@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#40FFFFFF">
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:angle="135"
+                android:startColor="@color/accent_primary"
+                android:endColor="@color/accent_cyan"
+                android:type="linear" />
+            <size
+                android:width="@dimen/main_play_button_size"
+                android:height="@dimen/main_play_button_size" />
+        </shape>
+    </item>
+</ripple>

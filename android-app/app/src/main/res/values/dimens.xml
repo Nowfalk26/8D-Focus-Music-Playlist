@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common Margins & Paddings -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+
+    <!-- Corner Radii -->
+    <dimen name="corner_radius_small">6dp</dimen>
+    <dimen name="corner_radius_medium">12dp</dimen>
+    <dimen name="corner_radius_large">18dp</dimen>
+    <dimen name="corner_radius_circle">50dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_subheading">16sp</dimen>
+    <dimen name="text_heading">20sp</dimen>
+    <dimen name="text_title">26sp</dimen>
+
+    <!-- Card & Component Sizes -->
+    <dimen name="song_thumb_size">56dp</dimen>
+    <dimen name="category_card_height">100dp</dimen>
+    <dimen name="player_album_art_size">260dp</dimen>
+    <dimen name="control_button_size">48dp</dimen>
+    <dimen name="main_play_button_size">64dp</dimen>
+</resources>

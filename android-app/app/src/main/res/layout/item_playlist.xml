@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp">
+
+        <!-- Playlist Icon Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardPlaylistIcon"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            app:cardBackgroundColor="#1E293B"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:contentDescription="Playlist"
+                android:src="@drawable/ic_queue_music"
+                app:tint="@color/accent_cyan" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Playlist Details -->
+        <TextView
+            android:id="@+id/tvPlaylistName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Deep Code Sprint"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnDeletePlaylist"
+            app:layout_constraintStart_toEndOf="@id/cardPlaylistIcon"
+            app:layout_constraintTop_toTopOf="@id/cardPlaylistIcon" />
+
+        <TextView
+            android:id="@+id/tvPlaylistDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Curated binaural soundscapes for programming sessions"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/btnDeletePlaylist"
+            app:layout_constraintStart_toEndOf="@id/cardPlaylistIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvPlaylistName" />
+
+        <TextView
+            android:id="@+id/tvPlaylistTrackCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_badge_8d"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="2dp"
+            android:text="0 Tracks"
+            android:textColor="@color/accent_cyan"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/cardPlaylistIcon"
+            app:layout_constraintStart_toEndOf="@id/cardPlaylistIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvPlaylistDesc" />
+
+        <!-- Delete Action -->
+        <FrameLayout
+            android:id="@+id/btnDeletePlaylist"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_card_rounded"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:contentDescription="Delete Playlist"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/text_secondary" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
