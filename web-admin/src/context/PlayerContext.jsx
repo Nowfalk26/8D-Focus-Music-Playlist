@@ -69,6 +69,8 @@ export function PlayerProvider({ children }) {
   const sourceNodeRef = useRef(null);
   const animFrameRef = useRef(null);
   const orbitAngleRef = useRef(0);
+  const prefetchedNextSongRef = useRef(null);
+  const bgOrbitIntervalRef = useRef(null);
 
   // Offline & Network state
   const [isOnline, setIsOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true);
@@ -263,14 +265,11 @@ export function PlayerProvider({ children }) {
     }
   };
 
-  // Continuous Spatial Panning loop with mode awareness
+  // Continuous Spatial Panning loop with lock-screen awareness (Dual RAF + Interval ticker)
   useEffect(() => {
     let lastTime = performance.now();
 
-    const loop = (now) => {
-      const delta = (now - lastTime) / 1000;
-      lastTime = now;
-
+    const updatePanning = (delta) => {
       if (isPlaying && is8DActive && pannerRef.current && audioMode !== "normal") {
         const rate = orbitSpeed * 1.2;
         orbitAngleRef.current += rate * delta;
@@ -283,13 +282,64 @@ export function PlayerProvider({ children }) {
         // Pure stereo center without spatial panning
         pannerRef.current.pan.value = 0;
       }
-
-      animFrameRef.current = requestAnimationFrame(loop);
     };
 
-    animFrameRef.current = requestAnimationFrame(loop);
+    const loop = (now) => {
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
+      updatePanning(delta);
+      if (typeof document !== "undefined" && !document.hidden) {
+        animFrameRef.current = requestAnimationFrame(loop);
+      }
+    };
+
+    const handleVisibility = () => {
+      if (typeof document !== "undefined" && document.hidden) {
+        // Screen locked or tab hidden: cancel RAF and run smooth fallback interval
+        if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+        if (!bgOrbitIntervalRef.current) {
+          bgOrbitIntervalRef.current = setInterval(() => {
+            updatePanning(0.05);
+          }, 50);
+        }
+        // Ensure AudioContext doesn't suspend in background
+        if (audioContextRef.current && audioContextRef.current.state === "suspended") {
+          audioContextRef.current.resume().catch(() => {});
+        }
+      } else {
+        // Screen unlocked / tab visible: return to RAF
+        if (bgOrbitIntervalRef.current) {
+          clearInterval(bgOrbitIntervalRef.current);
+          bgOrbitIntervalRef.current = null;
+        }
+        lastTime = performance.now();
+        animFrameRef.current = requestAnimationFrame(loop);
+        if (audioContextRef.current && audioContextRef.current.state === "suspended") {
+          audioContextRef.current.resume().catch(() => {});
+        }
+      }
+    };
+
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", handleVisibility);
+      window.addEventListener("focus", handleVisibility);
+      window.addEventListener("pageshow", handleVisibility);
+
+      if (document.hidden) {
+        bgOrbitIntervalRef.current = setInterval(() => updatePanning(0.05), 50);
+      } else {
+        animFrameRef.current = requestAnimationFrame(loop);
+      }
+    }
+
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (bgOrbitIntervalRef.current) clearInterval(bgOrbitIntervalRef.current);
+      if (typeof document !== "undefined") {
+        document.removeEventListener("visibilitychange", handleVisibility);
+        window.removeEventListener("focus", handleVisibility);
+        window.removeEventListener("pageshow", handleVisibility);
+      }
     };
   }, [isPlaying, is8DActive, orbitSpeed, spatialDepth, audioMode]);
 
@@ -327,6 +377,35 @@ export function PlayerProvider({ children }) {
   useEffect(() => {
     refreshRecommendations();
   }, [refreshRecommendations]);
+
+  // Pre-fetch the next track well in advance so lock-screen transitions are instant & zero-latency
+  const prefetchNextTrack = useCallback(async (baseList = null, curId = null) => {
+    try {
+      const activeList = baseList || playlist;
+      let eligible = activeList.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+      if (eligible.length === 0) {
+        const res = await songsApi.getAll({ mode: audioMode || "8d" });
+        if (res.data?.data && res.data.data.length > 0) {
+          eligible = res.data.data;
+        }
+      }
+      if (eligible.length === 0) return;
+
+      const next = await playbackCycleManager.getNextSong(
+        eligible,
+        curId || currentSong?._id || currentSong?.id,
+        async (params) => {
+          const res = await recommendationsApi.getRecommendations(params);
+          return res.data?.data || [];
+        }
+      );
+      if (next) {
+        prefetchedNextSongRef.current = next;
+      }
+    } catch (e) {
+      console.warn("Background prefetch next track error:", e);
+    }
+  }, [playlist, audioMode, currentSong]);
 
   // Play a song & register interaction with ML Recommendation engine and PlaybackCycleManager
   const playSong = async (
@@ -400,12 +479,18 @@ export function PlayerProvider({ children }) {
     }
 
     if (audioRef.current) {
+      if (audioContextRef.current && audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume().catch(() => {});
+      }
       audioRef.current.src = song.audioUrl || "";
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
             setIsPlaying(true);
+            if (audioContextRef.current && audioContextRef.current.state === "suspended") {
+              audioContextRef.current.resume().catch(() => {});
+            }
           })
           .catch((err) => {
             setIsPlaying(false);
@@ -432,6 +517,11 @@ export function PlayerProvider({ children }) {
     } catch (err) {
       console.warn("Error logging play event:", err);
     }
+
+    // Schedule background prefetch of next track for seamless lock-screen transition
+    setTimeout(() => {
+      prefetchNextTrack(activeList, song._id || song.id);
+    }, 1500);
   };
 
   const togglePlay = () => {
@@ -499,18 +589,66 @@ export function PlayerProvider({ children }) {
 
     if (eligibleSongs.length === 0) return;
 
-    // Use atomic getNextSong from PlaybackCycleManager with ML ranking callback
-    const nextSong = await playbackCycleManager.getNextSong(
-      eligibleSongs,
-      currentSong?._id || currentSong?.id,
-      async (params) => {
-        const res = await recommendationsApi.getRecommendations(params);
-        return res.data?.data || [];
-      }
-    );
+    // Use pre-fetched candidate if ready to eliminate latency
+    let nextSong = prefetchedNextSongRef.current;
+    prefetchedNextSongRef.current = null;
+
+    if (!nextSong) {
+      nextSong = await playbackCycleManager.getNextSong(
+        eligibleSongs,
+        currentSong?._id || currentSong?.id,
+        async (params) => {
+          const res = await recommendationsApi.getRecommendations(params);
+          return res.data?.data || [];
+        }
+      );
+    }
+
+    if (!nextSong) {
+      nextSong = playbackCycleManager.peekNextCandidateSync(
+        eligibleSongs,
+        currentSong?._id || currentSong?.id
+      );
+    }
 
     if (nextSong) {
       await playSong(nextSong, eligibleSongs, true);
+    }
+  };
+
+  // Immediate Zero-Latency Track Transition for lock-screen continuity
+  const handleTrackEnded = async () => {
+    if (currentSong) {
+      playbackCycleManager.recordTrackCompleted(currentSong, playlist);
+    }
+
+    let eligibleSongs = playlist.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+    if (eligibleSongs.length === 0) {
+      try {
+        const res = await songsApi.getAll({ mode: audioMode || "8d" });
+        if (res.data?.data && res.data.data.length > 0) {
+          eligibleSongs = res.data.data;
+          setPlaylist(eligibleSongs);
+        }
+      } catch (e) {}
+    }
+
+    // Seamless instantaneous transition using pre-fetched or immediate candidate
+    let nextSong = prefetchedNextSongRef.current;
+    prefetchedNextSongRef.current = null;
+
+    if (!nextSong && eligibleSongs.length > 0) {
+      nextSong = playbackCycleManager.peekNextCandidateSync(
+        eligibleSongs,
+        currentSong?._id || currentSong?.id
+      );
+    }
+
+    if (nextSong) {
+      // Synchronous start maintains mobile browser lock-screen playback authorization
+      playSong(nextSong, eligibleSongs, true);
+    } else {
+      await playNext();
     }
   };
 
@@ -560,6 +698,19 @@ export function PlayerProvider({ children }) {
     const dur = audioRef.current?.duration || 0;
     setCurrentTime(curr);
 
+    // Sync lock-screen scrubber position
+    if (typeof navigator !== "undefined" && "mediaSession" in navigator && "setPositionState" in navigator.mediaSession) {
+      try {
+        if (dur > 0 && curr >= 0 && curr <= dur) {
+          navigator.mediaSession.setPositionState({
+            duration: dur,
+            playbackRate: audioRef.current?.playbackRate || 1.0,
+            position: curr,
+          });
+        }
+      } catch (e) {}
+    }
+
     if (dur > 0 && curr / dur >= 0.75 && !hasLoggedCompletionRef.current && currentSong) {
       hasLoggedCompletionRef.current = true;
       playbackCycleManager.recordTrackCompleted(currentSong, playlist);
@@ -570,6 +721,109 @@ export function PlayerProvider({ children }) {
       }).then(() => refreshRecommendations());
     }
   };
+
+  // Media Session API: Full Lock-screen & Notification Center Integration
+  useEffect(() => {
+    if (typeof navigator === "undefined" || !("mediaSession" in navigator)) return;
+
+    if (currentSong) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentSong.title,
+        artist: currentSong.artist || "Flow 8D Artist",
+        album: `Flow 8D • ${audioMode === "normal" ? "Normal Music" : "8D Audio"}`,
+        artwork: [
+          {
+            src: currentSong.imageUrl || "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=512",
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+          {
+            src: currentSong.imageUrl || "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=192",
+            sizes: "192x192",
+            type: "image/jpeg",
+          },
+        ],
+      });
+    }
+
+    navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+
+    const handlers = [
+      ["play", () => {
+        if (audioRef.current && audioRef.current.paused) {
+          if (audioContextRef.current && audioContextRef.current.state === "suspended") {
+            audioContextRef.current.resume().catch(() => {});
+          }
+          audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+        }
+      }],
+      ["pause", () => {
+        if (audioRef.current && !audioRef.current.paused) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+      }],
+      ["previoustrack", () => playPrev()],
+      ["nexttrack", () => playNext()],
+      ["seekto", (details) => {
+        if (details.seekTime !== undefined) seek(details.seekTime);
+      }],
+      ["seekforward", (details) => {
+        const step = details.seekOffset || 10;
+        seek(Math.min((audioRef.current?.duration || 0), (audioRef.current?.currentTime || 0) + step));
+      }],
+      ["seekbackward", (details) => {
+        const step = details.seekOffset || 10;
+        seek(Math.max(0, (audioRef.current?.currentTime || 0) - step));
+      }],
+      ["stop", () => {
+        if (audioRef.current) audioRef.current.pause();
+        setIsPlaying(false);
+      }],
+    ];
+
+    handlers.forEach(([action, handler]) => {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (err) {}
+    });
+  }, [currentSong, isPlaying, audioMode]);
+
+  // Screen Wake Lock API: keeps device display/audio pipeline awake during playback
+  useEffect(() => {
+    let wakeLock = null;
+
+    const requestLock = async () => {
+      try {
+        if (typeof navigator !== "undefined" && "wakeLock" in navigator && isPlaying && document.visibilityState === "visible") {
+          wakeLock = await navigator.wakeLock.request("screen");
+        }
+      } catch (e) {}
+    };
+
+    if (isPlaying) {
+      requestLock();
+    } else if (wakeLock) {
+      wakeLock.release().catch(() => {});
+      wakeLock = null;
+    }
+
+    const handleVis = () => {
+      if (document.visibilityState === "visible" && isPlaying) {
+        requestLock();
+      }
+    };
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", handleVis);
+    }
+
+    return () => {
+      if (typeof document !== "undefined") {
+        document.removeEventListener("visibilitychange", handleVis);
+      }
+      if (wakeLock) wakeLock.release().catch(() => {});
+    };
+  }, [isPlaying]);
 
   return (
     <PlayerContext.Provider
@@ -632,14 +886,13 @@ export function PlayerProvider({ children }) {
       <audio
         ref={audioRef}
         crossOrigin="anonymous"
+        preload="auto"
+        playsInline={true}
+        webkit-playsinline="true"
+        x-webkit-airplay="allow"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
-        onEnded={async () => {
-          if (currentSong) {
-            playbackCycleManager.recordTrackCompleted(currentSong, playlist);
-          }
-          await playNext();
-        }}
+        onEnded={handleTrackEnded}
         onError={() => {
           if (currentSong) {
             playbackCycleManager.recordTrackFailed(currentSong);

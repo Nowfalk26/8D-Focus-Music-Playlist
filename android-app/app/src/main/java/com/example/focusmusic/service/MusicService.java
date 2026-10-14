@@ -154,7 +154,7 @@ public class MusicService extends Service implements
                 break;
         }
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     private void playSong(Song song) {

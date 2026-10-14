@@ -486,6 +486,57 @@ export class PlaybackCycleManager {
     }
   }
 
+  /**
+   * Synchronous, zero-latency candidate selector for uninterrupted background/lock-screen transitions.
+   * Immediately selects and reserves the next eligible track in the current cycle using BPM harmony,
+   * with zero network delay, guaranteeing browser audio continuity on lock screen.
+   */
+  peekNextCandidateSync(allEligibleSongs = [], currentSongId = null) {
+    if (!Array.isArray(allEligibleSongs) || allEligibleSongs.length === 0) {
+      return null;
+    }
+
+    let excluded = this.getExcludedIds();
+    let candidates = allEligibleSongs.filter(
+      (s) => !excluded.has((s._id || s.id).toString())
+    );
+
+    if (candidates.length === 0) {
+      this.resetCycle(allEligibleSongs);
+      excluded = this.getExcludedIds();
+      if (allEligibleSongs.length > 1 && this.cycleData.lastCompletedSongId) {
+        candidates = allEligibleSongs.filter(
+          (s) => (s._id || s.id).toString() !== this.cycleData.lastCompletedSongId.toString()
+        );
+      } else {
+        candidates = [...allEligibleSongs];
+      }
+    }
+
+    if (candidates.length === 0) return null;
+
+    const currentTrack = allEligibleSongs.find(
+      (s) => (s._id || s.id).toString() === (currentSongId || "").toString()
+    );
+    const currentBpm = currentTrack?.audioFeatures?.tempo || 100;
+
+    // Pick closest BPM candidate for smooth harmonic transition
+    candidates.sort((a, b) => {
+      const bpmA = a.audioFeatures?.tempo || 100;
+      const bpmB = b.audioFeatures?.tempo || 100;
+      return Math.abs(bpmA - currentBpm) - Math.abs(bpmB - currentBpm);
+    });
+
+    const chosenSong = candidates[0];
+    const chosenId = (chosenSong._id || chosenSong.id).toString();
+    if (!this.cycleData.reservedSongIds.includes(chosenId)) {
+      this.cycleData.reservedSongIds.push(chosenId);
+    }
+    this.saveCycle();
+    this.notifyListeners();
+    return chosenSong;
+  }
+
   // Get current cycle metrics for UI badges and diagnostics
   getCycleStatus(allEligibleSongs = []) {
     const totalEligible = Array.isArray(allEligibleSongs) && allEligibleSongs.length > 0
