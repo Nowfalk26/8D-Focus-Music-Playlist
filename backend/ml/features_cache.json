@@ -1,0 +1,28 @@
+{
+  "test_track_1": {
+    "tempo": 65.0,
+    "energy": 0.28,
+    "danceability": 0.25,
+    "valence": 0.4,
+    "acousticness": 0.9,
+    "spectralCentroid": 950.0,
+    "spectralRolloff": 1520.0,
+    "spectralContrast": 0.35,
+    "zeroCrossingRate": 0.045,
+    "calmness": 0.92,
+    "duration": 300.0,
+    "vector": [
+      0.1154,
+      0.28,
+      0.25,
+      0.4,
+      0.9,
+      0.1375,
+      0.35,
+      0.5,
+      0.85,
+      0.92
+    ],
+    "isSynthesized": true
+  }
+}

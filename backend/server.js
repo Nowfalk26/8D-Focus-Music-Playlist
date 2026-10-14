@@ -9,6 +9,8 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const playlistRoutes = require("./routes/playlistRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 const recentlyPlayedRoutes = require("./routes/recentlyPlayedRoutes");
+const recommendationRoutes = require("./routes/recommendationRoutes");
+const aiChatRoutes = require("./routes/aiChatRoutes");
 
 const app = express();
 
@@ -33,6 +35,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/playlists", playlistRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/recently-played", recentlyPlayedRoutes);
+app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/ai-chat", aiChatRoutes);
 
 app.get("/", (req, res) => {
     res.send("8D Focus Music Playlist Backend is Running!");

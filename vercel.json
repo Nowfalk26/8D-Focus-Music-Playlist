@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd web-admin && npm run build",
+  "outputDirectory": "web-admin/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}

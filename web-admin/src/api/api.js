@@ -79,4 +79,25 @@ export const usersApi = {
   create: (userData) => api.post("/auth/register", userData),
 };
 
+// Machine Learning Recommendation Engine APIs
+export const recommendationsApi = {
+  getRecommendations: (params = {}) => {
+    // If excludeSongIds is an array with items, send via POST body to prevent query string truncation
+    if (params && params.excludeSongIds && params.excludeSongIds.length > 5) {
+      return api.post("/recommendations", params);
+    }
+    return api.get("/recommendations", { params });
+  },
+  recordInteraction: (data) => api.post("/recommendations/interaction", data),
+  getProfile: (params) => api.get("/recommendations/profile", { params }),
+  resetProfile: (data) => api.post("/recommendations/reset", data),
+  getSimilarSongs: (id, params) => api.get(`/recommendations/similar/${id}`, { params }),
+};
+
+// Milo The Cat AI Mood Assistant APIs
+export const aiChatApi = {
+  sendMessage: (data) => api.post("/ai-chat/message", data),
+  getPrompts: () => api.get("/ai-chat/prompts"),
+};
+
 export default api;

@@ -4,8 +4,13 @@ const Song = require("../models/Song");
 // @route   GET /api/songs
 const getAllSongs = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const { category, search, mode, audioMode } = req.query;
     let query = {};
+
+    const targetMode = mode || audioMode;
+    if (targetMode && ["normal", "8d"].includes(targetMode.toLowerCase())) {
+      query.audioMode = targetMode.toLowerCase();
+    }
 
     if (category) {
       query.category = { $regex: new RegExp(`^${category}$`, "i") };
@@ -63,7 +68,7 @@ const getSongById = async (req, res) => {
 // @route   POST /api/songs
 const createSong = async (req, res) => {
   try {
-    const { title, artist, category, audioUrl, imageUrl, duration, is8D } = req.body;
+    const { title, artist, category, audioUrl, imageUrl, duration, is8D, audioMode } = req.body;
 
     if (!title || !artist || !category || !audioUrl) {
       return res.status(400).json({
@@ -80,6 +85,7 @@ const createSong = async (req, res) => {
       imageUrl: imageUrl || "",
       duration: duration || "",
       is8D: is8D !== undefined ? is8D : true,
+      audioMode: audioMode || (is8D === false ? "normal" : "8d"),
     });
 
     res.status(201).json({

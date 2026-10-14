@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
+import HomeScreen from "./components/HomeScreen";
+import Studio8D from "./components/Studio8D";
+import MusicLibrary from "./components/MusicLibrary";
 import Dashboard from "./components/Dashboard";
 import SongManagement from "./components/SongManagement";
 import CategoryManagement from "./components/CategoryManagement";
 import UserManagement from "./components/UserManagement";
+import TasteProfileScreen from "./components/TasteProfileScreen";
+import OrbitStageScreen from "./components/OrbitStageScreen";
+import { PlayerProvider } from "./context/PlayerContext";
 
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("home"); // Default to Flow 8D Home from Stitch
   const [authChecked, setAuthChecked] = useState(false);
 
   // Check saved session on startup
@@ -29,38 +35,55 @@ export default function App() {
 
   const handleLoginSuccess = (userData) => {
     setAdminUser(userData);
-    setActiveTab("dashboard");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminUser");
     setAdminUser(null);
+    setActiveTab("home");
   };
 
   if (!authChecked) {
-    return null; // Brief initial session check
+    return null;
   }
 
-  // If not logged in as Admin, render Login screen
-  if (!adminUser) {
-    return <Login onLoginSuccess={handleLoginSuccess} />;
-  }
+  // Admin tabs require authentication
+  const isAdminTab = ["dashboard", "songs", "categories", "users"].includes(activeTab);
 
   return (
-    <Layout
-      activeTab={activeTab}
-      onSelectTab={setActiveTab}
-      user={adminUser}
-      onLogout={handleLogout}
-    >
-      {activeTab === "dashboard" && <Dashboard onNavigate={setActiveTab} />}
+    <PlayerProvider>
+      <Layout
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
+        user={adminUser || { name: "Guest Listener", role: "explorer" }}
+        onLogout={handleLogout}
+      >
+        {activeTab === "home" && <HomeScreen onNavigate={setActiveTab} />}
 
-      {activeTab === "songs" && <SongManagement />}
+        {activeTab === "taste" && <TasteProfileScreen />}
 
-      {activeTab === "categories" && <CategoryManagement />}
+        {activeTab === "orbit" && <OrbitStageScreen onNavigate={setActiveTab} />}
 
-      {activeTab === "users" && <UserManagement currentAdmin={adminUser} />}
-    </Layout>
+        {activeTab === "studio" && <Studio8D onNavigate={setActiveTab} />}
+
+        {activeTab === "library" && <MusicLibrary onNavigate={setActiveTab} />}
+
+        {/* Admin Tabs - render Login if not authenticated */}
+        {isAdminTab && !adminUser ? (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        ) : (
+          <>
+            {activeTab === "dashboard" && <Dashboard onNavigate={setActiveTab} />}
+
+            {activeTab === "songs" && <SongManagement />}
+
+            {activeTab === "categories" && <CategoryManagement />}
+
+            {activeTab === "users" && <UserManagement currentAdmin={adminUser} />}
+          </>
+        )}
+      </Layout>
+    </PlayerProvider>
   );
 }
