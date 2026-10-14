@@ -23,11 +23,13 @@ export default function ModeTransitionOverlay({
   const MODE_TITLES = {
     normal: "Preparing Your Music Experience",
     "8d": "Entering the 8D Universe",
+    "9d": "Entering the 9D Dimension",
   };
 
   const MODE_SUBTITLES = {
     normal: "Configuring Studio Master Stereo Fidelity",
     "8d": "Calibrating 360° Binaural Audio Orbit",
+    "9d": "Calibrating Multi-Dimensional Acoustic Harmonics",
   };
 
   const title = MODE_TITLES[targetMode] || MODE_TITLES["8d"];

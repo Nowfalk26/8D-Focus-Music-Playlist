@@ -33,6 +33,17 @@ export default function AudioModeSelector({
       borderClass: "border-purple-500/30 hover:border-purple-400/80 hover:shadow-[0_0_25px_rgba(192,38,211,0.35)]",
       activeBorder: "border-purple-400 shadow-[0_0_35px_rgba(192,38,211,0.55)] bg-purple-950/30",
     },
+    {
+      id: "9d",
+      label: "9D Dimension",
+      tag: "Hyper Depth",
+      subtitle: "Multi-dimensional holographic sound.",
+      description: "Dual-orbital harmonics, micro-echo reflection and spatial frequency isolation create an otherworldly holographic dimension.",
+      accent: "#f43f5e",
+      accentRgb: "244, 63, 94",
+      borderClass: "border-rose-500/30 hover:border-rose-400/80 hover:shadow-[0_0_25px_rgba(244,63,94,0.35)]",
+      activeBorder: "border-rose-400 shadow-[0_0_35px_rgba(244,63,94,0.55)] bg-rose-950/30",
+    },
   ];
 
   if (!isOpen) return null;
@@ -103,8 +114,8 @@ export default function AudioModeSelector({
           </p>
         </div>
 
-        {/* Selectable Audio Mode Cards (2 Modes: Normal Music and 8D Audio) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 max-w-3xl mx-auto gap-6 sm:gap-8 w-full mt-8 sm:mt-12">
+        {/* Selectable Audio Mode Cards (3 Modes: Normal, 8D Audio, 9D Dimension) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto gap-5 sm:gap-6 w-full mt-6 sm:mt-10">
           {modes.map((mode) => {
             const isCurrent = currentMode === mode.id;
             const isSelected = (highlightedMode || currentMode) === mode.id;
@@ -158,6 +169,7 @@ export default function AudioModeSelector({
                 <div className="my-auto py-6 flex flex-col items-center justify-center z-10">
                   {mode.id === "normal" && <NormalModeVisual />}
                   {mode.id === "8d" && <EightDModeVisual />}
+                  {mode.id === "9d" && <NineDModeVisual />}
 
                   <h3 className="text-2xl font-black text-white mt-5 tracking-tight group-hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
                     {mode.label}
@@ -241,6 +253,28 @@ function EightDModeVisual() {
         <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M12 1a9 9 0 0 0-9 9v7c0 2.21 1.79 4 4 4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H6v-2a6 6 0 0 1 12 0v2h-2a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1c2.21 0 4-1.79 4-4v-7a9 9 0 0 0-9-9z" />
         </svg>
+      </div>
+    </div>
+  );
+}
+
+// 9D Dimension Mode Visual (Holographic multi-layered orbital field)
+function NineDModeVisual() {
+  return (
+    <div className="w-24 h-24 rounded-full bg-rose-950/30 border border-rose-500/40 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-300 shadow-[0_0_25px_rgba(244,63,94,0.3)]">
+      {/* Outer Rotating Dotted Ring */}
+      <div
+        className="absolute inset-1 rounded-full border-2 border-dotted border-rose-400/70 animate-spin"
+        style={{ animationDuration: "8s" }}
+      />
+      {/* Reverse Dashed Ring */}
+      <div
+        className="absolute inset-3 rounded-full border border-dashed border-cyan-400/60 animate-spin"
+        style={{ animationDuration: "3.5s", animationDirection: "reverse" }}
+      />
+      {/* Glowing 9D Dimensional Badge */}
+      <div className="relative z-10 w-9 h-9 rounded-full bg-gradient-to-tr from-rose-500 to-purple-600 flex items-center justify-center text-white shadow-[0_0_15px_rgba(244,63,94,0.6)] text-xs font-black tracking-wider">
+        9D
       </div>
     </div>
   );

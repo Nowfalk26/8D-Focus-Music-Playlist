@@ -75,7 +75,8 @@ export default function HomeScreen({ onNavigate }) {
   const gradientStyles = {
     normal: "from-[#0d3b66]/60 via-[#121212]/90 to-[#121212]",
     "8d": "from-[#3a0ca3]/60 via-[#121212]/90 to-[#121212]",
-  }[audioMode || "8d"];
+    "9d": "from-[#831843]/60 via-[#121212]/90 to-[#121212]",
+  }[audioMode || "8d"] || "from-[#3a0ca3]/60 via-[#121212]/90 to-[#121212]";
 
   // Top 6 Quick Cards for Spotify 2x3 Grid
   const quickCards = [
@@ -95,7 +96,7 @@ export default function HomeScreen({ onNavigate }) {
   ];
 
   return (
-    <div className="w-full flex flex-col font-sans text-slate-200 select-none">
+    <div className="w-full flex flex-col font-sans text-slate-200 select-none pb-28 md:pb-16">
       {/* Dynamic Spotify Top Gradient Header */}
       <div className={`p-6 pb-4 bg-gradient-to-b ${gradientStyles} transition-colors duration-700`}>
         {/* Top Notification / Cycle Status HUD */}

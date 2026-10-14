@@ -13,6 +13,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
   const modeBadge = {
     normal: { label: "Normal Music", icon: "🎵", color: "text-cyan-400 border-cyan-400/40 bg-cyan-950/40" },
     "8d": { label: "8D Audio", icon: "🎧", color: "text-[#00f2fe] border-[#00f2fe]/40 bg-[#00f2fe]/10" },
+    "9d": { label: "9D Dimension", icon: "✨", color: "text-rose-400 border-rose-400/40 bg-rose-950/40" },
   }[audioMode || "8d"] || { label: "8D Audio", icon: "🎧", color: "text-[#00f2fe] border-[#00f2fe]/40 bg-[#00f2fe]/10" };
 
   return (

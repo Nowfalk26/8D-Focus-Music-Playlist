@@ -8,7 +8,7 @@ const getAllSongs = async (req, res) => {
     let query = {};
 
     const targetMode = mode || audioMode;
-    if (targetMode && ["normal", "8d"].includes(targetMode.toLowerCase())) {
+    if (targetMode && ["normal", "8d", "9d"].includes(targetMode.toLowerCase())) {
       query.audioMode = targetMode.toLowerCase();
     }
 

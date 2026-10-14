@@ -21,8 +21,16 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
     handleTransitionComplete,
   } = usePlayer();
 
+  const mobileNavTabs = [
+    { id: "home", label: "Home", icon: "home" },
+    { id: "library", label: "Search", icon: "search" },
+    { id: "orbit", label: "360° Orbit", icon: "spatial_audio_off" },
+    { id: "taste", label: "Taste DNA", icon: "insights" },
+    { id: "studio", label: "8D Studio", icon: "tune" },
+  ];
+
   return (
-    <div className="flex flex-col w-screen h-screen bg-[#000000] p-2 gap-2 overflow-hidden text-white font-sans select-none">
+    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-1 sm:p-2 gap-1.5 sm:gap-2 overflow-hidden text-white font-sans select-none">
       {/* Upper Section: Spotify Sidebar + Main Content Window */}
       <div className="flex-1 flex gap-2 min-h-0 overflow-hidden">
         {/* Spotify Sidebar (Left Navigation & Your Library Dock) */}
@@ -47,6 +55,32 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
 
       {/* Bottom: Spotify Persistent Player Bar */}
       <SpotifyPlayerBar onNavigate={onSelectTab} />
+
+      {/* Mobile Bottom Navigation Bar (Spotify mobile style) */}
+      <nav
+        aria-label="Mobile Navigation"
+        className="md:hidden flex items-center justify-around bg-[#121212] border-t border-white/10 py-1.5 px-2 shrink-0 z-40 rounded-t-lg"
+      >
+        {mobileNavTabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onSelectTab(tab.id)}
+              className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 transition-all ${
+                isActive ? "text-[#00f2fe]" : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              <span className={`material-symbols-outlined text-xl ${isActive ? "text-[#00f2fe] scale-110" : ""}`}>
+                {tab.icon}
+              </span>
+              <span className="text-[10px] font-medium leading-none tracking-tight">
+                {tab.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
 
       {/* Full 360 Binaural Orbit Player Modal */}
       {showFullPlayer && <Player360 />}

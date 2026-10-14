@@ -53,7 +53,7 @@ const songSchema = new mongoose.Schema(
     },
     audioMode: {
       type: String,
-      enum: ["normal", "8d"],
+      enum: ["normal", "8d", "9d"],
       default: "8d",
       index: true,
     },

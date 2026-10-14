@@ -74,10 +74,11 @@ export default function MusicLibrary({ onNavigate }) {
   const gradientStyles = {
     normal: "from-[#0d3b66]/70 via-[#181818]/90 to-[#121212]",
     "8d": "from-[#3a0ca3]/70 via-[#181818]/90 to-[#121212]",
-  }[audioMode || "8d"];
+    "9d": "from-[#831843]/70 via-[#181818]/90 to-[#121212]",
+  }[audioMode || "8d"] || "from-[#3a0ca3]/70 via-[#181818]/90 to-[#121212]";
 
   return (
-    <div className="w-full flex flex-col font-sans text-slate-200 select-none pb-24">
+    <div className="w-full flex flex-col font-sans text-slate-200 select-none pb-28 md:pb-24">
       {/* ============================================================== */}
       {/* 🌟 SPOTIFY GRAND PLAYLIST HERO HEADER */}
       {/* ============================================================== */}
@@ -95,13 +96,17 @@ export default function MusicLibrary({ onNavigate }) {
         {/* Playlist Info Block */}
         <div className="flex flex-col text-center md:text-left min-w-0">
           <span className="text-[11px] font-bold uppercase tracking-widest text-[#00f2fe] mb-1 font-mono">
-            PUBLIC PLAYLIST • {audioMode === "normal" ? "STEREO MASTER" : "8D BINAURAL"}
+            PUBLIC PLAYLIST • {audioMode === "normal" ? "STEREO MASTER" : audioMode === "9d" ? "9D HOLOGRAPHIC" : "8D BINAURAL"}
           </span>
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight my-1">
-            {audioMode === "normal" ? "Normal Music Library" : "8D Audio Library"}
+            {audioMode === "normal" ? "Normal Music Library" : audioMode === "9d" ? "9D Dimension Library" : "8D Audio Library"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
-            Precision binaural panning, dynamic orbit velocity, and acoustic soundstage captures for deep flow state and spatial focus.
+            {audioMode === "normal"
+              ? "Studio master stereo tracks with clean dynamic fidelity and rich acoustics."
+              : audioMode === "9d"
+              ? "Multi-dimensional dual harmonic panning, frequency isolation, and holographic depth for transcendent focus."
+              : "Precision binaural panning, dynamic orbit velocity, and acoustic soundstage captures for deep flow state."}
           </p>
           <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-xs font-semibold text-white">
             <span className="text-[#00f2fe]">Flow 8D</span>

@@ -40,7 +40,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
   });
 
   return (
-    <aside className="w-72 lg:w-80 h-full flex flex-col gap-2 shrink-0 select-none font-sans">
+    <aside className="hidden md:flex w-72 lg:w-80 h-full flex-col gap-2 shrink-0 select-none font-sans">
       {/* Top Card: Primary Spotify Nav Dock */}
       <div className="bg-[#121212] rounded-lg p-4 flex flex-col gap-3 shadow-md">
         {/* Brand Header */}

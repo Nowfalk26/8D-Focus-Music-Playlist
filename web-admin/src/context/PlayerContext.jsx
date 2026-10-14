@@ -5,12 +5,11 @@ import { playbackCycleManager } from "../services/PlaybackCycleManager";
 const PlayerContext = createContext(null);
 
 export function PlayerProvider({ children }) {
-  // Audio Universe Mode: 'normal' | '8d'
+  // Audio Universe Mode: 'normal' | '8d' | '9d'
   const [audioMode, setAudioModeState] = useState(() => {
     const saved = localStorage.getItem("flow8d_audio_mode");
-    if (saved === "9d") {
-      localStorage.setItem("flow8d_audio_mode", "8d");
-      return "8d";
+    if (saved && ["normal", "8d", "9d"].includes(saved)) {
+      return saved;
     }
     return saved || null;
   });
@@ -191,7 +190,7 @@ export function PlayerProvider({ children }) {
 
   // Centralized setAudioMode method
   const setAudioMode = useCallback((newMode) => {
-    if (!["normal", "8d"].includes(newMode)) return;
+    if (!["normal", "8d", "9d"].includes(newMode)) return;
     setAudioModeState(newMode);
     localStorage.setItem("flow8d_audio_mode", newMode);
     setIsModeSelectorOpen(false);
@@ -208,6 +207,10 @@ export function PlayerProvider({ children }) {
       setIs8DActive(true);
       setOrbitSpeed(1.0);
       setSpatialDepth(85);
+    } else if (newMode === "9d") {
+      setIs8DActive(true);
+      setOrbitSpeed(1.4);
+      setSpatialDepth(100);
     }
 
     // Gracefully handle active playback:
@@ -232,7 +235,7 @@ export function PlayerProvider({ children }) {
   // Animated mode switch initiation: locks clicks, sets target mode, triggers loading overlay
   const switchAudioMode = useCallback((targetMode) => {
     if (isSwitchingLocked) return;
-    if (!["normal", "8d"].includes(targetMode)) return;
+    if (!["normal", "8d", "9d"].includes(targetMode)) return;
 
     // If user clicks the mode that is already active, do not unnecessarily restart loading animation
     if (targetMode === audioMode) {
@@ -275,9 +278,15 @@ export function PlayerProvider({ children }) {
         orbitAngleRef.current += rate * delta;
         const depth = spatialDepth / 100;
 
-        // 8D Circular Binaural Orbit
-        const panValue = Math.sin(orbitAngleRef.current) * depth;
-        pannerRef.current.pan.value = Math.max(-1, Math.min(1, panValue));
+        if (audioMode === "9d") {
+          // 9D Dual-orbital harmonic spatial panning with golden ratio overtone
+          const panValue = (Math.sin(orbitAngleRef.current) * 0.72 + Math.sin(orbitAngleRef.current * 1.618) * 0.28) * depth;
+          pannerRef.current.pan.value = Math.max(-1, Math.min(1, panValue));
+        } else {
+          // 8D Circular Binaural Orbit
+          const panValue = Math.sin(orbitAngleRef.current) * depth;
+          pannerRef.current.pan.value = Math.max(-1, Math.min(1, panValue));
+        }
       } else if (pannerRef.current && (!is8DActive || audioMode === "normal")) {
         // Pure stereo center without spatial panning
         pannerRef.current.pan.value = 0;

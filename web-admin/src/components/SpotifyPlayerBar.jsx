@@ -37,14 +37,14 @@ export default function SpotifyPlayerBar({ onNavigate }) {
     "https://lh3.googleusercontent.com/aida-public/AB6AXuCYHY4hp0r-GSzPdesFf5Z5mHQjlDX8zkLIjOdCA_IqUU_uw_nFr73ANifvOdaM2Q0NTsbK9ZB4CakHGH5fOSwA-_HynlD80C-hNL1oquc1m9K6gETHr9tKwpVJsxr8i3yXt8MxzxgSfUOhVYLQ8IqgfrlSGKs-61qE80eejtCqn6bE6dEiNbaAVFjYTn5bXQizoK0XcGh2VyyPyVMbGgVbr-Vnz7APr5Vg8HSuKiI1D50YhAVg3lfgaQ";
 
   return (
-    <footer className="h-20 bg-[#000000] border-t border-[#242424] px-4 flex items-center justify-between z-50 shrink-0 select-none">
+    <footer className="h-16 sm:h-20 bg-[#000000] border-t border-[#242424] px-2.5 sm:px-4 flex items-center justify-between z-50 shrink-0 select-none">
       {/* Left: Track Information (Spotify style) */}
-      <div className="flex items-center gap-3.5 w-1/4 min-w-[200px] max-w-[320px]">
+      <div className="flex items-center gap-2 sm:gap-3.5 flex-1 min-w-0 max-w-[55%] md:w-1/4 md:min-w-[180px] md:max-w-[320px]">
         {currentSong ? (
           <>
             <div
               onClick={() => setShowFullPlayer(true)}
-              className="relative w-14 h-14 rounded-md overflow-hidden shrink-0 group cursor-pointer shadow-md bg-[#181818]"
+              className="relative w-11 h-11 sm:w-14 sm:h-14 rounded-md overflow-hidden shrink-0 group cursor-pointer shadow-md bg-[#181818]"
             >
               <img
                 src={currentSong.imageUrl || DEFAULT_COVER}
@@ -64,14 +64,14 @@ export default function SpotifyPlayerBar({ onNavigate }) {
               <div className="flex items-center gap-2">
                 <h4
                   onClick={() => setShowFullPlayer(true)}
-                  className="text-sm font-semibold text-white truncate hover:underline cursor-pointer"
+                  className="text-xs sm:text-sm font-semibold text-white truncate hover:underline cursor-pointer"
                   title={currentSong.title}
                 >
                   {currentSong.title}
                 </h4>
               </div>
               <p
-                className="text-xs text-slate-400 truncate hover:text-white hover:underline cursor-pointer mt-0.5"
+                className="text-[11px] sm:text-xs text-slate-400 truncate hover:text-white hover:underline cursor-pointer mt-0.5"
                 title={currentSong.artist}
               >
                 {currentSong.artist || "Flow 8D Artist"}
@@ -85,7 +85,7 @@ export default function SpotifyPlayerBar({ onNavigate }) {
               title={isFav ? "Remove from Your Library" : "Save to Your Library"}
             >
               <span
-                className={`material-symbols-outlined text-xl transition-all ${
+                className={`material-symbols-outlined text-lg sm:text-xl transition-all ${
                   isFav
                     ? "text-[#00f2fe] scale-110 drop-shadow-[0_0_8px_rgba(0,242,254,0.6)]"
                     : "text-slate-400 hover:text-white"
@@ -97,22 +97,22 @@ export default function SpotifyPlayerBar({ onNavigate }) {
             </button>
           </>
         ) : (
-          <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-md bg-[#181818] border border-white/5 flex items-center justify-center text-slate-500">
-              <span className="material-symbols-outlined text-2xl">music_note</span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-md bg-[#181818] border border-white/5 flex items-center justify-center text-slate-500">
+              <span className="material-symbols-outlined text-xl sm:text-2xl">music_note</span>
             </div>
             <div>
               <p className="text-xs text-slate-400">No track playing</p>
-              <p className="text-[10px] text-slate-600 font-mono">Select a song to start</p>
+              <p className="text-[10px] text-slate-600 font-mono hidden sm:block">Select a song to start</p>
             </div>
           </div>
         )}
       </div>
 
       {/* Center: Playback Transport & Scrubber Bar (Spotify Canonical Center) */}
-      <div className="flex flex-col items-center justify-center w-2/4 max-w-xl px-4">
+      <div className="flex flex-col items-center justify-center shrink-0 md:flex-1 md:w-2/4 md:max-w-xl px-1 sm:px-4">
         {/* Top Control Buttons */}
-        <div className="flex items-center gap-5 mb-1.5">
+        <div className="flex items-center gap-3 sm:gap-5 mb-0.5 sm:mb-1.5">
           {/* Smart No-Repeat Cycle Loop status */}
           <button
             onClick={resetPlaybackCycle}
@@ -203,7 +203,7 @@ export default function SpotifyPlayerBar({ onNavigate }) {
       </div>
 
       {/* Right: Audio Modes & Tools (Spotify right utility bar) */}
-      <div className="flex items-center justify-end gap-3 w-1/4 min-w-[200px]">
+      <div className="hidden md:flex items-center justify-end gap-3 w-1/4 min-w-[180px]">
         {/* Milo AI Chat Button */}
         <button
           onClick={() => setShowMiloChat(true)}

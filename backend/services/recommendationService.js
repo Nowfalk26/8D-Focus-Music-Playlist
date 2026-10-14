@@ -239,7 +239,7 @@ class RecommendationService {
 
     // Retrieve songs from the library filtered strictly by audioMode if provided
     const query = {};
-    if (audioMode && ["normal", "8d"].includes(audioMode.toLowerCase())) {
+    if (audioMode && ["normal", "8d", "9d"].includes(audioMode.toLowerCase())) {
       query.audioMode = audioMode.toLowerCase();
     }
     let allSongs = await Song.find(query);
