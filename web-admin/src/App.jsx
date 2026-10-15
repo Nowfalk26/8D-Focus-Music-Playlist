@@ -61,13 +61,13 @@ export default function App() {
       >
         {activeTab === "home" && <HomeScreen onNavigate={setActiveTab} />}
 
-        {activeTab === "taste" && <TasteProfileScreen />}
+        {(activeTab === "taste" || activeTab === "dna") && <TasteProfileScreen />}
 
-        {activeTab === "orbit" && <OrbitStageScreen onNavigate={setActiveTab} />}
+        {(activeTab === "orbit" || activeTab === "stage") && <OrbitStageScreen onNavigate={setActiveTab} />}
 
-        {activeTab === "studio" && <Studio8D onNavigate={setActiveTab} />}
+        {(activeTab === "studio" || activeTab === "8d") && <Studio8D onNavigate={setActiveTab} />}
 
-        {activeTab === "library" && <MusicLibrary onNavigate={setActiveTab} />}
+        {(activeTab === "library" || activeTab === "search") && <MusicLibrary onNavigate={setActiveTab} />}
 
         {/* Admin Tabs - render Login if not authenticated */}
         {isAdminTab && !adminUser ? (

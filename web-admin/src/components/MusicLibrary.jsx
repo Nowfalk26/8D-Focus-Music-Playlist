@@ -77,21 +77,20 @@ export default function MusicLibrary({ onNavigate }) {
     ...Array.from(new Set(categories.map((c) => c.name || c).filter(Boolean))),
   ];
 
-  // Header gradient styling based on active audio universe
   const gradientStyles = {
     normal: "from-[#0d3b66]/70 via-[#181818]/90 to-[#121212]",
-    "8d": "from-[#3a0ca3]/70 via-[#181818]/90 to-[#121212]",
+    "8d": "from-[#1DB954]/25 via-[#181818]/90 to-[#121212]",
     "9d": "from-[#831843]/70 via-[#181818]/90 to-[#121212]",
-  }[audioMode || "8d"] || "from-[#3a0ca3]/70 via-[#181818]/90 to-[#121212]";
+  }[audioMode || "8d"] || "from-[#1DB954]/25 via-[#181818]/90 to-[#121212]";
 
   return (
     <div className="w-full flex flex-col font-sans text-slate-200 select-none pb-28 md:pb-24">
       {/* ============================================================== */}
-      {/* 🌟 SPOTIFY GRAND PLAYLIST HERO HEADER */}
+      {/* 🌟 SPOTIFY GRAND PLAYLIST HERO HEADER (Stitch Screen 1c3c1d45) */}
       {/* ============================================================== */}
-      <div className={`p-6 md:p-8 bg-gradient-to-b ${gradientStyles} flex flex-col md:flex-row items-center md:items-end gap-6 transition-colors duration-700`}>
+      <div className={`p-5 sm:p-8 bg-gradient-to-b ${gradientStyles} flex flex-col sm:flex-row items-center sm:items-end gap-5 transition-colors duration-700`}>
         {/* Massive Album Cover */}
-        <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-md overflow-hidden shadow-2xl shrink-0 bg-[#242424] border border-white/10 relative group">
+        <div className="w-40 h-40 sm:w-52 sm:h-52 rounded-xl overflow-hidden shadow-2xl shrink-0 bg-[#242424] border border-white/10 relative group">
           <img
             src={filteredSongs[0]?.imageUrl || DEFAULT_COVER}
             alt="Library Cover"
@@ -101,26 +100,26 @@ export default function MusicLibrary({ onNavigate }) {
         </div>
 
         {/* Playlist Info Block */}
-        <div className="flex flex-col text-center md:text-left min-w-0">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-[#00f2fe] mb-1 font-mono">
+        <div className="flex flex-col text-center sm:text-left min-w-0">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-[#1DB954] mb-1 font-mono">
             PUBLIC PLAYLIST • {audioMode === "normal" ? "STEREO MASTER" : audioMode === "9d" ? "9D HOLOGRAPHIC" : "8D BINAURAL"}
           </span>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight my-1">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight my-1">
             {audioMode === "normal" ? "Normal Music Library" : audioMode === "9d" ? "9D Dimension Library" : "8D Audio Library"}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-neutral-300 mt-1 max-w-2xl leading-relaxed">
             {audioMode === "normal"
               ? "Studio master stereo tracks with clean dynamic fidelity and rich acoustics."
               : audioMode === "9d"
-              ? "Multi-dimensional dual harmonic panning, frequency isolation, and holographic depth for transcendent focus."
-              : "Precision binaural panning, dynamic orbit velocity, and acoustic soundstage captures for deep flow state."}
+              ? "Multi-dimensional dual harmonic panning, frequency isolation, and holographic depth."
+              : "Precision binaural panning, dynamic orbit velocity, and acoustic soundstage captures."}
           </p>
-          <div className="flex items-center justify-center md:justify-start gap-2 mt-3 text-xs font-semibold text-white">
-            <span className="text-[#00f2fe]">Flow 8D</span>
+          <div className="flex items-center justify-center sm:justify-start gap-2 mt-2 text-xs font-semibold text-white">
+            <span className="text-[#1DB954]">Flow 8D</span>
             <span>•</span>
-            <span className="text-slate-300">{filteredSongs.length} songs</span>
+            <span className="text-neutral-300">{filteredSongs.length} songs</span>
             <span>•</span>
-            <span className="text-slate-400 font-mono">~{Math.round(filteredSongs.length * 4.2)} mins</span>
+            <span className="text-neutral-400 font-mono">~{Math.round(filteredSongs.length * 4.2)} mins</span>
           </div>
         </div>
       </div>
@@ -128,16 +127,19 @@ export default function MusicLibrary({ onNavigate }) {
       {/* ============================================================== */}
       {/* 🎵 ACTION TOOLBAR: Play, Universe Switch, Search */}
       {/* ============================================================== */}
-      <div className="px-6 py-5 flex flex-wrap items-center justify-between gap-4 border-b border-white/5 bg-[#121212]/80 backdrop-blur-md sticky top-0 z-20">
-        <div className="flex items-center gap-5">
+      <div className="px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/5 bg-[#121212]/85 backdrop-blur-md sticky top-0 z-20">
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Large Spotify Circular Play Button */}
           {filteredSongs.length > 0 && (
             <button
               onClick={() => playSong(filteredSongs[0], filteredSongs)}
-              className="w-14 h-14 rounded-full bg-[#00f2fe] text-obsidian-950 flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#1DB954] text-black flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform"
               title="Play playlist"
             >
-              <span className="material-symbols-outlined text-3xl font-bold ml-1">
+              <span
+                className="material-symbols-outlined text-3xl font-bold ml-1"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
                 play_arrow
               </span>
             </button>
@@ -146,10 +148,10 @@ export default function MusicLibrary({ onNavigate }) {
           {/* Universe Switcher Pill */}
           <button
             onClick={openModeSelector}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#242424] hover:bg-[#2e2e2e] border border-[#00f2fe]/30 text-white hover:text-[#00f2fe] text-xs font-semibold transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#242424] hover:bg-[#2e2e2e] border border-[#1DB954]/30 text-white hover:text-[#1DB954] text-xs font-semibold transition-all shadow-sm"
           >
-            <span className="material-symbols-outlined text-sm text-[#00f2fe]">sync</span>
-            <span>Switch Universe</span>
+            <span className="material-symbols-outlined text-sm text-[#1DB954]">sync</span>
+            <span>Mode</span>
           </button>
 
           {/* Favorites Filter */}
@@ -159,8 +161,8 @@ export default function MusicLibrary({ onNavigate }) {
             }
             className={`p-2.5 rounded-full border transition-all ${
               activeFilterTab === "favorites"
-                ? "bg-[#00f2fe]/20 text-[#00f2fe] border-[#00f2fe]/50 shadow-glow-cyan"
-                : "border-white/10 text-slate-400 hover:text-white hover:bg-white/5"
+                ? "bg-[#1DB954]/20 text-[#1DB954] border-[#1DB954]/50 shadow-md"
+                : "border-white/10 text-neutral-400 hover:text-white hover:bg-white/5"
             }`}
             title="Filter Liked Songs"
           >
@@ -177,20 +179,20 @@ export default function MusicLibrary({ onNavigate }) {
 
         {/* Search Input on the right */}
         <div className="relative w-full sm:w-72">
-          <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-sm">
+          <span className="material-symbols-outlined absolute left-3 top-2.5 text-neutral-400 text-sm">
             search
           </span>
           <input
             type="text"
-            placeholder="Filter in library..."
+            placeholder="Search in playlist..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#242424] border-0 rounded-full py-2 pl-9 pr-8 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-white/20"
+            className="w-full bg-[#242424] border-0 rounded-full py-2 pl-9 pr-8 text-xs text-white placeholder-neutral-500 focus:outline-none focus:ring-1 focus:ring-[#1DB954]"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-2.5 text-slate-500 hover:text-white text-xs"
+              className="absolute right-3 top-2.5 text-neutral-400 hover:text-white text-xs"
             >
               ✕
             </button>
@@ -199,23 +201,22 @@ export default function MusicLibrary({ onNavigate }) {
       </div>
 
       {/* Mood / Genre & Category Pills Strip */}
-      <div className="px-6 pt-3 pb-1 overflow-x-auto scrollbar-none flex items-center gap-2">
-        {/* Mood Filter Pills */}
+      <div className="px-4 sm:px-6 pt-3 pb-1 overflow-x-auto no-scrollbar flex items-center gap-2">
         {[
-          { id: "All", label: "All Moods", icon: "auto_awesome" },
-          { id: "Love", label: "❤️ Love", icon: "favorite" },
-          { id: "Melody", label: "🎵 Melody", icon: "music_note" },
-          { id: "Vibe", label: "⚡ Vibe", icon: "bolt" },
+          { id: "All", label: "All Moods" },
+          { id: "Love", label: "❤️ Love" },
+          { id: "Melody", label: "🎵 Melody" },
+          { id: "Vibe", label: "⚡ Vibe" },
         ].map((m) => {
           const isSelected = selectedGenre === m.id;
           return (
             <button
               key={m.id}
               onClick={() => setSelectedGenre(m.id)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                 isSelected
-                  ? "bg-[#00f2fe] text-black font-bold shadow-glow-cyan"
-                  : "bg-[#1c1c1c] hover:bg-[#282828] text-slate-300 border border-white/5"
+                  ? "bg-[#1DB954] text-black font-bold shadow-md"
+                  : "bg-[#1c1c1c] hover:bg-[#282828] text-neutral-300 border border-white/5"
               }`}
             >
               <span>{m.label}</span>
@@ -225,7 +226,6 @@ export default function MusicLibrary({ onNavigate }) {
 
         <div className="h-4 w-px bg-white/20 mx-1 shrink-0" />
 
-        {/* Category Pills */}
         {categoryList.map((cat, idx) => {
           const isSelected =
             (cat === "All Categories" && selectedCategory === "All") ||
@@ -237,7 +237,7 @@ export default function MusicLibrary({ onNavigate }) {
               className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
                 isSelected
                   ? "bg-white text-black font-bold"
-                  : "bg-[#242424] hover:bg-[#2c2c2c] text-slate-300"
+                  : "bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300"
               }`}
             >
               {cat}
@@ -249,18 +249,18 @@ export default function MusicLibrary({ onNavigate }) {
       {/* ============================================================== */}
       {/* 📋 SPOTIFY TRACK TABLE */}
       {/* ============================================================== */}
-      <div className="px-6 mt-4">
+      <div className="px-3 sm:px-6 mt-4">
         {/* Table Header */}
-        <div className="grid grid-cols-12 px-4 py-2 text-[11px] font-medium text-slate-400 uppercase tracking-wider border-b border-white/10">
+        <div className="grid grid-cols-12 px-3 py-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider border-b border-white/10">
           <div className="col-span-1 text-center">#</div>
-          <div className="col-span-6 md:col-span-5">Title</div>
+          <div className="col-span-8 md:col-span-5">Title</div>
           <div className="hidden md:block md:col-span-3">Category</div>
-          <div className="col-span-5 md:col-span-3 text-right pr-2">Duration</div>
+          <div className="col-span-3 md:col-span-3 text-right pr-2">Duration</div>
         </div>
 
         {/* Table Rows */}
         {filteredSongs.length === 0 ? (
-          <div className="py-16 text-center text-slate-500 font-mono text-xs">
+          <div className="py-16 text-center text-neutral-500 font-mono text-xs">
             {loading ? "Loading audio tracks..." : "No tracks found."}
           </div>
         ) : (
@@ -276,14 +276,14 @@ export default function MusicLibrary({ onNavigate }) {
                 <div
                   key={song._id || song.id || idx}
                   onClick={() => playSong(song, filteredSongs)}
-                  className={`grid grid-cols-12 items-center px-4 py-2.5 rounded-md hover:bg-[#282828] cursor-pointer group transition-colors text-xs ${
-                    isThisPlaying ? "bg-[#282828] text-[#00f2fe]" : "text-slate-300"
+                  className={`grid grid-cols-12 items-center px-3 py-2.5 rounded-lg hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
+                    isThisPlaying ? "bg-[#242424] text-[#1DB954]" : "text-neutral-300"
                   }`}
                 >
                   {/* Number or Play indicator */}
-                  <div className="col-span-1 flex items-center justify-center font-mono text-slate-400 group-hover:hidden">
+                  <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden">
                     {isThisPlaying ? (
-                      <span className="material-symbols-outlined text-[#00f2fe] text-base animate-pulse">
+                      <span className="material-symbols-outlined text-[#1DB954] text-base animate-pulse">
                         equalizer
                       </span>
                     ) : (
@@ -296,17 +296,20 @@ export default function MusicLibrary({ onNavigate }) {
                         e.stopPropagation();
                         playSong(song, filteredSongs);
                       }}
-                      className="text-white hover:text-[#00f2fe] transition-colors"
+                      className="text-white hover:text-[#1DB954] transition-colors"
                     >
-                      <span className="material-symbols-outlined text-xl">
+                      <span
+                        className="material-symbols-outlined text-xl"
+                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      >
                         {isThisPlaying ? "pause" : "play_arrow"}
                       </span>
                     </button>
                   </div>
 
                   {/* Title & Artist */}
-                  <div className="col-span-6 md:col-span-5 flex items-center gap-3 min-w-0 pr-3">
-                    <div className="w-10 h-10 rounded overflow-hidden shrink-0 bg-[#242424]">
+                  <div className="col-span-8 md:col-span-5 flex items-center gap-3 min-w-0 pr-3">
+                    <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 bg-black shadow-sm">
                       <img
                         src={song.imageUrl || DEFAULT_COVER}
                         alt={song.title}
@@ -316,47 +319,47 @@ export default function MusicLibrary({ onNavigate }) {
                     </div>
                     <div className="min-w-0">
                       <h4
-                        className={`font-semibold truncate text-sm ${
-                          isThisPlaying ? "text-[#00f2fe]" : "text-white group-hover:text-white"
+                        className={`font-semibold truncate text-xs sm:text-sm ${
+                          isThisPlaying ? "text-[#1DB954]" : "text-white group-hover:text-white"
                         }`}
                       >
                         {song.title}
                       </h4>
-                      <p className="text-xs text-slate-400 truncate mt-0.5">
+                      <p className="text-[11px] text-neutral-400 truncate mt-0.5">
                         {song.artist}
                       </p>
                     </div>
                   </div>
 
                   {/* Category & Mood Badge */}
-                  <div className="hidden md:flex md:col-span-3 items-center gap-2 text-slate-400 text-xs truncate">
+                  <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400 text-xs truncate">
                     <span className="truncate">{song.category || "Tamil Melodies"}</span>
                     {song.genre && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#00f2fe] shrink-0">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] shrink-0">
                         {song.genre}
                       </span>
                     )}
                   </div>
 
                   {/* Duration & Heart */}
-                  <div className="col-span-5 md:col-span-3 flex items-center justify-end gap-4 text-slate-400 font-mono text-xs pr-2">
+                  <div className="col-span-3 md:col-span-3 flex items-center justify-end gap-3 text-neutral-400 font-mono text-xs pr-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleFavorite(song._id || song.id);
                       }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity hover:text-white"
+                      className="transition-opacity hover:text-white p-1"
                     >
                       <span
                         className={`material-symbols-outlined text-base ${
-                          isFav ? "text-[#00f2fe] opacity-100" : "text-slate-400"
+                          isFav ? "text-[#1DB954] opacity-100" : "text-neutral-400 opacity-0 group-hover:opacity-100"
                         }`}
                         style={{ fontVariationSettings: isFav ? "'FILL' 1" : "'FILL' 0" }}
                       >
                         favorite
                       </span>
                     </button>
-                    <span>{song.duration || "4:30"}</span>
+                    <span>{song.duration || "4:15"}</span>
                   </div>
                 </div>
               );
