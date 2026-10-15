@@ -4,7 +4,7 @@ const Song = require("../models/Song");
 // @route   GET /api/songs
 const getAllSongs = async (req, res) => {
   try {
-    const { category, search, mode, audioMode } = req.query;
+    const { category, genre, search, mode, audioMode } = req.query;
     let query = {};
 
     const targetMode = mode || audioMode;
@@ -16,10 +16,16 @@ const getAllSongs = async (req, res) => {
       query.category = { $regex: new RegExp(`^${category}$`, "i") };
     }
 
+    if (genre) {
+      query.genre = { $regex: new RegExp(`^${genre}$`, "i") };
+    }
+
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: "i" } },
         { artist: { $regex: search, $options: "i" } },
+        { composer: { $regex: search, $options: "i" } },
+        { album: { $regex: search, $options: "i" } },
       ];
     }
 

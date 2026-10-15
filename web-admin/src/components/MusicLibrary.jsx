@@ -21,6 +21,7 @@ export default function MusicLibrary({ onNavigate }) {
   const [categories, setCategories] = useState([]);
   const [activeFilterTab, setActiveFilterTab] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedGenre, setSelectedGenre] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -52,17 +53,23 @@ export default function MusicLibrary({ onNavigate }) {
     const matchesSearch =
       song.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       song.artist?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      song.category?.toLowerCase().includes(searchQuery.toLowerCase());
+      song.composer?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      song.album?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      song.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      song.genre?.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesCategory =
       selectedCategory === "All" || song.category === selectedCategory;
+
+    const matchesGenre =
+      selectedGenre === "All" || song.genre?.toLowerCase() === selectedGenre.toLowerCase();
 
     const matchesTab =
       activeFilterTab === "all" ||
       (activeFilterTab === "favorites" && favorites.has(song._id || song.id)) ||
       (activeFilterTab === "mode_only" && (song.audioMode === audioMode || (!song.audioMode && audioMode === "8d")));
 
-    return matchesSearch && matchesCategory && matchesTab;
+    return matchesSearch && matchesCategory && matchesGenre && matchesTab;
   });
 
   const categoryList = [
@@ -191,8 +198,34 @@ export default function MusicLibrary({ onNavigate }) {
         </div>
       </div>
 
-      {/* Category Pills Strip */}
+      {/* Mood / Genre & Category Pills Strip */}
       <div className="px-6 pt-3 pb-1 overflow-x-auto scrollbar-none flex items-center gap-2">
+        {/* Mood Filter Pills */}
+        {[
+          { id: "All", label: "All Moods", icon: "auto_awesome" },
+          { id: "Love", label: "❤️ Love", icon: "favorite" },
+          { id: "Melody", label: "🎵 Melody", icon: "music_note" },
+          { id: "Vibe", label: "⚡ Vibe", icon: "bolt" },
+        ].map((m) => {
+          const isSelected = selectedGenre === m.id;
+          return (
+            <button
+              key={m.id}
+              onClick={() => setSelectedGenre(m.id)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                isSelected
+                  ? "bg-[#00f2fe] text-black font-bold shadow-glow-cyan"
+                  : "bg-[#1c1c1c] hover:bg-[#282828] text-slate-300 border border-white/5"
+              }`}
+            >
+              <span>{m.label}</span>
+            </button>
+          );
+        })}
+
+        <div className="h-4 w-px bg-white/20 mx-1 shrink-0" />
+
+        {/* Category Pills */}
         {categoryList.map((cat, idx) => {
           const isSelected =
             (cat === "All Categories" && selectedCategory === "All") ||
@@ -295,9 +328,14 @@ export default function MusicLibrary({ onNavigate }) {
                     </div>
                   </div>
 
-                  {/* Category */}
-                  <div className="hidden md:block md:col-span-3 text-slate-400 text-xs truncate">
-                    {song.category || "Focus Music"}
+                  {/* Category & Mood Badge */}
+                  <div className="hidden md:flex md:col-span-3 items-center gap-2 text-slate-400 text-xs truncate">
+                    <span className="truncate">{song.category || "Tamil Melodies"}</span>
+                    {song.genre && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#00f2fe] shrink-0">
+                        {song.genre}
+                      </span>
+                    )}
                   </div>
 
                   {/* Duration & Heart */}

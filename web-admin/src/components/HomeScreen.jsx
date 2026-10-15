@@ -440,9 +440,14 @@ export default function HomeScreen({ onNavigate }) {
                       </div>
                     </div>
 
-                    {/* Category */}
-                    <div className="hidden md:block md:col-span-3 text-slate-400 text-xs truncate">
-                      {song.category || "Focus Music"}
+                    {/* Category & Mood */}
+                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-slate-400 text-xs truncate">
+                      <span className="truncate">{song.category || "Tamil Melodies"}</span>
+                      {song.genre && (
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#00f2fe] shrink-0">
+                          {song.genre}
+                        </span>
+                      )}
                     </div>
 
                     {/* Duration & Favorite */}

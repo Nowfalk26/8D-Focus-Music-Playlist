@@ -57,6 +57,37 @@ const songSchema = new mongoose.Schema(
       default: "8d",
       index: true,
     },
+    composer: {
+      type: String,
+      default: "",
+    },
+    album: {
+      type: String,
+      default: "",
+    },
+    year: {
+      type: Number,
+      default: 2024,
+    },
+    language: {
+      type: String,
+      default: "Tamil",
+    },
+    genre: {
+      type: String,
+      enum: ["Love", "Melody", "Vibe"],
+      default: "Melody",
+      index: true,
+    },
+    canonicalId: {
+      type: String,
+      default: "",
+      index: true,
+    },
+    trendSource: {
+      type: String,
+      default: "",
+    },
     audioFeatures: {
       type: audioFeaturesSchema,
       default: () => ({}),

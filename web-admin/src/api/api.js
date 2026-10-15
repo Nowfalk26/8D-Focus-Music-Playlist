@@ -87,13 +87,20 @@ export const songsApi = {
       const cat = params.category.toLowerCase();
       filtered = filtered.filter((s) => s.category?.toLowerCase() === cat);
     }
+    if (params.genre && params.genre !== "All") {
+      const gen = params.genre.toLowerCase();
+      filtered = filtered.filter((s) => s.genre?.toLowerCase() === gen);
+    }
     if (params.search) {
       const q = params.search.toLowerCase();
       filtered = filtered.filter(
         (s) =>
           s.title?.toLowerCase().includes(q) ||
           s.artist?.toLowerCase().includes(q) ||
-          s.category?.toLowerCase().includes(q)
+          s.composer?.toLowerCase().includes(q) ||
+          s.album?.toLowerCase().includes(q) ||
+          s.category?.toLowerCase().includes(q) ||
+          s.genre?.toLowerCase().includes(q)
       );
     }
 
