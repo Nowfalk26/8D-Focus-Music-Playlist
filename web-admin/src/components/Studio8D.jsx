@@ -87,153 +87,140 @@ export default function Studio8D({ onNavigate }) {
   };
 
   return (
-    <div className="w-full flex flex-col space-y-6 max-w-7xl mx-auto pb-28 text-slate-200 font-sans">
-      {/* Top Navigation & Telemetry Bar */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-semibold">
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-8 space-y-6 pb-28">
+      {/* Top Header & Telemetry */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
+        <div>
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#1DB954]">
               Spatial Engine Lab
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span className="text-xs font-mono text-slate-400">v4.2.8 Binaural HRTF DSP</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
+            <span className="text-xs font-mono text-neutral-400">v4.2 Binaural HRTF DSP</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-display font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
             AI 8D Studio &amp; Customizer
           </h1>
         </div>
 
-        {/* Mode Badges & Live Status */}
-        <div className="flex items-center flex-wrap gap-2.5">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#131322] border border-white/5 text-slate-300 text-xs font-medium shadow-sm">
-            <span className="material-symbols-outlined text-[15px] text-purple-400">headphones</span>
-            <span>8D Audio Engine</span>
-            <span className="text-[9px] uppercase font-mono px-1.5 py-0.2 rounded bg-purple-900/50 text-purple-300 border border-purple-500/30">
-              Pro
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#131322] border border-white/5 text-slate-300 text-xs font-medium shadow-sm">
-            <span className="material-symbols-outlined text-[15px] text-pink-400">smart_toy</span>
-            <span>Milo AI Assist</span>
-          </div>
+        {/* 8D DSP Toggle Pill */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setIs8DActive(!is8DActive)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all shadow-sm ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-bold transition-all shadow-sm active:scale-95 ${
               is8DActive
-                ? "bg-cyan-950/60 border border-cyan-400/40 text-cyan-300 shadow-glow-cyan"
-                : "bg-[#131322] border border-white/10 text-slate-400"
+                ? "bg-[#1DB954]/20 border border-[#1DB954]/50 text-[#1DB954] shadow-md shadow-[#1DB954]/20"
+                : "bg-white/10 border border-white/10 text-neutral-400"
             }`}
           >
-            <span
-              className={`w-2 h-2 rounded-full ${is8DActive ? "bg-cyan-400 animate-ping" : "bg-slate-500"}`}
-            ></span>
+            <span className={`w-2 h-2 rounded-full ${is8DActive ? "bg-[#1DB954] animate-ping" : "bg-neutral-500"}`} />
             <span>{is8DActive ? "8D DSP Active" : "8D DSP Bypassed"}</span>
           </button>
         </div>
       </div>
 
-      {/* Main Soundstage Radar / Visualizer Canvas */}
-      <div className="relative w-full rounded-3xl bg-[#080812] border border-white/10 p-6 md:p-8 overflow-hidden shadow-2xl flex flex-col items-center justify-between min-h-[420px]">
+      {/* Main Soundstage Radar Canvas */}
+      <div className="relative w-full rounded-3xl bg-[#181818] border border-white/5 p-6 sm:p-8 overflow-hidden shadow-2xl flex flex-col items-center justify-between min-h-[380px]">
         {/* Ambient Radial Aurora Glow */}
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-16 left-1/3 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#1DB954]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 left-1/3 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* HUD Telemetry Overlay */}
-        <div className="w-full flex flex-col sm:flex-row items-center justify-between text-slate-400 font-mono text-[11px] z-10 pointer-events-none gap-2">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-between text-neutral-400 font-mono text-xs z-10 pointer-events-none gap-2">
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1 text-slate-200">
-              <span className="material-symbols-outlined text-sm text-cyan-400">sensors</span>
+            <span className="flex items-center gap-1.5 text-white">
+              <span className="material-symbols-outlined text-sm text-[#1DB954]">sensors</span>
               Bilateral HRTF: 360° Sphere
             </span>
-            <span className="text-slate-600">•</span>
-            <span>Lat: 1.2ms</span>
+            <span className="text-neutral-600">•</span>
+            <span>Latency: 1.2ms</span>
           </div>
           <div className="flex items-center gap-3">
             <span>Azimuth: {azimuth}°</span>
-            <span className="text-slate-600">•</span>
-            <span className="text-purple-400 font-semibold">Phase Sync: 99.4%</span>
+            <span className="text-neutral-600">•</span>
+            <span className="text-[#1DB954] font-semibold">Phase Sync: 99.4%</span>
           </div>
         </div>
 
         {/* Interactive Binaural Orbital Soundstage */}
-        <div className="relative w-64 h-64 md:w-72 md:h-72 my-6 flex items-center justify-center">
-          {/* Outer Orbit Ring with markers */}
-          <div className="absolute inset-0 rounded-full border border-white/10 bg-[#0a0a14]/40"></div>
-          {/* Concentric Ring 2 */}
-          <div className="absolute inset-6 rounded-full border border-cyan-400/20 bg-[#131322]/20"></div>
-          {/* Concentric Ring 3 */}
-          <div className="absolute inset-12 rounded-full border border-purple-500/30 bg-[#1b1b30]/30"></div>
+        <div className="relative w-56 h-56 sm:w-64 sm:h-64 my-6 flex items-center justify-center">
+          {/* Outer Orbit Ring */}
+          <div className="absolute inset-0 rounded-full border border-white/10 bg-black/30" />
+          {/* Middle Ring */}
+          <div className="absolute inset-6 rounded-full border border-[#1DB954]/20 bg-[#242424]/20" />
+          {/* Inner Ring */}
+          <div className="absolute inset-12 rounded-full border border-white/10 bg-[#242424]/30" />
 
           {/* Center Listener Avatar */}
-          <div className="relative z-20 w-16 h-16 rounded-full bg-[#131322] border border-cyan-400/40 flex flex-col items-center justify-center shadow-glow-cyan text-cyan-300">
+          <div className="relative z-20 w-16 h-16 rounded-full bg-[#242424] border border-[#1DB954]/40 flex flex-col items-center justify-center text-[#1DB954] shadow-lg">
             <span className="material-symbols-outlined text-2xl">headphones</span>
-            <span className="text-[8px] font-mono tracking-wider -mt-0.5 text-slate-300 font-bold">
+            <span className="text-[8px] font-mono tracking-wider -mt-0.5 text-neutral-300 font-bold">
               LISTENER
             </span>
           </div>
 
-          {/* Animated Orbiting Node Carrier (Outer Track) */}
+          {/* Animated Orbiting Node Carrier */}
           <div
             className="absolute inset-0 transition-transform duration-100"
             style={{ transform: `rotate(${azimuth}deg)` }}
           >
             {/* Spatial Audio Emitter Node */}
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center group cursor-pointer">
-              <div className="relative w-5 h-5 rounded-full bg-cyan-400 shadow-glow-cyan flex items-center justify-center">
-                <span className="w-2 h-2 rounded-full bg-obsidian-950"></span>
-                <span className="absolute -inset-1 rounded-full bg-cyan-400/40 animate-ping"></span>
+              <div className="relative w-5 h-5 rounded-full bg-[#1DB954] shadow-lg shadow-[#1DB954]/50 flex items-center justify-center">
+                <span className="w-2 h-2 rounded-full bg-black" />
+                <span className="absolute -inset-1 rounded-full bg-[#1DB954]/40 animate-ping" />
               </div>
-              <span className="text-[9px] font-mono text-cyan-300 px-1.5 py-0.5 mt-1 rounded bg-[#0a0a14]/90 border border-cyan-400/40">
+              <span className="text-[9px] font-mono text-[#1DB954] px-1.5 py-0.5 mt-1 rounded bg-black/80 border border-[#1DB954]/40 font-bold">
                 L·R
               </span>
             </div>
           </div>
 
-          {/* Secondary Harmonic Orbit Node (Inner Track) */}
+          {/* Secondary Harmonic Orbit Node */}
           <div
             className="absolute inset-8 transition-transform duration-100"
             style={{ transform: `rotate(${-azimuth * 0.7}deg)` }}
           >
             <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 flex items-center justify-center">
-              <div className="w-3.5 h-3.5 rounded-full bg-purple-500 shadow-glow-purple"></div>
+              <div className="w-3.5 h-3.5 rounded-full bg-purple-400 shadow-md shadow-purple-400/50" />
             </div>
           </div>
 
-          {/* Orbit Speed Readout Center Floating Badge */}
-          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#131322] border border-white/10 shadow-md flex items-center gap-1.5 z-20">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          {/* RPM Floating Badge */}
+          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#242424] border border-white/10 shadow-md flex items-center gap-1.5 z-20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
             <span className="font-mono text-xs font-bold text-white">
               {Math.round(48 * orbitSpeed)} RPM
             </span>
           </div>
         </div>
 
-        {/* Active Track Status Bar & Action Switch */}
+        {/* Active Track Status & Action Controls */}
         <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-white/5 z-10">
           <div className="flex items-center gap-2.5 text-center sm:text-left">
-            <span className="material-symbols-outlined text-cyan-400 text-base">graphic_eq</span>
-            <p className="text-xs text-slate-400">
-              Playing:{" "}
-              <span className="text-sm text-white font-bold font-display">
-                {currentSong?.title || "Usure Neethaney (8D Panning)"}
+            <span className="material-symbols-outlined text-[#1DB954] text-xl">graphic_eq</span>
+            <p className="text-xs text-neutral-400">
+              Active Track:{" "}
+              <span className="text-sm text-white font-bold">
+                {currentSong?.title || "Flow 8D Spatial Track"}
               </span>
             </p>
           </div>
           <div className="flex items-center gap-2.5">
             <button
               onClick={togglePlay}
-              className="px-4 py-2 rounded-full bg-[#131322] hover:bg-[#1b1b30] border border-white/10 text-white text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 shadow-sm"
+              className="px-4 py-2 rounded-full bg-[#242424] hover:bg-[#2e2e2e] border border-white/10 text-white text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95"
             >
-              <span className="material-symbols-outlined text-sm text-cyan-400">
+              <span className="material-symbols-outlined text-base text-[#1DB954]">
                 {isPlaying ? "pause" : "play_arrow"}
               </span>
               <span>{isPlaying ? "Pause" : "Play"}</span>
             </button>
             <button
               onClick={() => onNavigate("orbit")}
-              className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 hover:brightness-110 text-obsidian-950 text-xs font-bold flex items-center gap-1.5 shadow-glow-cyan active:scale-95 transition-all"
+              className="px-4 py-2 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold flex items-center gap-1.5 shadow-md active:scale-95 transition-all"
             >
-              <span className="material-symbols-outlined text-sm">360</span>
+              <span className="material-symbols-outlined text-base font-bold">spatial_audio_off</span>
               <span>360° Stage</span>
             </button>
           </div>
@@ -241,50 +228,46 @@ export default function Studio8D({ onNavigate }) {
       </div>
 
       {/* 8D Spatial Presets Section */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-cyan-400 text-lg">auto_awesome</span>
-            <h2 className="text-lg font-bold font-display text-white">8D Spatial Presets</h2>
-            <span className="text-xs text-slate-400 font-mono hidden sm:inline">• One-tap acoustic tuning</span>
+            <span className="material-symbols-outlined text-[#1DB954] text-lg">auto_awesome</span>
+            <h2 className="text-base font-bold text-white">8D Spatial Presets</h2>
+            <span className="text-xs text-neutral-400 font-mono hidden sm:inline">• 1-click acoustic tuning</span>
           </div>
-          <span className="text-[10px] font-mono text-purple-400 uppercase tracking-wider font-semibold">
-            Adaptive DSP Matrix
-          </span>
         </div>
 
-        {/* Presets Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {presets.map((p) => {
             const isSelected = activePreset === p.id;
             return (
               <div
                 key={p.id}
                 onClick={() => handleApplyPreset(p)}
-                className={`group relative p-4 rounded-2xl cursor-pointer transition-all duration-200 border ${
+                className={`p-4 rounded-2xl cursor-pointer transition-all border ${
                   isSelected
-                    ? "bg-[#1b1b30] border-cyan-400 shadow-glow-cyan"
-                    : "bg-[#0d0d18] hover:bg-[#131322] border-white/5"
+                    ? "bg-[#242424] border-[#1DB954] shadow-md shadow-[#1DB954]/20"
+                    : "bg-[#181818] hover:bg-[#202020] border-white/5"
                 }`}
               >
-                {isSelected && (
-                  <div className="absolute top-3.5 right-3.5 w-2 h-2 rounded-full bg-cyan-400 shadow-glow-cyan"></div>
-                )}
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex items-center justify-between mb-2">
                   <span
-                    className={`material-symbols-outlined text-lg ${
-                      isSelected ? "text-cyan-400" : "text-slate-400 group-hover:text-cyan-300"
+                    className={`material-symbols-outlined text-xl ${
+                      isSelected ? "text-[#1DB954]" : "text-neutral-400"
                     }`}
                   >
                     {p.icon}
                   </span>
-                  <h3 className="text-sm font-bold text-white">{p.name}</h3>
+                  {isSelected && (
+                    <span className="w-2 h-2 rounded-full bg-[#1DB954] shadow-sm shadow-[#1DB954]" />
+                  )}
                 </div>
-                <p className="text-xs text-slate-400 mb-3 leading-relaxed">{p.desc}</p>
-                <div className="flex items-center justify-between text-[10px] font-mono pt-2 border-t border-white/5">
-                  <span className="text-cyan-400 font-bold">{p.speed}x Speed</span>
-                  <span className="text-slate-400">{p.rpm} RPM</span>
-                  <span className="text-purple-400">{p.depth}% Depth</span>
+                <h3 className="text-sm font-bold text-white">{p.name}</h3>
+                <p className="text-xs text-neutral-400 mt-0.5 mb-3 leading-relaxed">{p.desc}</p>
+                <div className="flex items-center justify-between text-[11px] font-mono pt-2 border-t border-white/5">
+                  <span className="text-[#1DB954] font-bold">{p.speed}x</span>
+                  <span className="text-neutral-400">{p.rpm} RPM</span>
+                  <span className="text-neutral-300">{p.depth}% Depth</span>
                 </div>
               </div>
             );
@@ -293,70 +276,55 @@ export default function Studio8D({ onNavigate }) {
       </div>
 
       {/* DSP Controls Slider Matrix */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Sliders Block 1 */}
-        <div className="glass-card rounded-2xl p-6 border border-white/5 space-y-5">
-          <h3 className="text-sm font-bold font-display text-white tracking-wide border-b border-white/5 pb-2">
+        <div className="bg-[#181818] border border-white/5 rounded-2xl p-6 shadow-md space-y-5">
+          <h3 className="text-sm font-bold text-white border-b border-white/5 pb-2">
             Orbit Dynamics &amp; Spatial Velocity
           </h3>
 
-          {/* Orbit Speed Slider */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-medium text-slate-200">Orbit Velocity (RPM)</span>
-              <span className="font-mono text-cyan-400 font-bold">
-                {orbitSpeed.toFixed(1)}x ({Math.round(48 * orbitSpeed)} RPM)
-              </span>
+          <div>
+            <div className="flex justify-between text-xs text-neutral-300 mb-1.5 font-medium">
+              <span>Orbit Angular Velocity</span>
+              <span className="font-mono text-[#1DB954] font-bold">{orbitSpeed.toFixed(2)}x ({Math.round(48 * orbitSpeed)} RPM)</span>
             </div>
             <input
               type="range"
               min="0.2"
               max="2.5"
-              step="0.1"
+              step="0.05"
               value={orbitSpeed}
               onChange={(e) => setOrbitSpeed(parseFloat(e.target.value))}
-              className="w-full"
+              className="w-full accent-[#1DB954] h-1.5 bg-neutral-700 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>0.2x (Ambient Meditation)</span>
-              <span>1.0x (Standard Focus)</span>
-              <span>2.5x (Hyper Orbit)</span>
-            </div>
           </div>
 
-          {/* Spatial Depth Slider */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-medium text-slate-200">Spatial Depth / Field Width</span>
-              <span className="font-mono text-purple-400 font-bold">{spatialDepth}%</span>
+          <div>
+            <div className="flex justify-between text-xs text-neutral-300 mb-1.5 font-medium">
+              <span>Binaural Soundstage Depth</span>
+              <span className="font-mono text-[#1DB954] font-bold">{spatialDepth}%</span>
             </div>
             <input
               type="range"
-              min="10"
+              min="20"
               max="100"
               value={spatialDepth}
               onChange={(e) => setSpatialDepth(parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-[#1DB954] h-1.5 bg-neutral-700 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>Narrow Stereo</span>
-              <span>Expanded Binaural</span>
-              <span>Full 360° Sphere</span>
-            </div>
           </div>
         </div>
 
         {/* Sliders Block 2 */}
-        <div className="glass-card rounded-2xl p-6 border border-white/5 space-y-5">
-          <h3 className="text-sm font-bold font-display text-white tracking-wide border-b border-white/5 pb-2">
-            Acoustic Chamber &amp; Frequency Resonance
+        <div className="bg-[#181818] border border-white/5 rounded-2xl p-6 shadow-md space-y-5">
+          <h3 className="text-sm font-bold text-white border-b border-white/5 pb-2">
+            Acoustics &amp; Harmonic EQ
           </h3>
 
-          {/* Reverb Room Slider */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-medium text-slate-200">Reverb Chamber Decay</span>
-              <span className="font-mono text-cyan-400 font-bold">{reverbRoom}%</span>
+          <div>
+            <div className="flex justify-between text-xs text-neutral-300 mb-1.5 font-medium">
+              <span>Acoustic Reverb Chamber</span>
+              <span className="font-mono text-[#1DB954] font-bold">{reverbRoom}%</span>
             </div>
             <input
               type="range"
@@ -364,20 +332,14 @@ export default function Studio8D({ onNavigate }) {
               max="100"
               value={reverbRoom}
               onChange={(e) => setReverbRoom(parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-[#1DB954] h-1.5 bg-neutral-700 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>Dry Studio</span>
-              <span>Cathedral Hall</span>
-              <span>Cosmic Void</span>
-            </div>
           </div>
 
-          {/* Bass & Sub-Harmonic Boost */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-medium text-slate-200">Bass &amp; Sub-Harmonic Warmth</span>
-              <span className="font-mono text-pink-400 font-bold">{bassBoost}%</span>
+          <div>
+            <div className="flex justify-between text-xs text-neutral-300 mb-1.5 font-medium">
+              <span>Sub-Bass Harmonic Boost</span>
+              <span className="font-mono text-[#1DB954] font-bold">{bassBoost}%</span>
             </div>
             <input
               type="range"
@@ -385,13 +347,8 @@ export default function Studio8D({ onNavigate }) {
               max="100"
               value={bassBoost}
               onChange={(e) => setBassBoost(parseInt(e.target.value))}
-              className="w-full"
+              className="w-full accent-[#1DB954] h-1.5 bg-neutral-700 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>Neutral Flat</span>
-              <span>Warm Binaural</span>
-              <span>Subwoofer Punch</span>
-            </div>
           </div>
         </div>
       </div>

@@ -58,239 +58,184 @@ export default function UserManagement({ currentAdmin }) {
     setSuccess("");
 
     if (!formData.name || !formData.email || !formData.password) {
-      setError("Please fill in Name, Email, and Password.");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError("All fields are required.");
       return;
     }
 
     try {
       setFormLoading(true);
       await usersApi.create(formData);
-      setSuccess(`User account for "${formData.name}" created successfully!`);
-      setIsModalOpen(false);
+      setSuccess(`User "${formData.name}" created successfully.`);
+      handleCloseModal();
       loadUsers();
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Failed to create user.");
+      setError(err.response?.data?.message || "Failed to create user.");
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDeleteUser = async (id, name, email) => {
-    if (id === currentAdmin?._id) {
-      alert("You cannot delete your own admin account.");
+  const handleDeleteUser = async (id, name) => {
+    if (currentAdmin && currentAdmin.id === id) {
+      setError("Action forbidden: You cannot delete your own active administrator account.");
       return;
     }
 
-    if (!window.confirm(`Are you sure you want to delete user "${name}" (${email})?`)) {
-      return;
-    }
+    if (!window.confirm(`Are you sure you want to remove account "${name}"?`)) return;
 
     try {
       setError("");
+      setSuccess("");
       await usersApi.delete(id);
-      setSuccess(`User "${name}" has been removed.`);
+      setSuccess(`User "${name}" deleted successfully.`);
       loadUsers();
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Failed to delete user.");
+      setError("Failed to delete user.");
     }
   };
 
   const filteredUsers = users.filter((u) => {
-    const query = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase();
     return (
-      u.name.toLowerCase().includes(query) ||
-      u.email.toLowerCase().includes(query) ||
-      u.role.toLowerCase().includes(query)
+      u.name?.toLowerCase().includes(q) ||
+      u.email?.toLowerCase().includes(q) ||
+      u.role?.toLowerCase().includes(q)
     );
   });
 
   return (
-    <div>
-      {/* Header and Controls */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-8 space-y-6 pb-28">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
         <div>
-          <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#fff", marginBottom: "4px" }}>
-            Registered Users Overview
-          </h2>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            Monitor accounts, listener profiles, and administrative privileges
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono">
+            Access Control
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
+            User Accounts
+          </h1>
+          <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+            Manage administrative credentials, listener permissions, and authentication
           </p>
         </div>
 
         <button
-          className="btn-primary"
-          style={{ width: "auto", margin: 0, padding: "10px 20px" }}
           onClick={handleOpenAddModal}
+          className="px-5 py-2.5 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold flex items-center gap-2 transition-all active:scale-95 shadow-md shadow-[#1DB954]/20 shrink-0"
         >
-          ➕ Provision New Account
+          <span className="material-symbols-outlined text-base font-bold">person_add</span>
+          <span>Add User</span>
         </button>
       </div>
 
-      {/* Notifications */}
       {error && (
-        <div className="alert-error" style={{ marginBottom: "16px" }}>
-          <span>⚠️</span>
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-lg">warning</span>
           <span>{error}</span>
         </div>
       )}
 
       {success && (
-        <div className="alert-success" style={{ marginBottom: "16px" }}>
-          <span>✓</span>
+        <div className="p-4 rounded-xl bg-[#1DB954]/10 border border-[#1DB954]/30 text-[#86efac] text-xs flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-lg">check_circle</span>
           <span>{success}</span>
         </div>
       )}
 
       {/* Search Bar */}
-      <div className="card" style={{ padding: "16px 20px" }}>
-        <input
-          type="text"
-          className="form-input"
-          placeholder="Filter users by name, email, or role..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+      <div className="bg-[#181818] border border-white/5 rounded-2xl p-4 flex items-center justify-between shadow-md">
+        <div className="relative flex-1 max-w-md">
+          <span className="material-symbols-outlined absolute left-3 top-2.5 text-neutral-400 text-sm">
+            search
+          </span>
+          <input
+            type="text"
+            className="w-full bg-[#242424] border border-white/10 rounded-full py-2 pl-9 pr-3 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#1DB954]"
+            placeholder="Search by name, email, or role..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <span className="text-xs text-neutral-400 font-mono hidden sm:inline">
+          {filteredUsers.length} Accounts
+        </span>
       </div>
 
       {/* Users Table */}
-      <div className="card" style={{ padding: "0" }}>
-        <div className="table-container">
-          <table className="data-table">
+      <div className="bg-[#181818] border border-white/5 rounded-2xl overflow-hidden shadow-lg">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr>
-                <th style={{ width: "60px" }}>Avatar</th>
-                <th>Full Name</th>
-                <th>Email Address</th>
-                <th>Role</th>
-                <th>Registered Date</th>
-                <th style={{ textAlign: "right" }}>Actions</th>
+              <tr className="bg-[#141414] border-b border-white/5 text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+                <th className="py-3 px-4">User</th>
+                <th className="py-3 px-4">Email</th>
+                <th className="py-3 px-4">Role</th>
+                <th className="py-3 px-4 hidden md:table-cell">Created</th>
+                <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {loading ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: "center", padding: "32px", color: "var(--text-muted)" }}>
-                    Loading accounts...
+                  <td colSpan="5" className="py-12 text-center text-neutral-500 font-mono">
+                    Loading users...
                   </td>
                 </tr>
               ) : filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: "center", padding: "48px 20px" }}>
-                    <div style={{ fontSize: "40px", marginBottom: "8px" }}>👥</div>
-                    <div style={{ fontSize: "16px", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>
-                      No users found
-                    </div>
-                    <p style={{ color: "var(--text-muted)", fontSize: "13px" }}>
-                      Users will appear here once they register via the Android application.
-                    </p>
+                  <td colSpan="5" className="py-12 text-center text-neutral-400">
+                    No matching users found.
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => {
-                  const isCurrent = user._id === currentAdmin?._id;
+                filteredUsers.map((u) => {
+                  const isCurrent = currentAdmin && (currentAdmin.id === u._id || currentAdmin._id === u._id);
+                  const isAdmin = u.role === "admin";
                   return (
-                    <tr key={user._id}>
-                      <td>
-                        <div
-                          style={{
-                            width: "38px",
-                            height: "38px",
-                            borderRadius: "50%",
-                            backgroundColor:
-                              user.role === "admin"
-                                ? "rgba(99, 102, 241, 0.2)"
-                                : "rgba(6, 182, 212, 0.15)",
-                            color:
-                              user.role === "admin" ? "#818cf8" : "var(--accent-cyan)",
-                            border: `1px solid ${
-                              user.role === "admin"
-                                ? "rgba(99, 102, 241, 0.4)"
-                                : "rgba(6, 182, 212, 0.3)"
-                            }`,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "13px",
-                            fontWeight: "700",
-                          }}
-                        >
-                          {user.name ? user.name.substring(0, 2).toUpperCase() : "U"}
+                    <tr key={u._id || u.id} className="hover:bg-white/[0.02] transition-colors">
+                      <td className="py-3.5 px-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-[#242424] border border-white/10 flex items-center justify-center font-bold text-white text-xs">
+                            {u.name ? u.name[0].toUpperCase() : "U"}
+                          </div>
+                          <div>
+                            <p className="font-bold text-white flex items-center gap-1.5">
+                              <span>{u.name}</span>
+                              {isCurrent && (
+                                <span className="text-[10px] bg-[#1DB954]/20 text-[#1DB954] font-mono px-1.5 py-0.2 rounded font-semibold">
+                                  You
+                                </span>
+                              )}
+                            </p>
+                          </div>
                         </div>
                       </td>
-
-                      <td>
-                        <div style={{ fontWeight: "600", color: "#fff" }}>
-                          {user.name} {isCurrent && <span style={{ fontSize: "11px", color: "var(--accent-cyan)" }}>(You)</span>}
-                        </div>
+                      <td className="py-3.5 px-4 font-mono text-neutral-300">
+                        {u.email}
                       </td>
-
-                      <td>
-                        <div style={{ color: "var(--text-muted)", fontSize: "13px" }}>
-                          {user.email}
-                        </div>
-                      </td>
-
-                      <td>
+                      <td className="py-3.5 px-4">
                         <span
-                          style={{
-                            display: "inline-block",
-                            padding: "3px 10px",
-                            borderRadius: "12px",
-                            fontSize: "11px",
-                            fontWeight: "600",
-                            backgroundColor:
-                              user.role === "admin"
-                                ? "rgba(99, 102, 241, 0.2)"
-                                : "rgba(16, 185, 129, 0.15)",
-                            color:
-                              user.role === "admin" ? "#818cf8" : "var(--accent-success)",
-                            border: `1px solid ${
-                              user.role === "admin"
-                                ? "rgba(99, 102, 241, 0.4)"
-                                : "rgba(16, 185, 129, 0.3)"
-                            }`,
-                            textTransform: "uppercase",
-                          }}
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
+                            isAdmin
+                              ? "bg-purple-900/30 text-purple-300 border border-purple-500/30"
+                              : "bg-white/5 text-neutral-300 border border-white/10"
+                          }`}
                         >
-                          {user.role}
+                          {u.role || "user"}
                         </span>
                       </td>
-
-                      <td>
-                        <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                          {user.createdAt
-                            ? new Date(user.createdAt).toLocaleDateString()
-                            : "—"}
-                        </span>
+                      <td className="py-3.5 px-4 font-mono text-neutral-400 hidden md:table-cell">
+                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "Active"}
                       </td>
-
-                      <td style={{ textAlign: "right" }}>
-                        <button
-                          className="btn-action-delete"
-                          onClick={() => handleDeleteUser(user._id, user.name, user.email)}
-                          disabled={isCurrent}
-                          style={{
-                            opacity: isCurrent ? 0.4 : 1,
-                            cursor: isCurrent ? "not-allowed" : "pointer",
-                          }}
-                          title={isCurrent ? "Cannot delete your own account" : "Delete User"}
-                        >
-                          🗑️ Delete
-                        </button>
+                      <td className="py-3.5 px-4 text-right">
+                        {!isCurrent && (
+                          <button
+                            onClick={() => handleDeleteUser(u._id || u.id, u.name)}
+                            className="px-3 py-1 rounded-full bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white text-xs font-semibold transition-all"
+                          >
+                            Remove
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
@@ -303,80 +248,79 @@ export default function UserManagement({ currentAdmin }) {
 
       {/* Add User Modal */}
       {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>
-                ➕ Provision User Account
-              </h3>
-              <button className="btn-close" onClick={handleCloseModal}>
-                ✕
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="relative w-full max-w-md bg-[#181818] border border-white/10 rounded-3xl p-6 shadow-2xl select-none">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <h3 className="text-base font-bold text-white tracking-tight">Add User Account</h3>
+              <button
+                onClick={handleCloseModal}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <div className="form-group">
-                <label className="form-label">Full Name *</label>
+            <form onSubmit={handleFormSubmit} className="mt-5 space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Full Name *</label>
                 <input
                   type="text"
-                  className="form-input"
-                  placeholder="e.g. Alex Johnson"
+                  required
+                  placeholder="e.g. John Doe"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Email Address *</label>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Email Address *</label>
                 <input
                   type="email"
-                  className="form-input"
-                  placeholder="user@focusmusic.com"
+                  required
+                  placeholder="user@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Initial Password * (min 6 chars)</label>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Password *</label>
                 <input
                   type="password"
-                  className="form-input"
+                  required
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  required
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Account Role *</label>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Role</label>
                 <select
-                  className="form-input"
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 >
-                  <option value="user">Regular Listener (Android User)</option>
-                  <option value="admin">Administrator (Web Admin Access)</option>
+                  <option value="user">Listener (Standard User)</option>
+                  <option value="admin">Administrator (Full Access)</option>
                 </select>
               </div>
 
-              <div style={{ display: "flex", gap: "10px", marginTop: "14px" }}>
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
                 <button
                   type="button"
-                  className="btn-logout"
-                  style={{ flex: 1, padding: "10px" }}
                   onClick={handleCloseModal}
+                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white text-xs font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-primary"
-                  style={{ flex: 2, margin: 0, padding: "10px" }}
                   disabled={formLoading}
+                  className="px-6 py-2 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold transition-all shadow-md active:scale-95 disabled:opacity-50"
                 >
                   {formLoading ? "Creating..." : "Create Account"}
                 </button>

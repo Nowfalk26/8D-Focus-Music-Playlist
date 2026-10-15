@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { aiChatApi } from "../api/api";
 import { usePlayer } from "../context/PlayerContext";
 
-export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
+export default function MiloCatChat({ isOpen = true, onClose, initialQuery = "" }) {
   const { playSong, currentSong, isPlaying, audioMode } = usePlayer();
 
   const [messages, setMessages] = useState([
@@ -287,27 +287,27 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-fadeIn">
       {/* Cat Lounge Container */}
-      <div className="relative w-full max-w-2xl h-[88vh] max-h-[760px] glass-panel rounded-3xl border border-purple-500/40 bg-gradient-to-b from-[#160d2e]/95 via-[#0e081f]/95 to-[#070412]/98 shadow-[0_0_50px_rgba(157,78,221,0.35)] flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-2xl h-[88vh] max-h-[760px] rounded-2xl border border-white/10 bg-[#121212] shadow-[0_20px_60px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden">
         {/* Header Bar */}
-        <div className="px-5 py-4 border-b border-purple-500/20 bg-purple-950/40 backdrop-blur-md flex items-center justify-between shrink-0">
+        <div className="px-5 py-4 border-b border-white/10 bg-[#181818] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             {renderCatAvatar(catState)}
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base sm:text-lg font-black text-white tracking-wide flex items-center gap-1.5">
+                <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
                   <span>Milo</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 font-mono font-normal">
-                    Friend & 8D Companion
+                  <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#1DB954]/15 text-[#1DB954] border border-[#1DB954]/30 font-semibold">
+                    AI Music Companion
                   </span>
                 </h3>
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" title="Online & Listening" />
+                <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse" title="Online & Listening" />
               </div>
-              <p className="text-[11px] text-purple-300/80 font-medium flex items-center gap-1">
-                <span>Your caring personal friend • 70% heart, 30% music</span>
-                <span className="text-pink-400">•</span>
+              <p className="text-xs text-neutral-400 font-medium flex items-center gap-1.5 mt-0.5">
+                <span>Your empathetic 8D music advisor</span>
+                <span className="text-neutral-600">•</span>
                 <button
                   onClick={handlePetCat}
-                  className="text-pink-300 hover:text-white underline font-semibold transition-colors"
+                  className="text-[#1DB954] hover:text-[#1ed760] font-semibold transition-colors"
                 >
                   High-five ({petCount} vibes ✨)
                 </button>
@@ -318,13 +318,13 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handlePetCat}
-              className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 text-xs font-bold border border-pink-400/30 transition-transform active:scale-95 shadow-sm"
+              className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition-transform active:scale-95"
             >
               <span>🤝 Vibe Check</span>
             </button>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-purple-900/50 hover:bg-purple-800 text-purple-200 hover:text-white flex items-center justify-center border border-purple-500/30 transition-all text-sm font-bold"
+              className="w-8 h-8 rounded-full bg-[#242424] hover:bg-[#2e2e2e] text-neutral-300 hover:text-white flex items-center justify-center border border-white/10 transition-all text-sm font-bold"
             >
               ✕
             </button>
@@ -332,15 +332,15 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
         </div>
 
         {/* Quick Topics Bar */}
-        <div className="px-4 py-2.5 border-b border-purple-500/15 bg-[#120a24]/60 overflow-x-auto scrollbar-none flex items-center gap-2 shrink-0">
-          <span className="text-[10px] text-purple-300/60 font-bold uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
-            <span>✨ Quick Topics:</span>
+        <div className="px-4 py-2.5 border-b border-white/5 bg-[#141414] overflow-x-auto scrollbar-none flex items-center gap-2 shrink-0">
+          <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
+            <span>✨ Quick Moods:</span>
           </span>
           {prompts.map((p) => (
             <button
               key={p.id}
               onClick={() => handleSendMessage(p.query)}
-              className="px-2.5 py-1 rounded-full bg-purple-900/30 hover:bg-purple-800/60 text-purple-200 hover:text-cyan-300 text-[11px] font-semibold border border-purple-500/25 transition-all shrink-0 flex items-center gap-1.5 active:scale-95"
+              className="px-3 py-1.5 rounded-full bg-[#242424] hover:bg-[#2e2e2e] text-neutral-200 hover:text-[#1DB954] text-xs font-medium border border-white/5 hover:border-[#1DB954]/30 transition-all shrink-0 flex items-center gap-1.5 active:scale-95"
             >
               <span>{p.emoji}</span>
               <span>{p.label}</span>
@@ -349,7 +349,7 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
         </div>
 
         {/* Chat History Messages */}
-        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-purple-800/40">
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4 no-scrollbar">
           {messages.map((msg) => {
             const isMilo = msg.sender === "milo";
 
@@ -362,7 +362,7 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                 {isMilo && (
                   <div
                     onClick={handlePetCat}
-                    className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-800 to-pink-600 flex items-center justify-center text-sm shrink-0 border border-purple-400/40 cursor-pointer shadow-md hover:scale-110 transition-transform"
+                    className="w-8 h-8 rounded-full bg-[#242424] border border-white/10 flex items-center justify-center text-sm shrink-0 cursor-pointer hover:border-[#1DB954]/50 transition-transform hover:scale-105"
                     title="Pet me!"
                   >
                     🐱
@@ -376,21 +376,21 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                   }`}
                 >
                   <div
-                    className={`px-4 py-3 rounded-2xl text-xs sm:text-sm leading-relaxed backdrop-blur-md shadow-lg ${
+                    className={`px-4 py-3 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-md ${
                       isMilo
-                        ? "bg-[#1c1238]/90 text-purple-100 border border-purple-500/30 rounded-tl-sm"
-                        : "bg-gradient-to-r from-brand-purple to-purple-600 text-white rounded-tr-sm shadow-neon-purple font-medium"
+                        ? "bg-[#242424] text-neutral-100 border border-white/5 rounded-tl-sm"
+                        : "bg-[#1DB954] text-black font-semibold rounded-tr-sm"
                     }`}
                   >
                     {isMilo && msg.emotion && (
-                      <div className="inline-block px-2.5 py-0.5 rounded-full bg-cyan-400/15 text-cyan-300 border border-cyan-400/30 text-[10px] font-bold mb-2">
+                      <div className="inline-block px-2.5 py-0.5 rounded-full bg-[#1DB954]/15 text-[#1DB954] border border-[#1DB954]/30 text-[10px] font-bold mb-2">
                         ✨ Milo Sensed: {msg.emotion}
                       </div>
                     )}
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                     <span
                       className={`block text-[9px] mt-1.5 ${
-                        isMilo ? "text-purple-300/50" : "text-purple-200/60"
+                        isMilo ? "text-neutral-400" : "text-black/60 font-normal"
                       }`}
                     >
                       {msg.timestamp}
@@ -401,7 +401,7 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                   {isMilo && (!msg.songs || msg.songs.length === 0) && msg.id !== "welcome" && (
                     <button
                       onClick={() => handleSendMessage(`Milo, can you recommend some 8D songs for my ${msg.emotion || "mood"}?`)}
-                      className="text-[11px] font-semibold text-cyan-300 hover:text-white flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/30 transition-all self-start active:scale-95 shadow-sm"
+                      className="text-xs font-semibold text-[#1DB954] hover:text-[#1ed760] flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181818] hover:bg-[#242424] border border-white/10 transition-all self-start active:scale-95 shadow-sm"
                     >
                       <span>🎵 Ask Milo for 8D songs for this mood</span>
                     </button>
@@ -410,8 +410,8 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                   {/* Playable Songs Cards rendered inside chat (Only when requested) */}
                   {isMilo && msg.songs && msg.songs.length > 0 && (
                     <div className="w-full space-y-2 pt-1">
-                      <div className="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5 px-1">
-                        <span>🎧 Milo's Curated 8D Remedies:</span>
+                      <div className="text-xs font-bold text-neutral-300 flex items-center gap-1.5 px-1">
+                        <span>🎧 Curated Recommendations:</span>
                       </div>
 
                       <div className="grid grid-cols-1 gap-2">
@@ -421,35 +421,35 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
 
                           return (
                             <div
-                              key={song._id}
-                              className={`p-2.5 rounded-xl border flex items-center justify-between gap-3 transition-all ${
+                              key={song._id || song.id}
+                              className={`p-3 rounded-xl border flex items-center justify-between gap-3 transition-all ${
                                 isCurrent
-                                  ? "bg-purple-900/50 border-cyan-400/80 shadow-neon-cyan"
-                                  : "bg-[#120a24]/90 hover:bg-[#1a0f33] border-purple-500/25 hover:border-purple-400/40"
+                                  ? "bg-[#1f2e24] border-[#1DB954]"
+                                  : "bg-[#181818] hover:bg-[#222222] border-white/5 hover:border-white/15"
                               }`}
                             >
-                              <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="flex items-center gap-3 min-w-0">
                                 <img
                                   src={
                                     song.imageUrl ||
                                     "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200"
                                   }
                                   alt={song.title}
-                                  className="w-11 h-11 rounded-lg object-cover border border-purple-500/30 shrink-0"
+                                  className="w-11 h-11 rounded-lg object-cover border border-white/10 shrink-0"
                                 />
                                 <div className="min-w-0">
                                   <h4 className="text-xs font-bold text-white truncate">
                                     {song.title}
                                   </h4>
-                                  <p className="text-[10px] text-purple-300/70 truncate">
+                                  <p className="text-[11px] text-neutral-400 truncate">
                                     {song.artist}
                                   </p>
                                   <div className="flex items-center gap-1.5 mt-0.5">
-                                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-950 text-cyan-300 border border-purple-500/30 font-mono">
+                                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-black/40 text-neutral-300 border border-white/10 font-mono">
                                       {song.duration || "04:00"}
                                     </span>
-                                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-pink-500/15 text-pink-300 border border-pink-500/30 font-bold">
-                                      {song.matchScore}% Match 💖
+                                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#1DB954]/15 text-[#1DB954] font-semibold">
+                                      {song.matchScore || 95}% Match
                                     </span>
                                   </div>
                                 </div>
@@ -458,20 +458,20 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                               {/* Play Button */}
                               <button
                                 onClick={() => playSong(song)}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all active:scale-95 ${
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all active:scale-95 ${
                                   isCurrent && isPlaying
-                                    ? "bg-cyan-400 text-black shadow-neon-cyan"
-                                    : "bg-gradient-to-r from-brand-purple to-purple-600 text-white shadow-neon-purple hover:brightness-110"
+                                    ? "bg-[#1DB954] text-black shadow-lg"
+                                    : "bg-white hover:bg-neutral-200 text-black shadow"
                                 }`}
                               >
                                 {isCurrent && isPlaying ? (
                                   <>
                                     <span className="w-2 h-2 rounded-full bg-black animate-ping" />
-                                    <span>Playing 8D</span>
+                                    <span>Playing</span>
                                   </>
                                 ) : (
                                   <>
-                                    <span>Play 8D</span>
+                                    <span>Play</span>
                                     <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                                       <path d="M8 5v14l11-7z" />
                                     </svg>
@@ -492,12 +492,12 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
           {/* Loading Indicator */}
           {loading && (
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-purple-800/80 flex items-center justify-center text-sm animate-bounce">
+              <div className="w-8 h-8 rounded-full bg-[#242424] border border-white/10 flex items-center justify-center text-sm animate-bounce">
                 🐱
               </div>
-              <div className="px-4 py-2.5 rounded-2xl bg-[#1c1238]/80 border border-purple-500/20 text-xs text-purple-200 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                <span>Milo is listening to your heart and mixing 8D remedies... *purrrrr*</span>
+              <div className="px-4 py-2.5 rounded-2xl bg-[#181818] border border-white/10 text-xs text-neutral-300 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-ping" />
+                <span>Milo is curating music for your mood...</span>
               </div>
             </div>
           )}
@@ -506,7 +506,7 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
         </div>
 
         {/* Input Bar */}
-        <div className="p-3 sm:p-4 border-t border-purple-500/20 bg-[#0d071a]/95 shrink-0">
+        <div className="p-3 sm:p-4 border-t border-white/10 bg-[#181818] shrink-0">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -520,8 +520,8 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Tell Milo how you feel... (e.g. 'Feeling sad', 'Night coding', 'Need gym kuthu')"
-                className="w-full bg-[#170e2c] border border-purple-500/30 rounded-2xl px-4 py-3 text-xs sm:text-sm text-white placeholder-purple-300/40 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all pr-10"
+                placeholder="Ask Milo for music or tell him how you feel..."
+                className="w-full bg-[#242424] border border-white/10 rounded-full px-4 py-3 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-[#1DB954] focus:ring-1 focus:ring-[#1DB954] transition-all pr-10"
               />
               <button
                 type="button"
@@ -536,9 +536,9 @@ export default function MiloCatChat({ isOpen, onClose, initialQuery = "" }) {
             <button
               type="submit"
               disabled={loading || !inputMessage.trim()}
-              className="px-4 py-3 rounded-2xl bg-gradient-to-r from-brand-purple via-purple-600 to-cyan-400 hover:brightness-110 text-white font-bold text-xs sm:text-sm shadow-neon-purple flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+              className="px-5 py-3 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-xs sm:text-sm flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shadow-md"
             >
-              <span>Meow</span>
+              <span>Send</span>
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>

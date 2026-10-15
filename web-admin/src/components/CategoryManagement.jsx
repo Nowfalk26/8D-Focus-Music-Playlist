@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { categoriesApi, songsApi } from "../api/api";
 
 const PRESET_CATEGORIES = [
-  { name: "Deep Focus", desc: "Monotonic frequencies for intense coding & study" },
-  { name: "Binaural Beats", desc: "Dual frequency theta and alpha wave stimulation" },
-  { name: "Relaxation", desc: "Gentle 8D panning for stress reduction & calm" },
-  { name: "Meditation", desc: "Ambient spatial soundscapes for mindfulness" },
-  { name: "Ambient", desc: "Subtle atmospheric noise and focus hums" },
-  { name: "Nature 8D", desc: "Spatial rain, river streams, and forest acoustic sounds" },
-  { name: "Sleep & Rest", desc: "Delta frequency sleep-inducing spatial audio" },
+  { name: "Tamil Melodies 8D", desc: "Soulful romantic melodies with dynamic binaural panning" },
+  { name: "Tamil High Energy 8D", desc: "Fast-paced club and kuthu beats with high velocity orbit" },
+  { name: "Deep Flow State", desc: "Monotonic frequencies for intense coding & study" },
+  { name: "Binaural Beats Focus", desc: "Dual frequency theta and alpha wave acoustic stimulation" },
+  { name: "Tamil Indie & Pop 8D", desc: "Modern acoustic guitars and contemporary vocal harmonics" },
+  { name: "Ambient Rain & Sleep", desc: "Spatial rain, river streams, and soothing focus white noise" },
 ];
 
 export default function CategoryManagement() {
@@ -59,26 +58,18 @@ export default function CategoryManagement() {
 
   const handleOpenAddModal = (preset = null) => {
     setEditingCategory(null);
-    if (preset) {
-      setFormData({
-        name: preset.name,
-        description: preset.desc,
-        imageUrl: "",
-      });
-    } else {
-      setFormData({
-        name: "",
-        description: "",
-        imageUrl: "",
-      });
-    }
+    setFormData({
+      name: preset ? preset.name : "",
+      description: preset ? preset.desc : "",
+      imageUrl: "",
+    });
     setIsModalOpen(true);
   };
 
   const handleOpenEditModal = (cat) => {
     setEditingCategory(cat);
     setFormData({
-      name: cat.name,
+      name: cat.name || "",
       description: cat.description || "",
       imageUrl: cat.imageUrl || "",
     });
@@ -102,17 +93,19 @@ export default function CategoryManagement() {
 
     try {
       setFormLoading(true);
+
       if (editingCategory) {
-        await categoriesApi.update(editingCategory._id, formData);
-        setSuccess(`Category "${formData.name}" updated successfully!`);
+        await categoriesApi.update(editingCategory._id || editingCategory.id, formData);
+        setSuccess(`"${formData.name}" updated successfully.`);
       } else {
         await categoriesApi.create(formData);
-        setSuccess(`Category "${formData.name}" created successfully!`);
+        setSuccess(`"${formData.name}" category created.`);
       }
-      setIsModalOpen(false);
+
+      handleCloseModal();
       loadData();
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Failed to save category.");
+      setError(err.response?.data?.message || "Failed to save category.");
     } finally {
       setFormLoading(false);
     }
@@ -120,301 +113,203 @@ export default function CategoryManagement() {
 
   const handleDeleteCategory = async (id, name) => {
     const songCount = getSongCountForCategory(name);
-    let confirmMsg = `Are you sure you want to delete category "${name}"?`;
-    if (songCount > 0) {
-      confirmMsg += ` Warning: There are ${songCount} track(s) assigned to this category.`;
-    }
+    const confirmMsg =
+      songCount > 0
+        ? `Warning: Category "${name}" contains ${songCount} tracks. Delete anyway?`
+        : `Are you sure you want to delete category "${name}"?`;
 
-    if (!window.confirm(confirmMsg)) {
-      return;
-    }
+    if (!window.confirm(confirmMsg)) return;
 
     try {
       setError("");
+      setSuccess("");
       await categoriesApi.delete(id);
-      setSuccess(`Category "${name}" deleted successfully.`);
+      setSuccess(`"${name}" deleted successfully.`);
       loadData();
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Failed to delete category.");
+      setError("Failed to delete category.");
     }
   };
 
   return (
-    <div>
-      {/* Header and Controls */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-8 space-y-6 pb-28">
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
         <div>
-          <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#fff", marginBottom: "4px" }}>
-            Focus Categories Management
-          </h2>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            Classify and group 8D audio tracks by study state, relaxation level, and brainwave type
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono">
+            Collection Architecture
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
+            Categories & Tags
+          </h1>
+          <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+            Organize audio universes into themed playlists, moods, and spatial frequencies
           </p>
         </div>
 
         <button
-          className="btn-primary"
-          style={{ width: "auto", margin: 0, padding: "10px 20px" }}
           onClick={() => handleOpenAddModal()}
+          className="px-5 py-2.5 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold flex items-center gap-2 transition-all active:scale-95 shadow-md shadow-[#1DB954]/20 shrink-0"
         >
-          ➕ Add New Category
+          <span className="material-symbols-outlined text-base font-bold">add</span>
+          <span>Create Category</span>
         </button>
       </div>
 
-      {/* Notifications */}
       {error && (
-        <div className="alert-error" style={{ marginBottom: "16px" }}>
-          <span>⚠️</span>
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-lg">warning</span>
           <span>{error}</span>
         </div>
       )}
 
       {success && (
-        <div className="alert-success" style={{ marginBottom: "16px" }}>
-          <span>✓</span>
+        <div className="p-4 rounded-xl bg-[#1DB954]/10 border border-[#1DB954]/30 text-[#86efac] text-xs flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-lg">check_circle</span>
           <span>{success}</span>
         </div>
       )}
 
-      {/* Quick Category Templates / Presets */}
-      <div className="card" style={{ padding: "18px 22px", marginBottom: "24px" }}>
-        <div style={{ fontSize: "13px", fontWeight: "600", color: "var(--text-muted)", marginBottom: "10px" }}>
-          Suggested Focus Presets (click to create):
+      {/* Suggested Curated Presets Bar */}
+      <div className="bg-[#181818] border border-white/5 rounded-2xl p-5 shadow-lg">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="material-symbols-outlined text-[#1DB954] text-xl">auto_awesome</span>
+          <h3 className="text-sm font-bold text-white tracking-tight">Recommended Presets</h3>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-          {PRESET_CATEGORIES.map((preset) => {
-            const alreadyExists = categories.some(
-              (c) => c.name.toLowerCase() === preset.name.toLowerCase()
-            );
-            return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          {PRESET_CATEGORIES.map((preset, idx) => (
+            <div
+              key={idx}
+              className="p-3 rounded-xl bg-[#242424] border border-white/5 flex items-center justify-between hover:border-white/10 transition-colors"
+            >
+              <div className="min-w-0 pr-2">
+                <p className="text-xs font-bold text-white truncate">{preset.name}</p>
+                <p className="text-[11px] text-neutral-400 truncate mt-0.5">{preset.desc}</p>
+              </div>
               <button
-                key={preset.name}
-                className="btn-logout"
-                style={{
-                  fontSize: "12px",
-                  padding: "5px 12px",
-                  borderRadius: "20px",
-                  opacity: alreadyExists ? 0.4 : 1,
-                  borderColor: alreadyExists ? "var(--border-color)" : "var(--accent-cyan)",
-                  color: alreadyExists ? "var(--text-muted)" : "var(--accent-cyan)",
-                }}
-                disabled={alreadyExists}
                 onClick={() => handleOpenAddModal(preset)}
-                title={alreadyExists ? "Category already added" : preset.desc}
+                className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-[#1DB954] hover:text-black text-white text-[10px] font-bold transition-all shrink-0"
               >
-                {alreadyExists ? `✓ ${preset.name}` : `+ ${preset.name}`}
+                + Add
               </button>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Categories Table */}
-      <div className="card" style={{ padding: "0" }}>
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th style={{ width: "60px" }}>Icon</th>
-                <th>Category Name</th>
-                <th>Description</th>
-                <th>Track Count</th>
-                <th>Created Date</th>
-                <th style={{ textAlign: "right" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="6" style={{ textAlign: "center", padding: "32px", color: "var(--text-muted)" }}>
-                    Loading categories...
-                  </td>
-                </tr>
-              ) : categories.length === 0 ? (
-                <tr>
-                  <td colSpan="6" style={{ textAlign: "center", padding: "48px 20px" }}>
-                    <div style={{ fontSize: "40px", marginBottom: "8px" }}>📁</div>
-                    <div style={{ fontSize: "16px", fontWeight: "600", color: "#fff", marginBottom: "4px" }}>
-                      No categories created yet
+      {/* Categories Grid */}
+      <div>
+        <h3 className="text-base font-bold text-white tracking-tight mb-3">Active Categories ({categories.length})</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {loading ? (
+            <div className="col-span-full py-12 text-center text-neutral-500 font-mono text-xs">
+              Loading categories...
+            </div>
+          ) : categories.length === 0 ? (
+            <div className="col-span-full py-12 text-center text-neutral-400">
+              No categories found. Click "Create Category" to add one.
+            </div>
+          ) : (
+            categories.map((cat) => {
+              const count = getSongCountForCategory(cat.name);
+              return (
+                <div
+                  key={cat._id || cat.name}
+                  className="bg-[#181818] border border-white/5 hover:border-white/10 rounded-2xl p-5 shadow-md flex flex-col justify-between transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="w-10 h-10 rounded-xl bg-[#1DB954]/15 text-[#1DB954] flex items-center justify-center font-bold">
+                        <span className="material-symbols-outlined text-xl">folder</span>
+                      </div>
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-white/10 text-neutral-300">
+                        {count} tracks
+                      </span>
                     </div>
-                    <p style={{ color: "var(--text-muted)", fontSize: "13px" }}>
-                      Choose a suggested preset above or click "Add New Category" to start.
+
+                    <h4 className="text-base font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                      {cat.name}
+                    </h4>
+                    <p className="text-xs text-neutral-400 mt-1 line-clamp-2 leading-relaxed">
+                      {cat.description || "Curated spatial music collection and playlists."}
                     </p>
-                  </td>
-                </tr>
-              ) : (
-                categories.map((cat) => {
-                  const songCount = getSongCountForCategory(cat.name);
-                  return (
-                    <tr key={cat._id}>
-                      <td>
-                        <div
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            borderRadius: "8px",
-                            backgroundColor: "var(--bg-input)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            overflow: "hidden",
-                            fontSize: "18px",
-                          }}
-                        >
-                          {cat.imageUrl ? (
-                            <img
-                              src={cat.imageUrl}
-                              alt={cat.name}
-                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                            />
-                          ) : (
-                            "📁"
-                          )}
-                        </div>
-                      </td>
+                  </div>
 
-                      <td>
-                        <div style={{ fontWeight: "600", color: "#fff" }}>{cat.name}</div>
-                      </td>
-
-                      <td>
-                        <div style={{ color: "var(--text-muted)", fontSize: "13px", maxWidth: "340px" }}>
-                          {cat.description || "—"}
-                        </div>
-                      </td>
-
-                      <td>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            padding: "3px 10px",
-                            borderRadius: "12px",
-                            fontSize: "12px",
-                            fontWeight: "600",
-                            backgroundColor:
-                              songCount > 0
-                                ? "rgba(16, 185, 129, 0.15)"
-                                : "rgba(255, 255, 255, 0.05)",
-                            color: songCount > 0 ? "var(--accent-success)" : "var(--text-muted)",
-                            border: `1px solid ${
-                              songCount > 0
-                                ? "rgba(16, 185, 129, 0.3)"
-                                : "var(--border-color)"
-                            }`,
-                          }}
-                        >
-                          {songCount} {songCount === 1 ? "track" : "tracks"}
-                        </span>
-                      </td>
-
-                      <td>
-                        <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
-                          {cat.createdAt
-                            ? new Date(cat.createdAt).toLocaleDateString()
-                            : "—"}
-                        </span>
-                      </td>
-
-                      <td style={{ textAlign: "right" }}>
-                        <div style={{ display: "inline-flex", gap: "8px" }}>
-                          <button
-                            className="btn-action-edit"
-                            onClick={() => handleOpenEditModal(cat)}
-                            title="Edit Category"
-                          >
-                            ✏️ Edit
-                          </button>
-                          <button
-                            className="btn-action-delete"
-                            onClick={() => handleDeleteCategory(cat._id, cat.name)}
-                            title="Delete Category"
-                          >
-                            🗑️ Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
+                  <div className="flex items-center justify-end gap-2 pt-4 mt-4 border-t border-white/5">
+                    <button
+                      onClick={() => handleOpenEditModal(cat)}
+                      className="px-3 py-1 rounded-full bg-white/10 hover:bg-[#1DB954] hover:text-black text-white text-xs font-semibold transition-all"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCategory(cat._id || cat.id, cat.name)}
+                      className="px-3 py-1 rounded-full bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white text-xs font-semibold transition-all"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
 
       {/* Add / Edit Category Modal */}
       {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>
-                {editingCategory ? "✏️ Edit Category" : "➕ Add New Category"}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="relative w-full max-w-md bg-[#181818] border border-white/10 rounded-3xl p-6 shadow-2xl select-none">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <h3 className="text-base font-bold text-white tracking-tight">
+                {editingCategory ? "Edit Category" : "Create New Category"}
               </h3>
-              <button className="btn-close" onClick={handleCloseModal}>
-                ✕
+              <button
+                onClick={handleCloseModal}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <div className="form-group">
-                <label className="form-label">Category Name *</label>
+            <form onSubmit={handleFormSubmit} className="mt-5 space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Category Name *</label>
                 <input
                   type="text"
-                  className="form-input"
-                  placeholder="e.g. Deep Focus"
+                  required
+                  placeholder="e.g. Tamil Melodies 8D"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Description</label>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-300 mb-1">Description</label>
                 <textarea
-                  className="form-input"
-                  style={{ minHeight: "80px", resize: "vertical" }}
-                  placeholder="Describe the focus or mood benefits of this category..."
+                  rows="3"
+                  placeholder="Brief description of this collection..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full bg-[#242424] border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-[#1DB954]"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Category Image / Icon URL</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="http://localhost:5000/uploads/images/cat.jpg or web URL"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                />
-              </div>
-
-              <div style={{ display: "flex", gap: "10px", marginTop: "14px" }}>
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
                 <button
                   type="button"
-                  className="btn-logout"
-                  style={{ flex: 1, padding: "10px" }}
                   onClick={handleCloseModal}
+                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white text-xs font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-primary"
-                  style={{ flex: 2, margin: 0, padding: "10px" }}
                   disabled={formLoading}
+                  className="px-6 py-2 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold transition-all shadow-md active:scale-95 disabled:opacity-50"
                 >
-                  {formLoading ? "Saving..." : editingCategory ? "Save Changes" : "Create Category"}
+                  {formLoading ? "Saving..." : editingCategory ? "Update" : "Create"}
                 </button>
               </div>
             </form>

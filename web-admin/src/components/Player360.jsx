@@ -46,17 +46,17 @@ export default function Player360() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-2xl p-4 overflow-y-auto">
       {/* Container simulating the Stitch Mobile Player Frame / Responsive Frame */}
-      <div className="relative w-full max-w-[420px] min-h-[780px] bg-[#07091B] rounded-[44px] border-[3px] border-purple-500/30 shadow-[0_25px_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col justify-between p-6">
-        {/* Atmospheric Radiant Background Blurs from Stitch */}
-        <div className="absolute -top-24 -left-20 w-80 h-80 bg-purple-600/25 rounded-full blur-[90px] pointer-events-none"></div>
-        <div className="absolute top-1/3 -right-24 w-80 h-80 bg-cyan-400/20 rounded-full blur-[100px] pointer-events-none"></div>
-        <div className="absolute -bottom-20 left-10 w-96 h-96 bg-purple-800/25 rounded-full blur-[110px] pointer-events-none"></div>
+      <div className="relative w-full max-w-[420px] min-h-[780px] bg-[#121212] rounded-3xl border border-white/10 shadow-[0_25px_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col justify-between p-6">
+        {/* Subtle Atmospheric Radial Background Glow */}
+        <div className="absolute -top-24 -left-20 w-80 h-80 bg-[#1DB954]/10 rounded-full blur-[90px] pointer-events-none"></div>
+        <div className="absolute top-1/3 -right-24 w-80 h-80 bg-[#1ed760]/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute -bottom-20 left-10 w-96 h-96 bg-[#1DB954]/10 rounded-full blur-[110px] pointer-events-none"></div>
 
         {/* Top Navigation Bar */}
         <nav className="relative z-20 flex items-center justify-between mb-2">
           <button
             onClick={() => setShowFullPlayer(false)}
-            className="w-10 h-10 rounded-full bg-slate-900/70 backdrop-blur-md border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white transition active:scale-95 shadow-md"
+            className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-white/10 flex items-center justify-center text-neutral-300 hover:text-white transition active:scale-95 shadow-md"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path d="M15.75 19.5L8.25 12l7.5-7.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -64,10 +64,10 @@ export default function Player360() {
           </button>
 
           <div className="text-center">
-            <span className="text-[10px] tracking-[0.25em] uppercase text-cyan-400 font-bold block mb-0.5">
+            <span className="text-[10px] tracking-[0.25em] uppercase text-[#1DB954] font-bold block mb-0.5">
               {audioMode === "normal" ? "Studio Master Direct" : "Spatial Engine 3.0"}
             </span>
-            <h1 className="text-sm font-semibold tracking-wide text-slate-200">
+            <h1 className="text-sm font-semibold tracking-wide text-neutral-200">
               {audioMode === "normal" ? "Pure Stereo Sound" : "360° Binaural Orbit"}
             </h1>
           </div>
@@ -76,8 +76,8 @@ export default function Player360() {
             <button
               onClick={() => setIs8DActive(!is8DActive)}
               title={is8DActive ? "8D Spatial Orbit Active" : "8D Orbit Muted"}
-              className={`w-10 h-10 rounded-full backdrop-blur-md border flex items-center justify-center transition active:scale-95 shadow-md ${
-                is8DActive ? "bg-cyan-950/70 border-cyan-400 text-cyan-300 shadow-neon-cyan" : "bg-slate-900/60 border-slate-700/50 text-slate-400"
+              className={`w-10 h-10 rounded-full border flex items-center justify-center transition active:scale-95 shadow-md ${
+                is8DActive ? "bg-[#1f2e24] border-[#1DB954] text-[#1DB954]" : "bg-[#1e1e1e] border-white/10 text-neutral-400"
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -87,9 +87,9 @@ export default function Player360() {
 
             <button
               onClick={() => toggleFavorite(currentSong._id || currentSong.id)}
-              className="w-10 h-10 rounded-full bg-slate-900/70 backdrop-blur-md border border-slate-700/60 flex items-center justify-center hover:scale-105 transition active:scale-90 shadow-md"
+              className="w-10 h-10 rounded-full bg-[#1e1e1e] border border-white/10 flex items-center justify-center hover:scale-105 transition active:scale-90 shadow-md"
             >
-              <svg className={`w-5 h-5 ${isFav ? "fill-pink-500 text-pink-500 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]" : "text-slate-400 fill-none"}`} stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-5 h-5 ${isFav ? "fill-[#1DB954] text-[#1DB954]" : "text-neutral-400 fill-none"}`} stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
             </button>
@@ -98,18 +98,18 @@ export default function Player360() {
 
         {/* Smart No-Repeat Playback Cycle Badge */}
         {cycleStatus && (
-          <div className="relative z-20 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-purple-950/40 border border-purple-500/30 text-[11px] mb-2 backdrop-blur-md">
-            <div className="flex items-center gap-1.5 text-cyan-300 font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="font-bold">Cycle #{cycleStatus.cycleId}</span>
-              <span className="text-purple-300/60">•</span>
-              <span className="text-purple-200">
+          <div className="relative z-20 flex items-center justify-between px-3.5 py-1.5 rounded-xl bg-[#181818] border border-white/10 text-[11px] mb-2">
+            <div className="flex items-center gap-1.5 text-neutral-300 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse"></span>
+              <span className="font-bold text-white">Cycle #{cycleStatus.cycleId}</span>
+              <span className="text-neutral-600">•</span>
+              <span className="text-neutral-400">
                 {cycleStatus.playedCount} played
                 {cycleStatus.totalEligible > 0 ? ` / ${cycleStatus.totalEligible}` : ""}
               </span>
             </div>
-            <div className="flex items-center gap-1.5 text-[10px] text-purple-300/80 font-mono">
-              <span className="text-emerald-400 font-semibold">⚡ No-Repeat Active</span>
+            <div className="flex items-center gap-1.5 text-[10px] text-neutral-300 font-mono">
+              <span className="text-[#1DB954] font-semibold">⚡ No-Repeat Active</span>
             </div>
           </div>
         )}
@@ -221,9 +221,9 @@ export default function Player360() {
         </div>
 
         {/* Spatial Engine Adjusters */}
-        <div className="bg-[#120c24]/80 rounded-2xl p-3 border border-purple-500/25 space-y-2 z-20 shadow-inner">
-          <div className="flex items-center justify-between text-[11px] text-purple-200">
-            <span className="font-semibold text-cyan-300 flex items-center gap-1">
+        <div className="bg-[#181818] rounded-2xl p-3 border border-white/10 space-y-2 z-20">
+          <div className="flex items-center justify-between text-[11px] text-neutral-300">
+            <span className="font-semibold text-white flex items-center gap-1">
               <span>💫 Orbit Speed</span>
             </span>
             <div className="flex items-center gap-1.5 font-mono">
@@ -231,10 +231,10 @@ export default function Player360() {
                 <button
                   key={speed}
                   onClick={() => setOrbitSpeed(speed)}
-                  className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-all ${
+                  className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
                     orbitSpeed === speed
-                      ? "bg-brand-cyan text-black shadow-neon-cyan"
-                      : "bg-purple-900/50 text-purple-300 hover:text-white"
+                      ? "bg-[#1DB954] text-black shadow-md"
+                      : "bg-[#242424] text-neutral-300 hover:text-white hover:bg-[#2c2c2c]"
                   }`}
                 >
                   {speed}x
@@ -243,15 +243,15 @@ export default function Player360() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] text-purple-200 pt-1">
-            <span className="font-semibold text-purple-300">Spatial Depth ({spatialDepth}%)</span>
+          <div className="flex items-center justify-between text-[11px] text-neutral-300 pt-1">
+            <span className="font-semibold text-neutral-400">Spatial Depth ({spatialDepth}%)</span>
             <input
               type="range"
               min="20"
               max="100"
               value={spatialDepth}
               onChange={(e) => setSpatialDepth(Number(e.target.value))}
-              className="w-36"
+              className="w-36 accent-[#1DB954]"
             />
           </div>
         </div>
@@ -265,37 +265,37 @@ export default function Player360() {
               const ratio = clickX / rect.width;
               seek(ratio * duration);
             }}
-            className="w-full h-2 rounded-full bg-slate-800/80 cursor-pointer overflow-hidden relative border border-purple-500/20"
+            className="w-full h-1.5 hover:h-2.5 rounded-full bg-white/20 cursor-pointer overflow-hidden relative transition-all group"
           >
             <div
-              className="h-full bg-gradient-to-r from-brand-purple via-brand-accent to-brand-cyan rounded-full transition-all duration-100 shadow-neon-cyan"
+              className="h-full bg-[#1DB954] group-hover:bg-[#1ed760] rounded-full transition-all duration-100"
               style={{ width: `${progressPercent}%` }}
             ></div>
           </div>
-          <div className="flex justify-between items-center text-[11px] font-mono text-purple-300/60 px-0.5">
+          <div className="flex justify-between items-center text-[11px] font-mono text-neutral-400 px-0.5">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
 
-        {/* Transport Controls from Stitch */}
+        {/* Transport Controls */}
         <div className="flex items-center justify-between mt-2 z-20 px-2">
-          <button className="text-purple-300/60 hover:text-cyan-300 transition-colors p-2">
+          <button className="text-neutral-400 hover:text-white transition-colors p-2">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
             </svg>
           </button>
 
-          <button onClick={playPrev} className="text-white hover:text-cyan-300 transition-transform active:scale-90 p-2">
+          <button onClick={playPrev} className="text-white hover:text-neutral-300 transition-transform active:scale-90 p-2">
             <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
               <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
             </svg>
           </button>
 
-          {/* Glowing Play/Pause FAB Button from Stitch */}
+          {/* Spotify signature circle FAB */}
           <button
             onClick={togglePlay}
-            className="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-purple via-purple-600 to-brand-cyan flex items-center justify-center text-white shadow-glow-play hover:scale-105 active:scale-95 transition-all duration-200"
+            className="w-16 h-16 rounded-full bg-[#1DB954] hover:bg-[#1ed760] flex items-center justify-center text-black shadow-xl hover:scale-105 active:scale-95 transition-all duration-200"
           >
             {isPlaying ? (
               <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
@@ -308,7 +308,7 @@ export default function Player360() {
             )}
           </button>
 
-          <button onClick={playNext} className="text-white hover:text-cyan-300 transition-transform active:scale-90 p-2">
+          <button onClick={playNext} className="text-white hover:text-neutral-300 transition-transform active:scale-90 p-2">
             <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
               <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
             </svg>
@@ -316,7 +316,7 @@ export default function Player360() {
 
           <button
             onClick={() => setIs8DActive(!is8DActive)}
-            className={`transition-colors p-2 ${is8DActive ? "text-cyan-300" : "text-purple-300/60"}`}
+            className={`transition-colors p-2 ${is8DActive ? "text-[#1DB954]" : "text-neutral-500"}`}
             title="8D Bilateral Stimulation"
           >
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
