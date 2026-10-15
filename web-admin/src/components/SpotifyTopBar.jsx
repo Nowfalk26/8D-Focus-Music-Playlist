@@ -99,24 +99,24 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           {/* Premium Button */}
           <button
             onClick={() => onSelectTab("orbit")}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-md"
+            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-md leading-none"
             title="Flow 8D Premium Spatial Audio"
           >
             <span className="material-symbols-outlined text-sm font-bold text-amber-600">workspace_premium</span>
-            <span>Explore Premium</span>
+            <span className="leading-none">Explore Premium</span>
           </button>
 
           {/* Audio Universe Mode Switcher Pill */}
           <button
             onClick={openModeSelector}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-125 ${modeBadge.color}`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-125 leading-none ${modeBadge.color}`}
             title="Switch Audio Experience Mode (Normal Music, 8D Audio)"
           >
             <span>{modeBadge.icon}</span>
-            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline">
+            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline leading-none">
               {modeBadge.label}
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden">
+            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden leading-none">
               {modeBadge.short}
             </span>
           </button>
@@ -124,29 +124,29 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           {/* Milo AI Assistant Button */}
           <button
             onClick={() => setShowMiloChat(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 text-xs font-bold transition-all active:scale-95 shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 text-xs font-bold transition-all active:scale-95 shadow-sm leading-none"
             title="Chat with Milo AI"
           >
             <span className="text-sm">🐱</span>
-            <span className="hidden md:inline">Milo AI</span>
+            <span className="hidden md:inline leading-none">Milo AI</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
           </button>
 
           {/* 360° Spatial Stage Control */}
           <button
             onClick={() => onSelectTab("orbit")}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white text-xs font-semibold transition-all"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white text-xs font-semibold transition-all leading-none"
             title="360° Binaural Stage"
           >
             <span className="material-symbols-outlined text-sm text-[#00f2fe]">spatial_audio_off</span>
-            <span>360° Orbit</span>
+            <span className="leading-none">360° Orbit</span>
           </button>
 
           {/* Notifications Bell */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="w-9 h-9 rounded-full bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white flex items-center justify-center transition-colors relative"
+              className="w-9 h-9 rounded-full bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white inline-flex items-center justify-center transition-colors relative leading-none"
               title="Notifications"
             >
               <span className="material-symbols-outlined text-lg">notifications</span>
@@ -175,12 +175,12 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           <div className="relative">
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-white transition-colors"
+              className="inline-flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-white transition-colors leading-none"
             >
-              <div className="w-7 h-7 rounded-full bg-[#1DB954] text-black flex items-center justify-center font-bold text-xs shadow-sm">
+              <div className="w-7 h-7 rounded-full bg-[#1DB954] text-black inline-flex items-center justify-center font-bold text-xs shadow-sm leading-none">
                 {user?.name ? user.name[0].toUpperCase() : "U"}
               </div>
-              <span className="text-xs font-semibold hidden md:inline truncate max-w-[100px]">
+              <span className="text-xs font-semibold hidden md:inline truncate max-w-[100px] leading-none">
                 {user?.name || "Listener"}
               </span>
               <span className="material-symbols-outlined text-sm text-neutral-400">
@@ -242,7 +242,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
             <button
               key={pill}
               onClick={() => handlePillClick(pill)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-transform active:scale-95 shadow-sm ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-transform active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
                 isActive
                   ? "bg-[#1DB954] text-black font-bold"
                   : "bg-[#242424] text-white hover:bg-[#2e2e2e]"

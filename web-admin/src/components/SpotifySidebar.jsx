@@ -85,13 +85,13 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
+                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 leading-none ${
                   active
                     ? "text-white bg-[#282828] font-bold shadow-sm"
                     : "text-neutral-400 hover:text-white hover:bg-[#1a1a1a]"
                 }`}
               >
-                <div className="flex items-center gap-3.5">
+                <div className="flex items-center gap-3.5 leading-none">
                   <span
                     className={`material-symbols-outlined text-xl transition-colors ${
                       active ? "text-[#1DB954]" : "text-neutral-400"
@@ -99,10 +99,10 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                   >
                     {item.icon}
                   </span>
-                  <span>{item.label}</span>
+                  <span className="leading-none">{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#1DB954]/20 text-[#1DB954] border border-[#1DB954]/30">
+                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#1DB954]/20 text-[#1DB954] border border-[#1DB954]/30 leading-none">
                     {item.badge}
                   </span>
                 )}
@@ -118,14 +118,14 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         <div className="flex items-center justify-between px-2 py-1 mb-2">
           <button
             onClick={() => onSelectTab("library")}
-            className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group"
+            className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group leading-none"
           >
             <span className="material-symbols-outlined text-2xl text-[#1DB954]">library_music</span>
-            <span className="text-sm font-bold">Your Library</span>
+            <span className="text-sm font-bold leading-none">Your Library</span>
           </button>
           <button
             onClick={() => onSelectTab("library")}
-            className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors"
+            className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors leading-none"
             title="Browse all tracks"
           >
             <span className="material-symbols-outlined text-lg">add</span>
@@ -142,7 +142,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                 if (f === "favorites") onSelectTab("library", "Favorites");
                 else if (f === "8D") onSelectTab("library", "8D");
               }}
-              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-colors ${
+              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-colors leading-none inline-flex items-center justify-center ${
                 libraryFilter === f
                   ? "bg-white text-black font-bold"
                   : "bg-[#242424] text-neutral-300 hover:text-white hover:bg-[#2e2e2e]"
@@ -165,11 +165,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                 favorite
               </span>
             </div>
-            <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors">
+            <div className="min-w-0 flex-1 flex flex-col justify-center">
+              <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors leading-snug pb-0.5">
                 Liked Songs
               </h4>
-              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5">
+              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5 leading-normal">
                 <span className="text-[#1DB954]">📌 Pinned</span>
                 <span>•</span>
                 <span>{favorites.size} tracks</span>
@@ -179,7 +179,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
 
           {/* Section Divider: Curated Tamil Channels */}
           <div className="pt-3 pb-1 px-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono leading-none block">
               Curated Tamil Channels
             </span>
           </div>
@@ -196,11 +196,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                     {item.icon}
                   </span>
                 </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-semibold text-neutral-200 group-hover:text-white truncate">
+                <div className="min-w-0 flex flex-col justify-center">
+                  <div className="text-xs font-semibold text-neutral-200 group-hover:text-white truncate leading-snug pb-0.5">
                     {item.label}
                   </div>
-                  <div className="text-[10px] text-neutral-500 truncate">Spatial Playlist</div>
+                  <div className="text-[10px] text-neutral-500 truncate leading-normal">Spatial Playlist</div>
                 </div>
               </div>
               <span className="material-symbols-outlined text-neutral-600 group-hover:text-neutral-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
@@ -213,7 +213,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
           {filteredCategories.length > 0 && (
             <>
               <div className="pt-3 pb-1 px-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono leading-none block">
                   Custom Playlists
                 </span>
               </div>
@@ -232,11 +232,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h4 className="text-xs font-semibold text-neutral-200 truncate group-hover:text-[#1DB954] transition-colors">
+                    <div className="min-w-0 flex-1 flex flex-col justify-center">
+                      <h4 className="text-xs font-semibold text-neutral-200 truncate group-hover:text-[#1DB954] transition-colors leading-snug pb-0.5">
                         {catName}
                       </h4>
-                      <p className="text-[10px] text-neutral-500 truncate">
+                      <p className="text-[10px] text-neutral-500 truncate leading-normal">
                         Flow 8D • Tamil Mix
                       </p>
                     </div>

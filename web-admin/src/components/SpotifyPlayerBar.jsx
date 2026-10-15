@@ -93,11 +93,11 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
                 )}
               </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-white truncate leading-tight">
+              <div className="min-w-0 flex-1 flex flex-col justify-center">
+                <p className="text-xs font-bold text-white truncate leading-snug pb-0.5">
                   {currentSong.title}
                 </p>
-                <p className="text-[11px] text-neutral-400 truncate leading-tight mt-0.5">
+                <p className="text-[11px] text-neutral-400 truncate leading-normal mt-0.5">
                   {currentSong.artist || "Flow 8D Artist"}
                 </p>
               </div>
@@ -108,7 +108,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
               {/* Device Connect Button */}
               <button
                 onClick={onOpenConnect}
-                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-[#1DB954] active:scale-90 transition-all"
+                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-[#1DB954] active:scale-90 transition-all leading-none"
                 title="Connect Device"
               >
                 <span className="material-symbols-outlined text-lg">speaker_group</span>
@@ -117,7 +117,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
               {/* Heart Button */}
               <button
                 onClick={() => toggleFavorite(currentSong._id || currentSong.id)}
-                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-white active:scale-90 transition-all"
+                className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-white active:scale-90 transition-all leading-none"
                 title={isFav ? "Remove Favorite" : "Save to Library"}
               >
                 <span
@@ -133,7 +133,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
               {/* Play / Pause Circular Button */}
               <button
                 onClick={togglePlay}
-                className="w-10 h-10 rounded-full bg-[#1DB954] text-black flex items-center justify-center active:scale-90 transition-transform shadow-md ml-1"
+                className="w-10 h-10 rounded-full bg-[#1DB954] text-black flex items-center justify-center active:scale-90 transition-transform shadow-md ml-1 leading-none"
                 title={isPlaying ? "Pause" : "Play"}
               >
                 <span
@@ -174,16 +174,16 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
               </div>
 
               {/* Title & Artist */}
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 flex flex-col justify-center">
                 <h4
                   onClick={handleOpenPlayer}
-                  className="text-sm font-bold text-white truncate hover:underline cursor-pointer leading-tight"
+                  className="text-sm font-bold text-white truncate hover:underline cursor-pointer leading-snug pb-0.5"
                   title={currentSong.title}
                 >
                   {currentSong.title}
                 </h4>
                 <p
-                  className="text-xs text-neutral-400 truncate hover:text-white hover:underline cursor-pointer mt-0.5"
+                  className="text-xs text-neutral-400 truncate hover:text-white hover:underline cursor-pointer mt-0.5 leading-normal"
                   title={currentSong.artist}
                 >
                   {currentSong.artist || "Flow 8D Artist"}
@@ -193,7 +193,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
               {/* Like / Heart Button */}
               <button
                 onClick={() => toggleFavorite(currentSong._id || currentSong.id)}
-                className="text-neutral-400 hover:text-white transition-colors p-1.5 shrink-0"
+                className="text-neutral-400 hover:text-white transition-colors p-1.5 shrink-0 inline-flex items-center justify-center leading-none"
                 title={isFav ? "Remove from Liked Songs" : "Save to Liked Songs"}
               >
                 <span
@@ -326,7 +326,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
           {/* Spatial Mode Indicator Pill */}
           <button
             onClick={openModeSelector}
-            className="px-2.5 py-1 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95"
+            className="px-2.5 py-1 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95 leading-none inline-flex items-center justify-center"
             title="Switch Audio Experience Mode"
           >
             {audioMode?.toUpperCase() || "8D"}

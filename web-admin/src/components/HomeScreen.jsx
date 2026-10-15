@@ -165,28 +165,28 @@ export default function HomeScreen({ onNavigate }) {
         {/* Dynamic Spotify Greeting & Subtitle */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight font-display">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight font-display leading-[1.2]">
               {getGreeting()}
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-medium leading-normal">
               Feel the music in a whole new dimension • Flow 8D Spatial Audio
             </p>
           </div>
 
           {/* Smart Playback Cycle HUD */}
           {cycleStatus && (
-            <div className="flex items-center gap-2 self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-black/60 border border-[#1DB954]/30 backdrop-blur-md text-xs font-mono shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse" />
-              <span className="text-white font-bold">
+            <div className="flex items-center gap-2 self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-black/60 border border-[#1DB954]/30 backdrop-blur-md text-xs font-mono shadow-sm leading-none">
+              <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse shrink-0" />
+              <span className="text-white font-bold leading-none">
                 Cycle #{cycleStatus.cycleId}
               </span>
-              <span className="text-neutral-500">•</span>
-              <span className="text-[#1DB954]">
+              <span className="text-neutral-500 leading-none">•</span>
+              <span className="text-[#1DB954] leading-none">
                 {cycleStatus.playedCount} of {cycleStatus.totalEligible || songs.length} Played
               </span>
               <button
                 onClick={resetPlaybackCycle}
-                className="text-[10px] text-[#1DB954] hover:underline font-bold ml-1"
+                className="text-[10px] text-[#1DB954] hover:underline font-bold ml-1 leading-none"
                 title="Reset smart cycle"
               >
                 Reset ↻
@@ -213,38 +213,38 @@ export default function HomeScreen({ onNavigate }) {
                   className="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-500"
                   onError={handleImgError}
                 />
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/75 border border-[#1DB954]/40 text-[#1DB954] text-[10px] font-bold font-mono uppercase tracking-wider">
+                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/75 border border-[#1DB954]/40 text-[#1DB954] text-[10px] font-bold font-mono uppercase tracking-wider leading-none">
                   Featured 8D
                 </div>
               </div>
 
               {/* Track Metadata & Action Controls */}
               <div className="flex-1 min-w-0 text-center sm:text-left flex flex-col items-center sm:items-start">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[11px] font-bold tracking-widest uppercase text-[#1DB954] font-mono">
+                <div className="flex items-center gap-2 mb-2 leading-none">
+                  <span className="text-[11px] font-bold tracking-widest uppercase text-[#1DB954] font-mono leading-none">
                     SPOTLIGHT STREAM
                   </span>
-                  <span className="text-neutral-500">•</span>
-                  <span className="px-2 py-0.5 rounded-full bg-[#1DB954]/15 text-[#1DB954] border border-[#1DB954]/30 text-[10px] font-bold uppercase font-mono">
+                  <span className="text-neutral-500 leading-none">•</span>
+                  <span className="px-2 py-0.5 rounded-full bg-[#1DB954]/15 text-[#1DB954] border border-[#1DB954]/30 text-[10px] font-bold uppercase font-mono leading-none">
                     {featuredSong.audioMode?.toUpperCase() || "8D SPATIAL"}
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight line-clamp-2">
+                <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-[1.15] line-clamp-2 pb-0.5">
                   {featuredSong.title}
                 </h2>
-                <p className="text-sm sm:text-base text-neutral-300 font-medium mt-1 truncate max-w-xl">
+                <p className="text-sm sm:text-base text-neutral-300 font-medium mt-1.5 leading-snug truncate max-w-xl">
                   {featuredSong.artist} • {featuredSong.category || "Tamil Melodies"}
                 </p>
-                <p className="text-xs text-neutral-400 mt-1 max-w-lg hidden sm:block">
+                <p className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-lg hidden sm:block leading-relaxed">
                   Immerse in rotating binaural acoustics calibrated for headphones. Experience spatial separation and pristine high fidelity.
                 </p>
 
                 {/* Hero Action Buttons */}
-                <div className="flex items-center gap-3.5 mt-4">
+                <div className="flex items-center gap-3.5 mt-5">
                   <button
                     onClick={() => playSong(featuredSong, songs)}
-                    className="px-6 py-3 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm flex items-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition-all"
+                    className="px-6 py-3 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm inline-flex items-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition-all leading-none"
                   >
                     <span
                       className="material-symbols-outlined text-2xl font-bold"
@@ -252,14 +252,14 @@ export default function HomeScreen({ onNavigate }) {
                     >
                       {currentSong && (currentSong._id || currentSong.id) === (featuredSong._id || featuredSong.id) && isPlaying ? "pause" : "play_arrow"}
                     </span>
-                    <span>
+                    <span className="leading-none">
                       {currentSong && (currentSong._id || currentSong.id) === (featuredSong._id || featuredSong.id) && isPlaying ? "Pause" : "Play Now"}
                     </span>
                   </button>
 
                   <button
                     onClick={() => toggleFavorite(featuredSong._id || featuredSong.id)}
-                    className={`w-11 h-11 rounded-full border border-white/10 flex items-center justify-center transition-all active:scale-90 ${
+                    className={`w-11 h-11 rounded-full border border-white/10 inline-flex items-center justify-center transition-all active:scale-90 leading-none ${
                       favorites.has(featuredSong._id || featuredSong.id)
                         ? "bg-[#1DB954]/15 text-[#1DB954] border-[#1DB954]/40"
                         : "bg-[#242424] text-neutral-300 hover:text-white"
@@ -276,10 +276,10 @@ export default function HomeScreen({ onNavigate }) {
 
                   <button
                     onClick={() => onNavigate("orbit")}
-                    className="px-4 py-2.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-200 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    className="px-4 py-2.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-200 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors leading-none"
                   >
                     <span className="material-symbols-outlined text-base text-[#00f2fe]">spatial_audio_off</span>
-                    <span>360° Stage</span>
+                    <span className="leading-none">360° Stage</span>
                   </button>
                 </div>
               </div>
@@ -326,12 +326,12 @@ export default function HomeScreen({ onNavigate }) {
                 </div>
 
                 {/* Title */}
-                <div className="flex-1 px-3 min-w-0 pr-12">
-                  <h4 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                <div className="flex-1 px-3 min-w-0 pr-12 flex flex-col justify-center">
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                     {card.title}
                   </h4>
                   {card.subtitle && (
-                    <p className="text-[10px] sm:text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[10px] sm:text-[11px] text-neutral-400 truncate mt-0.5 leading-normal">
                       {card.subtitle}
                     </p>
                   )}
@@ -367,18 +367,18 @@ export default function HomeScreen({ onNavigate }) {
         {/* 🔥 SECTION 5: TRENDING NOW (Horizontal & Responsive Grid) */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono leading-none mb-1 block">
                 Top Viral Tracks
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Trending Now
               </h2>
             </div>
             <button
               onClick={() => onNavigate("library")}
-              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors"
+              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors leading-none pb-0.5"
             >
               See all
             </button>
@@ -407,12 +407,12 @@ export default function HomeScreen({ onNavigate }) {
                     />
 
                     {/* Mode Tag */}
-                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-black/75 text-[#1DB954] border border-[#1DB954]/30 uppercase">
+                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-black/75 text-[#1DB954] border border-[#1DB954]/30 uppercase leading-none inline-flex items-center">
                       {song.audioMode || "8D"}
                     </div>
 
                     {/* Trending Rank Tag */}
-                    <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/90 text-black shadow-sm">
+                    <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/90 text-black shadow-sm leading-none inline-flex items-center">
                       #{idx + 1}
                     </div>
 
@@ -435,11 +435,11 @@ export default function HomeScreen({ onNavigate }) {
                     </div>
                   </div>
 
-                  <div className="min-w-0">
-                    <h3 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                  <div className="min-w-0 flex flex-col">
+                    <h3 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                       {song.title}
                     </h3>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-neutral-400 truncate mt-1 leading-normal">
                       {song.artist}
                     </p>
                   </div>
@@ -453,18 +453,18 @@ export default function HomeScreen({ onNavigate }) {
         {/* 🌟 SECTION 6: MADE FOR YOU (Curated Mixes) */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono leading-none mb-1 block">
                 Tailored Playlists
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Made For You
               </h2>
             </div>
             <button
               onClick={() => onNavigate("library")}
-              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors"
+              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors leading-none pb-0.5"
             >
               See all
             </button>
@@ -509,11 +509,11 @@ export default function HomeScreen({ onNavigate }) {
                   </div>
                 </div>
 
-                <div className="min-w-0">
-                  <h3 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                <div className="min-w-0 flex flex-col">
+                  <h3 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                     {col.title}
                   </h3>
-                  <p className="text-[11px] text-neutral-400 line-clamp-2 mt-0.5 leading-snug">
+                  <p className="text-[11px] text-neutral-400 line-clamp-2 mt-1 leading-snug">
                     {col.subtitle}
                   </p>
                 </div>
@@ -526,18 +526,18 @@ export default function HomeScreen({ onNavigate }) {
         {/* 🎧 SECTION 7: JUMP BACK IN • RECENT & CONTINUE LISTENING */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono leading-none mb-1 block">
                 Continue Listening
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Jump Back In
               </h2>
             </div>
             <button
               onClick={() => onNavigate("library")}
-              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors"
+              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors leading-none pb-0.5"
             >
               See all
             </button>
@@ -582,11 +582,11 @@ export default function HomeScreen({ onNavigate }) {
                     </div>
                   </div>
 
-                  <div className="min-w-0">
-                    <h3 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                  <div className="min-w-0 flex flex-col">
+                    <h3 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                       {song.title}
                     </h3>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-neutral-400 truncate mt-1 leading-normal">
                       {song.artist}
                     </p>
                   </div>
@@ -600,18 +600,18 @@ export default function HomeScreen({ onNavigate }) {
         {/* 💖 SECTION 8: TAMIL LOVE SONGS */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-400 font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-400 font-mono leading-none mb-1 block">
                 Pure Romance
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Tamil Love Melodies
               </h2>
             </div>
             <button
               onClick={() => onNavigate("library", "Tamil Love")}
-              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors"
+              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors leading-none pb-0.5"
             >
               See all
             </button>
@@ -656,11 +656,11 @@ export default function HomeScreen({ onNavigate }) {
                     </div>
                   </div>
 
-                  <div className="min-w-0">
-                    <h3 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                  <div className="min-w-0 flex flex-col">
+                    <h3 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                       {song.title}
                     </h3>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-neutral-400 truncate mt-1 leading-normal">
                       {song.artist}
                     </p>
                   </div>
@@ -674,18 +674,18 @@ export default function HomeScreen({ onNavigate }) {
         {/* 🌟 SECTION 9: ARTISTS YOU LOVE */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono leading-none mb-1 block">
                 Legends & Hitmakers
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Artists You Love
               </h2>
             </div>
             <button
               onClick={() => onNavigate("library")}
-              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors"
+              className="text-xs font-bold text-neutral-400 hover:text-white transition-colors leading-none pb-0.5"
             >
               See all
             </button>
@@ -705,10 +705,10 @@ export default function HomeScreen({ onNavigate }) {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h4 className="text-xs sm:text-sm font-bold text-white truncate w-full group-hover:text-[#1DB954] transition-colors">
+                <h4 className="text-xs sm:text-sm font-bold text-white truncate w-full group-hover:text-[#1DB954] transition-colors leading-snug pb-0.5">
                   {artist.name}
                 </h4>
-                <p className="text-[10px] text-neutral-400 truncate w-full mt-0.5 font-medium">
+                <p className="text-[10px] text-neutral-400 truncate w-full mt-0.5 font-medium leading-normal">
                   {artist.role}
                 </p>
               </div>
@@ -720,23 +720,23 @@ export default function HomeScreen({ onNavigate }) {
         {/* 📊 SECTION 10: TODAY'S TOP TRACKS CANONICAL TABLE */}
         {/* ============================================================== */}
         <section className="space-y-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-end justify-between mb-4">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono leading-none mb-1 block">
                 Ranked Playlist
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                 Today's Top Tracks
               </h2>
             </div>
-            <span className="text-xs font-mono text-neutral-400">
+            <span className="text-xs font-mono text-neutral-400 leading-none pb-0.5">
               {songs.length} Tracks Available
             </span>
           </div>
 
           <div className="w-full bg-[#181818]/60 rounded-2xl p-2 sm:p-4 border border-white/5">
             {/* Table Header */}
-            <div className="grid grid-cols-12 px-3 py-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider border-b border-white/10 font-mono">
+            <div className="grid grid-cols-12 px-4 py-2.5 items-center text-[11px] font-semibold text-neutral-400 uppercase tracking-wider border-b border-white/10 font-mono leading-none">
               <div className="col-span-1 text-center">#</div>
               <div className="col-span-8 md:col-span-5">Title</div>
               <div className="hidden md:block md:col-span-3">Category</div>
@@ -756,12 +756,12 @@ export default function HomeScreen({ onNavigate }) {
                   <div
                     key={song._id || song.id || idx}
                     onClick={() => playSong(song, songs)}
-                    className={`grid grid-cols-12 items-center px-3 py-2.5 rounded-xl hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
+                    className={`grid grid-cols-12 items-center px-4 py-3 rounded-xl hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
                       isThisPlaying ? "bg-[#242424] text-[#1DB954]" : "text-neutral-300"
                     }`}
                   >
                     {/* Index / Play Indicator */}
-                    <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden">
+                    <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden leading-none">
                       {isThisPlaying ? (
                         <span className="material-symbols-outlined text-[#1DB954] text-base animate-pulse">
                           equalizer
@@ -770,13 +770,13 @@ export default function HomeScreen({ onNavigate }) {
                         idx + 1
                       )}
                     </div>
-                    <div className="col-span-1 hidden items-center justify-center group-hover:flex">
+                    <div className="col-span-1 hidden items-center justify-center group-hover:flex leading-none">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           playSong(song, songs);
                         }}
-                        className="text-white hover:text-[#1DB954] transition-colors"
+                        className="text-white hover:text-[#1DB954] transition-colors inline-flex items-center justify-center"
                       >
                         <span
                           className="material-symbols-outlined text-xl"
@@ -788,7 +788,7 @@ export default function HomeScreen({ onNavigate }) {
                     </div>
 
                     {/* Artwork + Title + Artist */}
-                    <div className="col-span-8 md:col-span-5 flex items-center gap-3 min-w-0 pr-3">
+                    <div className="col-span-8 md:col-span-5 flex items-center gap-3.5 min-w-0 pr-3">
                       <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-black shadow-sm">
                         <img
                           src={song.imageUrl || DEFAULT_COVER}
@@ -797,38 +797,38 @@ export default function HomeScreen({ onNavigate }) {
                           onError={handleImgError}
                         />
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex flex-col justify-center">
                         <h4
-                          className={`font-bold truncate text-xs sm:text-sm ${
+                          className={`font-bold truncate text-xs sm:text-sm leading-snug pb-0.5 ${
                             isThisPlaying ? "text-[#1DB954]" : "text-white group-hover:text-[#1DB954] transition-colors"
                           }`}
                         >
                           {song.title}
                         </h4>
-                        <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                        <p className="text-[11px] text-neutral-400 truncate mt-0.5 leading-normal">
                           {song.artist}
                         </p>
                       </div>
                     </div>
 
                     {/* Category Pill */}
-                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400 text-xs truncate">
-                      <span className="truncate">{song.category || "Tamil Melodies"}</span>
+                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400 text-xs truncate leading-none">
+                      <span className="truncate leading-none">{song.category || "Tamil Melodies"}</span>
                       {song.audioMode && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] shrink-0 uppercase">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] shrink-0 uppercase leading-none inline-flex items-center">
                           {song.audioMode}
                         </span>
                       )}
                     </div>
 
                     {/* Duration & Heart */}
-                    <div className="col-span-3 md:col-span-3 flex items-center justify-end gap-3 text-neutral-400 font-mono text-xs pr-2">
+                    <div className="col-span-3 md:col-span-3 flex items-center justify-end gap-3 text-neutral-400 font-mono text-xs pr-2 leading-none">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleFavorite(song._id || song.id);
                         }}
-                        className="transition-opacity hover:text-white p-1"
+                        className="transition-opacity hover:text-white p-1 inline-flex items-center justify-center"
                       >
                         <span
                           className={`material-symbols-outlined text-base ${
@@ -839,7 +839,7 @@ export default function HomeScreen({ onNavigate }) {
                           favorite
                         </span>
                       </button>
-                      <span>{song.duration || "4:15"}</span>
+                      <span className="leading-none">{song.duration || "4:15"}</span>
                     </div>
                   </div>
                 );

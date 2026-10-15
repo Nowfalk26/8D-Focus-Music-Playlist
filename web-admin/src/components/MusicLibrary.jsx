@@ -333,21 +333,21 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     </div>
                   </div>
 
-                  <div className="min-w-0">
-                    <h3 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#1DB954] transition-colors">
+                  <div className="min-w-0 flex flex-col">
+                    <h3 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                       {song.title}
                     </h3>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] sm:text-xs text-neutral-400 truncate mt-1 leading-normal">
                       {song.artist}
                     </p>
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5 text-[10px] text-neutral-500 font-mono">
-                      <span>{song.duration || "4:15"}</span>
+                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5 text-[10px] text-neutral-500 font-mono leading-none">
+                      <span className="leading-none">{song.duration || "4:15"}</span>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleFavorite(song._id || song.id);
                         }}
-                        className="hover:text-white"
+                        className="hover:text-white p-1 inline-flex items-center justify-center leading-none"
                       >
                         <span
                           className={`material-symbols-outlined text-sm ${isFav ? "text-[#1DB954]" : ""}`}
@@ -365,7 +365,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
         ) : (
           /* Table Header & Rows */
           <div>
-            <div className="grid grid-cols-12 px-3 py-2 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider border-b border-white/10 font-mono">
+            <div className="grid grid-cols-12 px-4 py-2.5 items-center text-[11px] font-semibold text-neutral-400 uppercase tracking-wider border-b border-white/10 font-mono leading-none">
               <div className="col-span-1 text-center">#</div>
               <div className="col-span-8 md:col-span-5">Title</div>
               <div className="hidden md:block md:col-span-3">Category</div>
@@ -384,12 +384,12 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                   <div
                     key={song._id || song.id || idx}
                     onClick={() => playSong(song, filteredSongs)}
-                    className={`grid grid-cols-12 items-center px-3 py-2.5 rounded-xl hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
+                    className={`grid grid-cols-12 items-center px-4 py-3 rounded-xl hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
                       isThisPlaying ? "bg-[#242424] text-[#1DB954]" : "text-neutral-300"
                     }`}
                   >
                     {/* Number or Play indicator */}
-                    <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden">
+                    <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden leading-none">
                       {isThisPlaying ? (
                         <span className="material-symbols-outlined text-[#1DB954] text-base animate-pulse">
                           equalizer
@@ -398,13 +398,13 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                         idx + 1
                       )}
                     </div>
-                    <div className="col-span-1 hidden items-center justify-center group-hover:flex">
+                    <div className="col-span-1 hidden items-center justify-center group-hover:flex leading-none">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           playSong(song, filteredSongs);
                         }}
-                        className="text-white hover:text-[#1DB954] transition-colors"
+                        className="text-white hover:text-[#1DB954] transition-colors inline-flex items-center justify-center"
                       >
                         <span
                           className="material-symbols-outlined text-xl"
@@ -416,7 +416,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     </div>
 
                     {/* Title & Artist */}
-                    <div className="col-span-8 md:col-span-5 flex items-center gap-3 min-w-0 pr-3">
+                    <div className="col-span-8 md:col-span-5 flex items-center gap-3.5 min-w-0 pr-3">
                       <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-black shadow-sm">
                         <img
                           src={song.imageUrl || DEFAULT_COVER}
@@ -425,38 +425,38 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                           onError={handleImgError}
                         />
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex flex-col justify-center">
                         <h4
-                          className={`font-semibold truncate text-xs sm:text-sm ${
-                            isThisPlaying ? "text-[#1DB954]" : "text-white group-hover:text-white"
+                          className={`font-bold truncate text-xs sm:text-sm leading-snug pb-0.5 ${
+                            isThisPlaying ? "text-[#1DB954]" : "text-white group-hover:text-[#1DB954] transition-colors"
                           }`}
                         >
                           {song.title}
                         </h4>
-                        <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                        <p className="text-[11px] text-neutral-400 truncate mt-0.5 leading-normal">
                           {song.artist}
                         </p>
                       </div>
                     </div>
 
                     {/* Category & Mood Badge */}
-                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400 text-xs truncate">
-                      <span className="truncate">{song.category || "Tamil Melodies"}</span>
+                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400 text-xs truncate leading-none">
+                      <span className="truncate leading-none">{song.category || "Tamil Melodies"}</span>
                       {song.audioMode && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] shrink-0 uppercase">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] shrink-0 uppercase leading-none inline-flex items-center">
                           {song.audioMode}
                         </span>
                       )}
                     </div>
 
                     {/* Duration & Heart */}
-                    <div className="col-span-3 md:col-span-3 flex items-center justify-end gap-3 text-neutral-400 font-mono text-xs pr-2">
+                    <div className="col-span-3 md:col-span-3 flex items-center justify-end gap-3 text-neutral-400 font-mono text-xs pr-2 leading-none">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleFavorite(song._id || song.id);
                         }}
-                        className="transition-opacity hover:text-white p-1"
+                        className="transition-opacity hover:text-white p-1 inline-flex items-center justify-center"
                       >
                         <span
                           className={`material-symbols-outlined text-base ${
@@ -467,7 +467,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                           favorite
                         </span>
                       </button>
-                      <span>{song.duration || "4:15"}</span>
+                      <span className="leading-none">{song.duration || "4:15"}</span>
                     </div>
                   </div>
                 );
