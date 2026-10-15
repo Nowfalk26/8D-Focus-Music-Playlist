@@ -15,6 +15,7 @@ import { PlayerProvider } from "./context/PlayerContext";
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
   const [activeTab, setActiveTab] = useState("home"); // Default to Flow 8D Home from Stitch
+  const [libraryCategory, setLibraryCategory] = useState("All");
   const [authChecked, setAuthChecked] = useState(false);
 
   // Check saved session on startup
@@ -44,6 +45,13 @@ export default function App() {
     setActiveTab("home");
   };
 
+  const handleNavigate = (tab, category = null) => {
+    if (category) {
+      setLibraryCategory(category);
+    }
+    setActiveTab(tab);
+  };
+
   if (!authChecked) {
     return null;
   }
@@ -55,19 +63,21 @@ export default function App() {
     <PlayerProvider>
       <Layout
         activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleNavigate}
         user={adminUser || { name: "Guest Listener", role: "explorer" }}
         onLogout={handleLogout}
       >
-        {activeTab === "home" && <HomeScreen onNavigate={setActiveTab} />}
+        {activeTab === "home" && <HomeScreen onNavigate={handleNavigate} />}
 
         {(activeTab === "taste" || activeTab === "dna") && <TasteProfileScreen />}
 
-        {(activeTab === "orbit" || activeTab === "stage") && <OrbitStageScreen onNavigate={setActiveTab} />}
+        {(activeTab === "orbit" || activeTab === "stage") && <OrbitStageScreen onNavigate={handleNavigate} />}
 
-        {(activeTab === "studio" || activeTab === "8d") && <Studio8D onNavigate={setActiveTab} />}
+        {(activeTab === "studio" || activeTab === "8d") && <Studio8D onNavigate={handleNavigate} />}
 
-        {(activeTab === "library" || activeTab === "search") && <MusicLibrary onNavigate={setActiveTab} />}
+        {(activeTab === "library" || activeTab === "search") && (
+          <MusicLibrary onNavigate={handleNavigate} initialCategory={libraryCategory} />
+        )}
 
         {/* Admin Tabs - render Login if not authenticated */}
         {isAdminTab && !adminUser ? (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { usePlayer } from "../context/PlayerContext";
 
 export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }) {
@@ -9,98 +9,249 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
     setShowFullPlayer,
   } = usePlayer();
 
+  const [topSearch, setTopSearch] = useState("");
+  const [activeCategoryPill, setActiveCategoryPill] = useState("All");
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const categoryPills = [
+    "All",
+    "Music",
+    "Podcasts",
+    "Audiobooks",
+    "Tamil Hits",
+    "Spatial 8D",
+  ];
+
   const modeBadge = {
     normal: { label: "Normal Music", short: "Normal", icon: "🎵", color: "text-neutral-200 border-white/20 bg-white/10" },
     "8d": { label: "8D Audio", short: "8D", icon: "🎧", color: "text-[#1DB954] border-[#1DB954]/40 bg-[#1DB954]/15" },
     "9d": { label: "9D Dimension", short: "9D", icon: "✨", color: "text-rose-400 border-rose-400/40 bg-rose-950/40" },
   }[audioMode || "8d"] || { label: "8D Audio", short: "8D", icon: "🎧", color: "text-[#1DB954] border-[#1DB954]/40 bg-[#1DB954]/15" };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (topSearch.trim()) {
+      onSelectTab("library", topSearch.trim());
+    } else {
+      onSelectTab("library");
+    }
+  };
+
+  const handlePillClick = (pill) => {
+    setActiveCategoryPill(pill);
+    if (pill === "Tamil Hits") onSelectTab("library", "Tamil Hits");
+    else if (pill === "Spatial 8D") onSelectTab("library", "8D");
+    else if (pill === "Music" || pill === "All") onSelectTab("library", "All");
+    else onSelectTab("library", pill);
+  };
+
   return (
-    <header className="h-14 sm:h-16 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30 bg-[#121212]/90 backdrop-blur-md border-b border-white/5 select-none">
-      {/* Left: History Navigation & Quick Title */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <button
-            onClick={() => onSelectTab("home")}
-            className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
-            title="Go to Home"
-          >
-            <span className="material-symbols-outlined text-lg">chevron_left</span>
-          </button>
-          <button
-            onClick={() => onSelectTab("library")}
-            className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
-            title="Go to Library"
-          >
-            <span className="material-symbols-outlined text-lg">chevron_right</span>
-          </button>
-        </div>
-
-        {/* Search shortcut for quick access */}
-        <button
-          onClick={() => onSelectTab("library")}
-          className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#242424] hover:bg-[#2a2a2a] text-neutral-400 hover:text-white text-xs font-medium transition-colors"
-        >
-          <span className="material-symbols-outlined text-sm">search</span>
-          <span>What do you want to play?</span>
-        </button>
-      </div>
-
-      {/* Right: Audio Universe Pill, Milo AI & Profile */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* Audio Mode Switcher */}
-        <button
-          onClick={openModeSelector}
-          className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full border text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-125 ${modeBadge.color}`}
-          title="Switch Audio Experience Mode (Normal Music, 8D Audio)"
-        >
-          <span>{modeBadge.icon}</span>
-          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider hidden xs:inline">
-            {modeBadge.label}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-wider xs:hidden">
-            {modeBadge.short}
-          </span>
-          <span className="text-[9px] opacity-75 underline ml-0.5">Switch</span>
-        </button>
-
-        {/* Ask Milo AI Pill */}
-        <button
-          onClick={() => setShowMiloChat(true)}
-          className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-purple-900/40 hover:bg-purple-800/60 border border-purple-500/40 text-purple-200 text-xs font-semibold transition-all active:scale-95"
-          title="Chat with Milo AI"
-        >
-          <span>🐱</span>
-          <span className="hidden sm:inline">Milo AI</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-ping" />
-        </button>
-
-        {/* 360 Stage Pill */}
-        <button
-          onClick={() => onSelectTab("orbit")}
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#242424] hover:bg-[#2a2a2a] text-neutral-300 hover:text-white text-xs font-medium transition-colors"
-          title="360° Binaural Stage"
-        >
-          <span className="material-symbols-outlined text-sm text-[#00f2fe]">spatial_audio_off</span>
-          <span>360°</span>
-        </button>
-
-        {/* User Profile Pill */}
-        <div className="flex items-center gap-1.5 pl-2 border-l border-white/10">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#282828] border border-white/10 flex items-center justify-center font-bold text-xs text-white">
-            {user?.name ? user.name[0].toUpperCase() : "A"}
+    <header className="sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all">
+      {/* Upper Navigation & Search Row */}
+      <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-3">
+        {/* Left: History Navigation & Large Rounded Search Bar */}
+        <div className="flex items-center gap-3 flex-1 max-w-xl">
+          {/* Back & Forward Controls */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={() => onSelectTab("home")}
+              className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors active:scale-95 shadow-sm"
+              title="Go to Home"
+            >
+              <span className="material-symbols-outlined text-lg">chevron_left</span>
+            </button>
+            <button
+              onClick={() => onSelectTab("library")}
+              className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors active:scale-95 shadow-sm"
+              title="Go to Library"
+            >
+              <span className="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
           </div>
 
-          {onLogout && (
-            <button
-              onClick={onLogout}
-              className="text-neutral-400 hover:text-white p-1"
-              title="Logout"
-            >
-              <span className="material-symbols-outlined text-sm">logout</span>
-            </button>
-          )}
+          {/* Large Rounded Search Bar */}
+          <form onSubmit={handleSearchSubmit} className="relative flex-1">
+            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 text-lg pointer-events-none">
+              search
+            </span>
+            <input
+              type="text"
+              value={topSearch}
+              onChange={(e) => setTopSearch(e.target.value)}
+              placeholder="What do you want to play?"
+              className="w-full bg-[#242424] hover:bg-[#2a2a2a] focus:bg-[#2a2a2a] border border-white/5 focus:border-[#1DB954] text-white placeholder-neutral-400 text-xs sm:text-sm rounded-full py-2.5 pl-10 pr-10 focus:outline-none focus:ring-1 focus:ring-[#1DB954]/50 transition-all shadow-inner"
+            />
+            {topSearch && (
+              <button
+                type="button"
+                onClick={() => setTopSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </form>
         </div>
+
+        {/* Right Action Toolbar */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          {/* Premium Button */}
+          <button
+            onClick={() => onSelectTab("orbit")}
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-md"
+            title="Flow 8D Premium Spatial Audio"
+          >
+            <span className="material-symbols-outlined text-sm font-bold text-amber-600">workspace_premium</span>
+            <span>Explore Premium</span>
+          </button>
+
+          {/* Audio Universe Mode Switcher Pill */}
+          <button
+            onClick={openModeSelector}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-125 ${modeBadge.color}`}
+            title="Switch Audio Experience Mode (Normal Music, 8D Audio)"
+          >
+            <span>{modeBadge.icon}</span>
+            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline">
+              {modeBadge.label}
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden">
+              {modeBadge.short}
+            </span>
+          </button>
+
+          {/* Milo AI Assistant Button */}
+          <button
+            onClick={() => setShowMiloChat(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 text-xs font-bold transition-all active:scale-95 shadow-sm"
+            title="Chat with Milo AI"
+          >
+            <span className="text-sm">🐱</span>
+            <span className="hidden md:inline">Milo AI</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
+          </button>
+
+          {/* 360° Spatial Stage Control */}
+          <button
+            onClick={() => onSelectTab("orbit")}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white text-xs font-semibold transition-all"
+            title="360° Binaural Stage"
+          >
+            <span className="material-symbols-outlined text-sm text-[#00f2fe]">spatial_audio_off</span>
+            <span>360° Orbit</span>
+          </button>
+
+          {/* Notifications Bell */}
+          <div className="relative">
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="w-9 h-9 rounded-full bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white flex items-center justify-center transition-colors relative"
+              title="Notifications"
+            >
+              <span className="material-symbols-outlined text-lg">notifications</span>
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#1DB954] border border-[#121212]" />
+            </button>
+
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-72 bg-[#1e1e1e] border border-white/10 rounded-2xl p-4 shadow-2xl z-50 animate-fadeIn">
+                <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Notifications</h4>
+                  <span className="text-[10px] text-[#1DB954] font-semibold">1 New</span>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <div className="p-2 rounded-xl bg-[#282828] text-xs">
+                    <p className="font-bold text-white">🎵 312 Tamil Tracks Ready</p>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">
+                      New trending Tamil romantic melodies, vibe tracks, and 8D spatial mixes loaded.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* User Profile Menu */}
+          <div className="relative">
+            <button
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className="flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-white transition-colors"
+            >
+              <div className="w-7 h-7 rounded-full bg-[#1DB954] text-black flex items-center justify-center font-bold text-xs shadow-sm">
+                {user?.name ? user.name[0].toUpperCase() : "U"}
+              </div>
+              <span className="text-xs font-semibold hidden md:inline truncate max-w-[100px]">
+                {user?.name || "Listener"}
+              </span>
+              <span className="material-symbols-outlined text-sm text-neutral-400">
+                {showProfileMenu ? "expand_less" : "expand_more"}
+              </span>
+            </button>
+
+            {showProfileMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-[#1e1e1e] border border-white/10 rounded-2xl p-2 shadow-2xl z-50 animate-fadeIn">
+                <div className="px-3 py-2 border-b border-white/10">
+                  <p className="text-xs font-bold text-white truncate">{user?.name || "Guest Listener"}</p>
+                  <p className="text-[10px] text-neutral-400 capitalize">{user?.role || "Free Plan"}</p>
+                </div>
+                <div className="pt-1 space-y-0.5">
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      onSelectTab("taste");
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-[#282828] flex items-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-sm">insights</span>
+                    <span>Music Taste DNA</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      onSelectTab("library", "Favorites");
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-[#282828] flex items-center gap-2"
+                  >
+                    <span className="material-symbols-outlined text-sm">favorite</span>
+                    <span>Liked Songs</span>
+                  </button>
+                  {onLogout && (
+                    <button
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        onLogout();
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 border-t border-white/5 mt-1 pt-2"
+                    >
+                      <span className="material-symbols-outlined text-sm">logout</span>
+                      <span>Log out</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Lower Compact Pill-Style Category Filter Row */}
+      <div className="px-4 sm:px-6 pb-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        {categoryPills.map((pill) => {
+          const isActive = activeCategoryPill === pill;
+          return (
+            <button
+              key={pill}
+              onClick={() => handlePillClick(pill)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-transform active:scale-95 shadow-sm ${
+                isActive
+                  ? "bg-[#1DB954] text-black font-bold"
+                  : "bg-[#242424] text-white hover:bg-[#2e2e2e]"
+              }`}
+            >
+              {pill}
+            </button>
+          );
+        })}
       </div>
     </header>
   );

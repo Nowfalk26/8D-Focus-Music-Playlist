@@ -3,7 +3,7 @@ import { categoriesApi } from "../api/api";
 import { usePlayer } from "../context/PlayerContext";
 
 export default function SpotifySidebar({ activeTab, onSelectTab }) {
-  const { audioMode, favorites, isPlaying } = usePlayer();
+  const { audioMode, favorites } = usePlayer();
   const [categories, setCategories] = useState([]);
   const [libraryFilter, setLibraryFilter] = useState("all");
   const [librarySearch, setLibrarySearch] = useState("");
@@ -16,12 +16,25 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
       .catch(() => setCategories([]));
   }, []);
 
-  const navItems = [
+  const primaryNavItems = [
     { id: "home", label: "Home", icon: "home" },
     { id: "library", label: "Search & Library", icon: "search" },
     { id: "taste", label: "Music Taste DNA", icon: "insights", badge: "ML" },
     { id: "orbit", label: "360° Orbit Stage", icon: "spatial_audio_off", badge: "Live" },
     { id: "studio", label: "AI 8D Studio", icon: "tune" },
+  ];
+
+  const libraryItems = [
+    { id: "library", label: "Your Library", icon: "library_music" },
+    { id: "liked", label: "Liked Songs", icon: "favorite", isLiked: true, badge: `${favorites.size}` },
+    { id: "playlists", label: "Playlists", icon: "queue_music" },
+  ];
+
+  const curatedTamilChannels = [
+    { id: "tamil-love", label: "Tamil Love", categoryName: "Tamil Love", icon: "favorite_border", color: "text-rose-400" },
+    { id: "tamil-melodies", label: "Tamil Melodies", categoryName: "Tamil Melodies", icon: "music_note", color: "text-cyan-400" },
+    { id: "tamil-vibe", label: "Tamil Vibe", categoryName: "Tamil Vibe", icon: "bolt", color: "text-amber-400" },
+    { id: "90s-classics", label: "90s & Classics", categoryName: "90s & Classics", icon: "album", color: "text-purple-400" },
   ];
 
   const adminItems = [
@@ -41,41 +54,46 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
 
   return (
     <aside className="hidden md:flex w-72 lg:w-80 h-full flex-col gap-2 shrink-0 select-none font-sans">
-      {/* Top Card: Primary Spotify Nav Dock */}
-      <div className="bg-[#121212] rounded-lg p-4 flex flex-col gap-3 shadow-md">
+      {/* Top Card: Brand & Primary Navigation */}
+      <div className="bg-[#121212] rounded-xl p-4 flex flex-col gap-3 shadow-md border border-white/5">
         {/* Brand Header */}
         <div
           onClick={() => onSelectTab("home")}
-          className="flex items-center gap-2.5 cursor-pointer group pb-2"
+          className="flex items-center gap-3 cursor-pointer group pb-2 border-b border-white/5"
         >
-          <div className="w-8 h-8 rounded-full bg-[#1DB954] flex items-center justify-center shadow-lg">
-            <span className="material-symbols-outlined text-black text-base font-bold">graphic_eq</span>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1DB954] to-[#128a3c] flex items-center justify-center shadow-lg shadow-[#1DB954]/20 group-hover:scale-105 transition-transform shrink-0">
+            <span className="material-symbols-outlined text-black text-2xl font-black">graphic_eq</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-base font-extrabold text-white tracking-tight font-display">Flow</span>
-            <span className="text-xs font-black px-1.5 py-0.5 rounded bg-[#1DB954] text-black">
-              8D
+          <div className="flex flex-col min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-black text-white tracking-tight font-display">Flow 8D</span>
+              <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[#1DB954] text-black tracking-wide">
+                SPATIAL
+              </span>
+            </div>
+            <span className="text-[11px] font-semibold text-neutral-400 tracking-wide truncate">
+              Spatial Audio Experience
             </span>
           </div>
         </div>
 
         {/* Primary Links */}
         <nav className="flex flex-col gap-1">
-          {navItems.map((item) => {
+          {primaryNavItems.map((item) => {
             const active = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => onSelectTab(item.id)}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-semibold transition-colors duration-150 ${
+                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-150 ${
                   active
-                    ? "text-white bg-[#282828]"
+                    ? "text-white bg-[#282828] font-bold shadow-sm"
                     : "text-neutral-400 hover:text-white hover:bg-[#1a1a1a]"
                 }`}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3.5">
                   <span
-                    className={`material-symbols-outlined text-xl ${
+                    className={`material-symbols-outlined text-xl transition-colors ${
                       active ? "text-[#1DB954]" : "text-neutral-400"
                     }`}
                   >
@@ -94,38 +112,40 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         </nav>
       </div>
 
-      {/* Bottom Card: "Your Library" Dock (Spotify Signature) */}
-      <div className="bg-[#121212] rounded-lg flex-1 flex flex-col p-3 overflow-hidden shadow-md">
+      {/* Bottom Card: "Your Library" & Curated Channels Dock */}
+      <div className="bg-[#121212] rounded-xl flex-1 flex flex-col p-3 overflow-hidden shadow-md border border-white/5">
         {/* Library Header */}
         <div className="flex items-center justify-between px-2 py-1 mb-2">
           <button
             onClick={() => onSelectTab("library")}
-            className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors group"
+            className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group"
           >
-            <span className="material-symbols-outlined text-2xl group-hover:text-white">library_music</span>
+            <span className="material-symbols-outlined text-2xl text-[#1DB954]">library_music</span>
             <span className="text-sm font-bold">Your Library</span>
           </button>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => onSelectTab("library")}
-              className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors"
-              title="Browse all tracks"
-            >
-              <span className="material-symbols-outlined text-lg">add</span>
-            </button>
-          </div>
+          <button
+            onClick={() => onSelectTab("library")}
+            className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors"
+            title="Browse all tracks"
+          >
+            <span className="material-symbols-outlined text-lg">add</span>
+          </button>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-2 px-1 pb-2 overflow-x-auto no-scrollbar">
+        {/* Quick Library Filter Chips */}
+        <div className="flex items-center gap-1.5 px-1 pb-2 overflow-x-auto no-scrollbar">
           {["all", "playlists", "8D", "favorites"].map((f) => (
             <button
               key={f}
-              onClick={() => setLibraryFilter(f)}
+              onClick={() => {
+                setLibraryFilter(f);
+                if (f === "favorites") onSelectTab("library", "Favorites");
+                else if (f === "8D") onSelectTab("library", "8D");
+              }}
               className={`px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-colors ${
                 libraryFilter === f
                   ? "bg-white text-black font-bold"
-                  : "bg-[#242424] text-white hover:bg-[#2a2a2a]"
+                  : "bg-[#242424] text-neutral-300 hover:text-white hover:bg-[#2e2e2e]"
               }`}
             >
               {f === "8D" ? "8D Spatial" : f === "favorites" ? "Liked" : f}
@@ -133,33 +153,14 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
           ))}
         </div>
 
-        {/* Search & Sort row */}
-        <div className="flex items-center justify-between px-2 py-1 text-neutral-400 text-xs">
-          <div className="relative flex-1 mr-2">
-            <input
-              type="text"
-              placeholder="Search in Library..."
-              value={librarySearch}
-              onChange={(e) => setLibrarySearch(e.target.value)}
-              className="w-full bg-[#1e1e1e] border-0 rounded-full py-1 pl-7 pr-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:ring-1 focus:ring-white/20"
-            />
-            <span className="material-symbols-outlined absolute left-2 top-1 text-sm text-neutral-400">
-              search
-            </span>
-          </div>
-          <span className="text-[11px] font-medium text-neutral-400 hover:text-white cursor-pointer flex items-center gap-0.5 shrink-0">
-            Recents ▾
-          </span>
-        </div>
-
-        {/* Scrollable Playlists & Categories List */}
+        {/* Scrollable Channels & Playlists Container */}
         <div className="flex-1 overflow-y-auto no-scrollbar space-y-1 mt-1 pr-1">
-          {/* Liked Songs Pinned Item */}
+          {/* Liked Songs Entry */}
           <div
-            onClick={() => onSelectTab("library")}
-            className="flex items-center gap-3 p-2 rounded-md hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
+            onClick={() => onSelectTab("library", "Favorites")}
+            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
           >
-            <div className="w-12 h-12 rounded-md bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
               <span className="material-symbols-outlined text-white text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>
                 favorite
               </span>
@@ -171,58 +172,89 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
               <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5">
                 <span className="text-[#1DB954]">📌 Pinned</span>
                 <span>•</span>
-                <span>{favorites.size} songs</span>
+                <span>{favorites.size} tracks</span>
               </p>
             </div>
           </div>
 
-          {/* Categories / Playlists */}
-          {(filteredCategories.length > 0
-            ? filteredCategories
-            : [
-                { name: "Tamil Melodies 8D", count: 28 },
-                { name: "Tamil High Energy 8D", count: 32 },
-                { name: "Deep Flow State", count: 18 },
-                { name: "Binaural Beats Focus", count: 14 },
-                { name: "Tamil Indie & Pop 8D", count: 22 },
-                { name: "Ambient Rain & Sleep", count: 10 },
-              ]
-          ).map((cat, idx) => {
-            const catName = typeof cat === "string" ? cat : cat.name;
-            return (
-              <div
-                key={idx}
-                onClick={() => onSelectTab("library")}
-                className="flex items-center gap-3 p-2 rounded-md hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
-              >
-                <div className="w-12 h-12 rounded-md bg-[#242424] overflow-hidden shrink-0 border border-white/5">
-                  <img
-                    src={DEFAULT_PLAYLIST_COVER}
-                    alt={catName}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                  />
+          {/* Section Divider: Curated Tamil Channels */}
+          <div className="pt-3 pb-1 px-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
+              Curated Tamil Channels
+            </span>
+          </div>
+
+          {curatedTamilChannels.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => onSelectTab("library", item.categoryName)}
+              className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#1a1a1a] text-left transition-colors group"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-[#242424] border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#2a2a2a] transition-colors">
+                  <span className={`material-symbols-outlined text-lg ${item.color}`}>
+                    {item.icon}
+                  </span>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors">
-                    {catName}
-                  </h4>
-                  <p className="text-xs text-neutral-400 truncate">
-                    Playlist • Flow 8D
-                  </p>
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold text-neutral-200 group-hover:text-white truncate">
+                    {item.label}
+                  </div>
+                  <div className="text-[10px] text-neutral-500 truncate">Spatial Playlist</div>
                 </div>
               </div>
-            );
-          })}
+              <span className="material-symbols-outlined text-neutral-600 group-hover:text-neutral-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                chevron_right
+              </span>
+            </button>
+          ))}
+
+          {/* User & Dynamic Categories */}
+          {filteredCategories.length > 0 && (
+            <>
+              <div className="pt-3 pb-1 px-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
+                  Custom Playlists
+                </span>
+              </div>
+              {filteredCategories.map((cat, idx) => {
+                const catName = typeof cat === "string" ? cat : cat.name;
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => onSelectTab("library", catName)}
+                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-[#242424] overflow-hidden shrink-0 border border-white/5">
+                      <img
+                        src={DEFAULT_PLAYLIST_COVER}
+                        alt={catName}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs font-semibold text-neutral-200 truncate group-hover:text-[#1DB954] transition-colors">
+                        {catName}
+                      </h4>
+                      <p className="text-[10px] text-neutral-500 truncate">
+                        Flow 8D • Tamil Mix
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
 
         {/* Collapsible Admin Portal at Bottom */}
-        <div className="pt-2 border-t border-[#242424] mt-2">
+        <div className="pt-2 border-t border-white/5 mt-2">
           <button
             onClick={() => setIsAdminOpen(!isAdminOpen)}
-            className="w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold text-neutral-400 hover:text-white transition-colors"
+            className="w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white hover:bg-[#181818] transition-colors"
           >
             <span className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-base">admin_panel_settings</span>
+              <span className="material-symbols-outlined text-base text-neutral-400">admin_panel_settings</span>
               <span>Management Portal</span>
             </span>
             <span className="material-symbols-outlined text-sm">
@@ -238,7 +270,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                   onClick={() => onSelectTab(item.id)}
                   className={`w-full flex items-center gap-3 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     activeTab === item.id
-                      ? "text-[#1DB954] bg-[#282828]"
+                      ? "text-[#1DB954] bg-[#282828] font-bold"
                       : "text-neutral-400 hover:text-white hover:bg-[#1a1a1a]"
                   }`}
                 >

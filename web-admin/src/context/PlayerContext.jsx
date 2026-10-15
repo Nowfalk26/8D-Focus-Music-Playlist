@@ -52,6 +52,44 @@ export function PlayerProvider({ children }) {
   const [reverbRoom, setReverbRoom] = useState(50);
   const [favorites, setFavorites] = useState(new Set());
 
+  // Volume, Shuffle, Repeat controls
+  const [volume, setVolumeState] = useState(() => {
+    const saved = localStorage.getItem("flow8d_volume");
+    return saved !== null ? Number(saved) : 0.8;
+  });
+  const [isMuted, setIsMuted] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [repeatMode, setRepeatMode] = useState("off"); // 'off' | 'all' | 'one'
+
+  const setVolume = (val) => {
+    const v = Math.max(0, Math.min(1, Number(val)));
+    setVolumeState(v);
+    setIsMuted(v === 0);
+    localStorage.setItem("flow8d_volume", String(v));
+    if (audioRef.current) {
+      audioRef.current.volume = v;
+    }
+  };
+
+  const toggleMute = () => {
+    if (isMuted) {
+      const restore = volume > 0 ? volume : 0.8;
+      setIsMuted(false);
+      if (audioRef.current) audioRef.current.volume = restore;
+    } else {
+      setIsMuted(true);
+      if (audioRef.current) audioRef.current.volume = 0;
+    }
+  };
+
+  const toggleShuffle = () => {
+    setIsShuffle((prev) => !prev);
+  };
+
+  const toggleRepeat = () => {
+    setRepeatMode((prev) => (prev === "off" ? "all" : prev === "all" ? "one" : "off"));
+  };
+
   // ML Recommendation State
   const [recommendations, setRecommendations] = useState([]);
   const [tasteProfile, setTasteProfile] = useState(null);
@@ -627,6 +665,12 @@ export function PlayerProvider({ children }) {
 
   // Immediate Zero-Latency Track Transition for lock-screen continuity
   const handleTrackEnded = async () => {
+    if (repeatMode === "one" && audioRef.current && currentSong) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+      return;
+    }
+
     if (currentSong) {
       playbackCycleManager.recordTrackCompleted(currentSong, playlist);
     }
@@ -890,6 +934,14 @@ export function PlayerProvider({ children }) {
         setOfflineNotice,
         startOfflineSynth,
         stopOfflineSynth,
+        volume,
+        setVolume,
+        isMuted,
+        toggleMute,
+        isShuffle,
+        toggleShuffle,
+        repeatMode,
+        toggleRepeat,
       }}
     >
       <audio
