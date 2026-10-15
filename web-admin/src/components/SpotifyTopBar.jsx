@@ -32,18 +32,18 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (topSearch.trim()) {
-      onSelectTab("library", topSearch.trim());
+      onSelectTab("search", topSearch.trim());
     } else {
-      onSelectTab("library");
+      onSelectTab("search");
     }
   };
 
   const handlePillClick = (pill) => {
     setActiveCategoryPill(pill);
-    if (pill === "Tamil Hits") onSelectTab("library", "Tamil Hits");
-    else if (pill === "Spatial 8D") onSelectTab("library", "8D");
-    else if (pill === "Music" || pill === "All") onSelectTab("library", "All");
-    else onSelectTab("library", pill);
+    if (pill === "Tamil Hits") onSelectTab("search", "Tamil Hits");
+    else if (pill === "Spatial 8D") onSelectTab("search", "8D");
+    else if (pill === "Music" || pill === "All") onSelectTab("search", "All");
+    else onSelectTab("search", pill);
   };
 
   return (

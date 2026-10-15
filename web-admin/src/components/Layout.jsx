@@ -34,9 +34,9 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
 
   const mobileNavTabs = [
     { id: "home", label: "Home", icon: "home" },
-    { id: "library", label: "Search", icon: "search" },
+    { id: "search", label: "Search", icon: "search" },
+    { id: "library", label: "Library", icon: "library_music" },
     { id: "orbit", label: "360° Orbit", icon: "spatial_audio_off" },
-    { id: "queue", label: "Queue", icon: "queue_music", isAction: true, action: () => setIsQueueOpen(true) },
     { id: "milo", label: "Milo AI", icon: "smart_toy", isAction: true, action: () => setShowMiloChat(true) },
   ];
 

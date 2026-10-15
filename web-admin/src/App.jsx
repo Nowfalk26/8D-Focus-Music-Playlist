@@ -10,6 +10,7 @@ import CategoryManagement from "./components/CategoryManagement";
 import UserManagement from "./components/UserManagement";
 import TasteProfileScreen from "./components/TasteProfileScreen";
 import OrbitStageScreen from "./components/OrbitStageScreen";
+import YourLibraryScreen from "./components/YourLibraryScreen";
 import { PlayerProvider } from "./context/PlayerContext";
 
 export default function App() {
@@ -75,8 +76,12 @@ export default function App() {
 
         {(activeTab === "studio" || activeTab === "8d") && <Studio8D onNavigate={handleNavigate} />}
 
-        {(activeTab === "library" || activeTab === "search") && (
+        {activeTab === "search" && (
           <MusicLibrary onNavigate={handleNavigate} initialCategory={libraryCategory} />
+        )}
+
+        {activeTab === "library" && (
+          <YourLibraryScreen onNavigate={handleNavigate} />
         )}
 
         {/* Admin Tabs - render Login if not authenticated */}

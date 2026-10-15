@@ -18,7 +18,8 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
 
   const primaryNavItems = [
     { id: "home", label: "Home", icon: "home" },
-    { id: "library", label: "Search & Library", icon: "search" },
+    { id: "search", label: "Search & Browse", icon: "search" },
+    { id: "library", label: "Your Library", icon: "library_music" },
     { id: "taste", label: "Music Taste DNA", icon: "insights", badge: "ML" },
     { id: "orbit", label: "360° Orbit Stage", icon: "spatial_audio_off", badge: "Live" },
     { id: "studio", label: "AI 8D Studio", icon: "tune" },
