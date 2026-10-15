@@ -47,7 +47,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all">
+    <header className={`sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
       {/* Upper Navigation & Search Row */}
       <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-3">
         {/* Left: History Navigation & Large Rounded Search Bar */}
