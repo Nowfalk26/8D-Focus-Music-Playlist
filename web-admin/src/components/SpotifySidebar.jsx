@@ -133,7 +133,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         </div>
 
         {/* Quick Library Filter Chips */}
-        <div className="flex items-center gap-1.5 px-1 pb-2 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 px-2 py-1 mb-2 overflow-x-auto no-scrollbar">
           {["all", "playlists", "8D", "favorites"].map((f) => (
             <button
               key={f}
@@ -142,10 +142,10 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                 if (f === "favorites") onSelectTab("library", "Favorites");
                 else if (f === "8D") onSelectTab("library", "8D");
               }}
-              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-colors leading-none inline-flex items-center justify-center ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-all leading-none inline-flex items-center justify-center ${
                 libraryFilter === f
-                  ? "bg-white text-black font-bold"
-                  : "bg-[#242424] text-neutral-300 hover:text-white hover:bg-[#2e2e2e]"
+                  ? "bg-white text-black font-bold shadow-sm"
+                  : "bg-[#202020] hover:bg-[#282828] text-neutral-300 hover:text-white border border-white/5 hover:border-white/10"
               }`}
             >
               {f === "8D" ? "8D Spatial" : f === "favorites" ? "Liked" : f}
@@ -160,8 +160,8 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
             onClick={() => onSelectTab("library", "Favorites")}
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
           >
-            <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
-              <span className="material-symbols-outlined text-white text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+              <span className="material-symbols-outlined text-white text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
                 favorite
               </span>
             </div>
@@ -169,10 +169,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
               <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors leading-snug pb-0.5">
                 Liked Songs
               </h4>
-              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5 leading-normal">
-                <span className="text-[#1DB954]">📌 Pinned</span>
+              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5 leading-normal mt-0.5">
+                <span className="material-symbols-outlined text-[13px] text-[#1DB954]">push_pin</span>
+                <span className="text-[#1DB954] font-medium">Pinned</span>
                 <span>•</span>
-                <span>{favorites.size} tracks</span>
+                <span>{favorites.size} songs</span>
               </p>
             </div>
           </div>
@@ -191,16 +192,16 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
               className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-[#1a1a1a] text-left transition-colors group"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-8 h-8 rounded-lg bg-[#242424] border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#2a2a2a] transition-colors">
+                <div className="w-9 h-9 rounded-lg bg-[#202020] border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#282828] group-hover:border-white/10 transition-all">
                   <span className={`material-symbols-outlined text-lg ${item.color}`}>
                     {item.icon}
                   </span>
                 </div>
                 <div className="min-w-0 flex flex-col justify-center">
-                  <div className="text-xs font-semibold text-neutral-200 group-hover:text-white truncate leading-snug pb-0.5">
+                  <div className="text-xs sm:text-sm font-semibold text-neutral-200 group-hover:text-white truncate leading-snug pb-0.5">
                     {item.label}
                   </div>
-                  <div className="text-[10px] text-neutral-500 truncate leading-normal">Spatial Playlist</div>
+                  <div className="text-[11px] text-neutral-500 truncate leading-normal">Spatial Playlist</div>
                 </div>
               </div>
               <span className="material-symbols-outlined text-neutral-600 group-hover:text-neutral-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity">

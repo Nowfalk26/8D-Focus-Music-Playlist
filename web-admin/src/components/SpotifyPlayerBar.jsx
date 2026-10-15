@@ -210,12 +210,12 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
             </>
           ) : (
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-xl bg-[#181818] border border-white/5 flex items-center justify-center text-neutral-500">
+              <div className="w-14 h-14 rounded-xl bg-[#181818] border border-white/5 flex items-center justify-center text-neutral-400 shadow-sm shrink-0">
                 <span className="material-symbols-outlined text-2xl">music_note</span>
               </div>
-              <div>
-                <p className="text-xs font-semibold text-neutral-300">No track playing</p>
-                <p className="text-[10px] text-neutral-500 font-mono">Select a song to start</p>
+              <div className="flex flex-col justify-center">
+                <p className="text-xs font-semibold text-neutral-200 leading-snug">No track playing</p>
+                <p className="text-[11px] text-neutral-400 font-mono leading-normal mt-0.5">Select a song to start</p>
               </div>
             </div>
           )}
@@ -228,13 +228,13 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
             <button
               onClick={toggleShuffle}
               title={isShuffle ? "Shuffle On" : "Shuffle Off"}
-              className={`text-xs p-1 transition-colors relative ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors relative ${
                 isShuffle ? "text-[#1DB954]" : "text-neutral-400 hover:text-white"
               }`}
             >
               <span className="material-symbols-outlined text-xl">shuffle</span>
               {isShuffle && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#1DB954]" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#1DB954]" />
               )}
             </button>
 
@@ -242,7 +242,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
             <button
               onClick={playPrev}
               disabled={!currentSong}
-              className="text-neutral-300 hover:text-white transition-colors disabled:opacity-30 disabled:hover:text-neutral-400 active:scale-90"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-300 hover:text-white transition-colors disabled:opacity-30 disabled:hover:text-neutral-400 active:scale-90"
               title="Previous Track"
             >
               <span className="material-symbols-outlined text-2xl">skip_previous</span>
@@ -267,7 +267,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
             <button
               onClick={playNext}
               disabled={!currentSong}
-              className="text-neutral-300 hover:text-white transition-colors disabled:opacity-30 disabled:hover:text-neutral-400 active:scale-90"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-300 hover:text-white transition-colors disabled:opacity-30 disabled:hover:text-neutral-400 active:scale-90"
               title="Next Track"
             >
               <span className="material-symbols-outlined text-2xl">skip_next</span>
@@ -283,7 +283,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
                   ? "Repeat All (Click for Repeat One)"
                   : "Repeat One (Click to Turn Off)"
               }
-              className={`text-xs p-1 transition-colors relative ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors relative ${
                 repeatMode !== "off" ? "text-[#1DB954]" : "text-neutral-400 hover:text-white"
               }`}
             >
@@ -291,7 +291,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
                 {repeatMode === "one" ? "repeat_one" : "repeat"}
               </span>
               {repeatMode !== "off" && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#1DB954]" />
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#1DB954]" />
               )}
             </button>
           </div>
@@ -322,11 +322,11 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
         </div>
 
         {/* ================= RIGHT SECTION: Spatial Mode, Volume, Tools ================= */}
-        <div className="flex items-center justify-end gap-3.5 w-1/4 min-w-[200px]">
+        <div className="flex items-center justify-end gap-2 sm:gap-2.5 w-1/4 min-w-[200px]">
           {/* Spatial Mode Indicator Pill */}
           <button
             onClick={openModeSelector}
-            className="px-2.5 py-1 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95 leading-none inline-flex items-center justify-center"
+            className="h-7 px-2.5 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95 leading-none inline-flex items-center justify-center"
             title="Switch Audio Experience Mode"
           >
             {audioMode?.toUpperCase() || "8D"}
@@ -336,43 +336,43 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
           <button
             onClick={() => setIs8DActive(!is8DActive)}
             title={is8DActive ? "8D Spatial Orbit Active" : "8D Orbit Bypassed"}
-            className={`p-1 transition-colors ${
-              is8DActive ? "text-[#00f2fe]" : "text-neutral-500 hover:text-white"
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+              is8DActive ? "text-[#00f2fe]" : "text-neutral-400 hover:text-white"
             }`}
           >
-            <span className="material-symbols-outlined text-xl">spatial_audio_off</span>
+            <span className="material-symbols-outlined text-lg">spatial_audio_off</span>
           </button>
 
           {/* Queue Drawer Button */}
           <button
             onClick={onOpenQueue}
-            className="text-neutral-400 hover:text-white transition-colors p-1"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
             title="Open Playback Queue"
           >
-            <span className="material-symbols-outlined text-xl">queue_music</span>
+            <span className="material-symbols-outlined text-lg">queue_music</span>
           </button>
 
           {/* Device Connect Button */}
           <button
             onClick={onOpenConnect}
-            className="text-neutral-400 hover:text-white transition-colors p-1"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
             title="Connect to Device"
           >
-            <span className="material-symbols-outlined text-xl">speaker_group</span>
+            <span className="material-symbols-outlined text-lg">speaker_group</span>
           </button>
 
           {/* Volume Control Slider */}
           <div
-            className="flex items-center gap-2"
+            className="flex items-center gap-1.5"
             onMouseEnter={() => setIsVolumeHovered(true)}
             onMouseLeave={() => setIsVolumeHovered(false)}
           >
             <button
               onClick={toggleMute}
-              className="text-neutral-400 hover:text-white transition-colors"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
               title={isMuted ? "Unmute" : "Mute"}
             >
-              <span className="material-symbols-outlined text-xl">
+              <span className="material-symbols-outlined text-lg">
                 {isMuted || volume === 0
                   ? "volume_off"
                   : volume < 0.5
@@ -396,10 +396,10 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
           {/* Fullscreen / 360 Stage Button */}
           <button
             onClick={() => (onNavigate ? onNavigate("orbit") : handleOpenPlayer())}
-            className="text-neutral-400 hover:text-white transition-colors p-1"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
             title="Open 360° Binaural Stage"
           >
-            <span className="material-symbols-outlined text-xl">fullscreen</span>
+            <span className="material-symbols-outlined text-lg">fullscreen</span>
           </button>
         </div>
       </footer>

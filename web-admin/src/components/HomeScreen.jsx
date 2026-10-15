@@ -161,21 +161,21 @@ export default function HomeScreen({ onNavigate }) {
   return (
     <div className="w-full flex flex-col font-sans text-slate-200 select-none pb-28 md:pb-20">
       {/* Dynamic Top Ambient Header */}
-      <div className="p-4 sm:p-6 pb-6 bg-gradient-to-b from-[#1DB954]/15 via-[#181818]/80 to-[#121212] transition-colors duration-700">
+      <div className="px-4 sm:px-8 pt-8 pb-6 bg-gradient-to-b from-[#1DB954]/20 via-[#181818]/80 to-[#121212] transition-colors duration-700">
         {/* Dynamic Spotify Greeting & Subtitle */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight font-display leading-[1.2]">
               {getGreeting()}
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-medium leading-normal">
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1.5 font-medium leading-normal">
               Feel the music in a whole new dimension • Flow 8D Spatial Audio
             </p>
           </div>
 
           {/* Smart Playback Cycle HUD */}
           {cycleStatus && (
-            <div className="flex items-center gap-2 self-start sm:self-auto px-3.5 py-1.5 rounded-full bg-black/60 border border-[#1DB954]/30 backdrop-blur-md text-xs font-mono shadow-sm leading-none">
+            <div className="flex items-center gap-2 self-start sm:self-auto px-4 py-2 rounded-full bg-black/60 border border-[#1DB954]/30 backdrop-blur-md text-xs font-mono shadow-sm leading-none">
               <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse shrink-0" />
               <span className="text-white font-bold leading-none">
                 Cycle #{cycleStatus.cycleId}
@@ -186,7 +186,7 @@ export default function HomeScreen({ onNavigate }) {
               </span>
               <button
                 onClick={resetPlaybackCycle}
-                className="text-[10px] text-[#1DB954] hover:underline font-bold ml-1 leading-none"
+                className="text-[10px] text-[#1DB954] hover:underline font-bold ml-1.5 leading-none"
                 title="Reset smart cycle"
               >
                 Reset ↻
@@ -213,7 +213,7 @@ export default function HomeScreen({ onNavigate }) {
                   className="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-500"
                   onError={handleImgError}
                 />
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/75 border border-[#1DB954]/40 text-[#1DB954] text-[10px] font-bold font-mono uppercase tracking-wider leading-none">
+                <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-md bg-black/85 backdrop-blur-md border border-[#1DB954]/40 text-[#1DB954] text-[10px] font-bold font-mono uppercase tracking-wider leading-none shadow-lg">
                   Featured 8D
                 </div>
               </div>
@@ -241,10 +241,10 @@ export default function HomeScreen({ onNavigate }) {
                 </p>
 
                 {/* Hero Action Buttons */}
-                <div className="flex items-center gap-3.5 mt-5">
+                <div className="flex items-center gap-3 mt-5">
                   <button
                     onClick={() => playSong(featuredSong, songs)}
-                    className="px-6 py-3 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm inline-flex items-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition-all leading-none"
+                    className="h-11 px-7 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm inline-flex items-center gap-2.5 shadow-lg shadow-[#1DB954]/25 hover:scale-105 active:scale-95 transition-all leading-none"
                   >
                     <span
                       className="material-symbols-outlined text-2xl font-bold"
@@ -259,9 +259,9 @@ export default function HomeScreen({ onNavigate }) {
 
                   <button
                     onClick={() => toggleFavorite(featuredSong._id || featuredSong.id)}
-                    className={`w-11 h-11 rounded-full border border-white/10 inline-flex items-center justify-center transition-all active:scale-90 leading-none ${
+                    className={`w-11 h-11 rounded-full border border-white/15 hover:border-white/40 inline-flex items-center justify-center transition-all active:scale-90 leading-none ${
                       favorites.has(featuredSong._id || featuredSong.id)
-                        ? "bg-[#1DB954]/15 text-[#1DB954] border-[#1DB954]/40"
+                        ? "bg-[#1DB954]/15 text-[#1DB954] border-[#1DB954]/50 shadow-md"
                         : "bg-[#242424] text-neutral-300 hover:text-white"
                     }`}
                     title="Save to favorites"
@@ -276,7 +276,7 @@ export default function HomeScreen({ onNavigate }) {
 
                   <button
                     onClick={() => onNavigate("orbit")}
-                    className="px-4 py-2.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-200 text-xs font-semibold inline-flex items-center gap-1.5 transition-colors leading-none"
+                    className="h-11 px-5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/10 text-neutral-200 hover:text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors leading-none"
                   >
                     <span className="material-symbols-outlined text-base text-[#00f2fe]">spatial_audio_off</span>
                     <span className="leading-none">360° Stage</span>
@@ -290,7 +290,7 @@ export default function HomeScreen({ onNavigate }) {
         {/* ============================================================== */}
         {/* 🟩 2x3 TOP QUICK-ACCESS BENTO GRID */}
         {/* ============================================================== */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {quickCards.map((card, idx) => {
             const isThisPlaying =
               card.song &&
@@ -302,10 +302,10 @@ export default function HomeScreen({ onNavigate }) {
               <div
                 key={idx}
                 onClick={card.onClick}
-                className="group relative flex items-center bg-[#242424]/90 hover:bg-[#2e2e2e] rounded-xl overflow-hidden cursor-pointer transition-all duration-200 shadow-md border border-white/5 active:scale-[0.99]"
+                className="group relative flex items-center bg-[#242424]/85 hover:bg-[#2f2f2f] rounded-lg overflow-hidden cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md border border-white/5 hover:border-white/15 active:scale-[0.99] h-14 sm:h-16"
               >
                 {/* Thumbnail */}
-                <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 relative bg-[#181818]">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 relative bg-[#181818]">
                   {card.isLiked ? (
                     <div className="w-full h-full bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shadow-md">
                       <span
@@ -326,29 +326,29 @@ export default function HomeScreen({ onNavigate }) {
                 </div>
 
                 {/* Title */}
-                <div className="flex-1 px-3 min-w-0 pr-12 flex flex-col justify-center">
+                <div className="flex-1 px-3.5 min-w-0 pr-12 flex flex-col justify-center">
                   <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#1DB954] transition-colors pb-0.5">
                     {card.title}
                   </h4>
                   {card.subtitle && (
-                    <p className="text-[10px] sm:text-[11px] text-neutral-400 truncate mt-0.5 leading-normal">
+                    <p className="text-[11px] text-neutral-400 truncate mt-0.5 leading-normal">
                       {card.subtitle}
                     </p>
                   )}
                 </div>
 
                 {/* Floating Play Button */}
-                <div className="absolute right-2.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 translate-x-2 transition-all duration-200">
+                <div className="absolute right-3 opacity-0 group-hover:opacity-100 group-hover:scale-100 scale-90 transition-all duration-200">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       if (card.song) playSong(card.song, songs);
                       else onNavigate("library", "Favorites");
                     }}
-                    className="w-10 h-10 rounded-full bg-[#1DB954] text-black flex items-center justify-center shadow-xl hover:scale-105 active:scale-90 transition-transform"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1DB954] text-black flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform"
                   >
                     <span
-                      className="material-symbols-outlined text-2xl font-bold ml-0.5"
+                      className="material-symbols-outlined text-xl sm:text-2xl font-bold ml-0.5"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       {isThisPlaying ? "pause" : "play_arrow"}
@@ -407,12 +407,12 @@ export default function HomeScreen({ onNavigate }) {
                     />
 
                     {/* Mode Tag */}
-                    <div className="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-black/75 text-[#1DB954] border border-[#1DB954]/30 uppercase leading-none inline-flex items-center">
+                    <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-black/80 backdrop-blur-md text-[#1DB954] border border-[#1DB954]/40 uppercase leading-none inline-flex items-center shadow-md">
                       {song.audioMode || "8D"}
                     </div>
 
                     {/* Trending Rank Tag */}
-                    <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/90 text-black shadow-sm leading-none inline-flex items-center">
+                    <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-400 text-black shadow-md leading-none inline-flex items-center">
                       #{idx + 1}
                     </div>
 

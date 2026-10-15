@@ -71,26 +71,28 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           </div>
 
           {/* Large Rounded Search Bar */}
-          <form onSubmit={handleSearchSubmit} className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 text-lg pointer-events-none">
-              search
-            </span>
-            <input
-              type="text"
-              value={topSearch}
-              onChange={(e) => setTopSearch(e.target.value)}
-              placeholder="What do you want to play?"
-              className="w-full bg-[#242424] hover:bg-[#2a2a2a] focus:bg-[#2a2a2a] border border-white/5 focus:border-[#1DB954] text-white placeholder-neutral-400 text-xs sm:text-sm rounded-full py-2.5 pl-10 pr-10 focus:outline-none focus:ring-1 focus:ring-[#1DB954]/50 transition-all shadow-inner"
-            />
-            {topSearch && (
-              <button
-                type="button"
-                onClick={() => setTopSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white text-xs"
-              >
-                ✕
-              </button>
-            )}
+          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md">
+            <div className="flex items-center w-full bg-[#242424] hover:bg-[#2a2a2a] focus-within:bg-[#2a2a2a] border border-white/10 focus-within:border-[#1DB954] rounded-full h-11 px-4 gap-3 transition-all shadow-inner">
+              <span className="material-symbols-outlined text-neutral-400 text-xl shrink-0 select-none pointer-events-none">
+                search
+              </span>
+              <input
+                type="text"
+                value={topSearch}
+                onChange={(e) => setTopSearch(e.target.value)}
+                placeholder="What do you want to play?"
+                className="w-full bg-transparent border-0 text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none leading-none p-0"
+              />
+              {topSearch && (
+                <button
+                  type="button"
+                  onClick={() => setTopSearch("")}
+                  className="text-neutral-400 hover:text-white text-xs shrink-0 p-1"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </form>
         </div>
 
@@ -235,17 +237,17 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
       </div>
 
       {/* Lower Compact Pill-Style Category Filter Row */}
-      <div className="px-4 sm:px-6 pb-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <div className="px-4 sm:px-6 pt-1 pb-3 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
         {categoryPills.map((pill) => {
           const isActive = activeCategoryPill === pill;
           return (
             <button
               key={pill}
               onClick={() => handlePillClick(pill)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-transform active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
+              className={`px-4 py-2 rounded-full text-xs font-semibold shrink-0 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
                 isActive
-                  ? "bg-[#1DB954] text-black font-bold"
-                  : "bg-[#242424] text-white hover:bg-[#2e2e2e]"
+                  ? "bg-white text-black font-bold shadow-md"
+                  : "bg-[#242424] hover:bg-[#2e2e2e] text-neutral-200 hover:text-white border border-white/10 hover:border-white/20"
               }`}
             >
               {pill}
