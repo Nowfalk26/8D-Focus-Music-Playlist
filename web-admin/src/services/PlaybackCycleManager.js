@@ -90,9 +90,9 @@ export class PlaybackCycleManager {
     }
   }
 
-  // Set active Audio Universe Mode ('normal', '8d')
+  // Set active Audio Universe Mode ('normal', '8d', '9d')
   setAudioMode(newMode) {
-    if (!["normal", "8d"].includes(newMode)) return;
+    if (!["normal", "8d", "9d"].includes(newMode)) return;
     const modeChanged = this.audioMode !== newMode;
     this.audioMode = newMode;
 

@@ -4,6 +4,17 @@ import { playbackCycleManager } from "../services/PlaybackCycleManager";
 
 const PlayerContext = createContext(null);
 
+export const isSongMatchingMode = (s, mode) => {
+  if (!s || !mode) return true;
+  const sMode = (s.audioMode || "8d").toLowerCase();
+  const targetMode = mode.toLowerCase();
+  if (targetMode === "9d") {
+    // 9D mode processes 8D spatial tracks through the 9D dual-orbital DSP engine
+    return sMode === "8d" || sMode === "9d";
+  }
+  return sMode === targetMode;
+};
+
 export function PlayerProvider({ children }) {
   // Audio Universe Mode: 'normal' | '8d' | '9d'
   const [audioMode, setAudioModeState] = useState(() => {
@@ -429,7 +440,7 @@ export function PlayerProvider({ children }) {
   const prefetchNextTrack = useCallback(async (baseList = null, curId = null) => {
     try {
       const activeList = baseList || playlist;
-      let eligible = activeList.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+      let eligible = activeList.filter((s) => isSongMatchingMode(s, audioMode));
       if (eligible.length === 0) {
         const res = await songsApi.getAll({ mode: audioMode || "8d" });
         if (res.data?.data && res.data.data.length > 0) {
@@ -486,7 +497,7 @@ export function PlayerProvider({ children }) {
 
     let activeList = playlist;
     if (songList && songList.length > 0) {
-      const modeFiltered = songList.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+      const modeFiltered = songList.filter((s) => isSongMatchingMode(s, audioMode));
       const listToUse = modeFiltered.length > 0 ? modeFiltered : songList;
       setPlaylist(listToUse);
       activeList = listToUse;
@@ -619,7 +630,7 @@ export function PlayerProvider({ children }) {
 
   // Smart No-Repeat Next Track Selection: ML ranked with cycle guarantee
   const playNext = async () => {
-    let eligibleSongs = playlist.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+    let eligibleSongs = playlist.filter((s) => isSongMatchingMode(s, audioMode));
 
     // If in library context or playlist is exhausted, ensure we have full library pool
     if (eligibleSongs.length === 0 || playbackCycleManager.context.type === "library") {
@@ -675,7 +686,7 @@ export function PlayerProvider({ children }) {
       playbackCycleManager.recordTrackCompleted(currentSong, playlist);
     }
 
-    let eligibleSongs = playlist.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+    let eligibleSongs = playlist.filter((s) => isSongMatchingMode(s, audioMode));
     if (eligibleSongs.length === 0) {
       try {
         const res = await songsApi.getAll({ mode: audioMode || "8d" });
@@ -706,7 +717,7 @@ export function PlayerProvider({ children }) {
   };
 
   const playPrev = () => {
-    const modePlaylist = playlist.filter((s) => !s.audioMode || !audioMode || s.audioMode === audioMode);
+    const modePlaylist = playlist.filter((s) => isSongMatchingMode(s, audioMode));
     if (modePlaylist.length === 0) return;
     const prevIdx = (currentIndex - 1 + modePlaylist.length) % modePlaylist.length;
     setCurrentIndex(prevIdx);

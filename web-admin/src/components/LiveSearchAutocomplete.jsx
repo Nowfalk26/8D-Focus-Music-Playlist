@@ -17,8 +17,10 @@ function HighlightMatch({ text = "", query = "" }) {
     return <span>{text}</span>;
   }
 
-  const escaped = escapeRegExp(query.trim());
-  const regex = new RegExp(`(${escaped})`, "gi");
+  const trimmed = query.trim();
+  const words = trimmed.replace(/[.\-_]/g, " ").split(/\s+/).filter((w) => w.length > 1);
+  const patterns = Array.from(new Set([trimmed, ...words].map(escapeRegExp))).filter(Boolean);
+  const regex = new RegExp(`(${patterns.join("|")})`, "gi");
   const parts = String(text).split(regex);
 
   return (
@@ -111,7 +113,8 @@ export default function LiveSearchAutocomplete({
       return { suggestions: [], totalMatchCount: 0 };
     }
 
-    const queryWords = trimmed.split(/\s+/).filter(Boolean);
+    const trimmedNorm = trimmed.replace(/[.\-_]/g, " ").replace(/\s+/g, " ").trim();
+    const queryWords = (trimmedNorm || trimmed).split(/\s+/).filter(Boolean);
     const scored = [];
 
     for (let i = 0; i < allSongs.length; i++) {
@@ -123,38 +126,45 @@ export default function LiveSearchAutocomplete({
       const category = (s.category || "").toLowerCase();
       const genre = (s.genre || "").toLowerCase();
 
+      const titleNorm = title.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+      const artistNorm = artist.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+      const composerNorm = composer.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+      const albumNorm = album.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+
       let score = 0;
 
       // 1. Title Scoring
-      if (title === trimmed) {
+      if (title === trimmed || titleNorm === trimmedNorm) {
         score += 1200;
-      } else if (title.startsWith(trimmed)) {
+      } else if (title.startsWith(trimmed) || titleNorm.startsWith(trimmedNorm)) {
         score += 900;
-      } else if (title.includes(trimmed)) {
+      } else if (title.includes(trimmed) || titleNorm.includes(trimmedNorm)) {
         score += 600;
-      } else if (queryWords.every((w) => title.includes(w))) {
+      } else if (queryWords.every((w) => titleNorm.includes(w))) {
         score += 500;
       }
 
       // 2. Artist Scoring
-      if (artist === trimmed) {
+      if (artist === trimmed || artistNorm === trimmedNorm) {
         score += 800;
-      } else if (artist.startsWith(trimmed)) {
+      } else if (artist.startsWith(trimmed) || artistNorm.startsWith(trimmedNorm)) {
         score += 550;
-      } else if (artist.includes(trimmed)) {
+      } else if (artist.includes(trimmed) || artistNorm.includes(trimmedNorm)) {
         score += 400;
-      } else if (queryWords.every((w) => artist.includes(w))) {
+      } else if (queryWords.every((w) => artistNorm.includes(w))) {
         score += 350;
       }
 
       // 3. Composer Scoring
-      if (composer && composer.includes(trimmed)) {
+      if ((composer && composer.includes(trimmed)) || composerNorm.includes(trimmedNorm)) {
         score += 300;
+      } else if (queryWords.every((w) => composerNorm.includes(w))) {
+        score += 250;
       }
 
       // 4. Album Scoring
-      if (album && album.includes(trimmed)) {
-        score += 250;
+      if ((album && album.includes(trimmed)) || albumNorm.includes(trimmedNorm)) {
+        score += 200;
       }
 
       // 5. Category / Genre
@@ -163,7 +173,11 @@ export default function LiveSearchAutocomplete({
       }
 
       // Bonus if song matches active audio mode
-      if (audioMode && s.audioMode === audioMode) {
+      const isModeMatch =
+        audioMode === "9d"
+          ? (s.audioMode || "8d").toLowerCase() === "8d" || (s.audioMode || "").toLowerCase() === "9d"
+          : s.audioMode === audioMode;
+      if (audioMode && isModeMatch) {
         score += 30;
       }
 

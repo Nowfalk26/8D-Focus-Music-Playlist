@@ -81,7 +81,14 @@ export const songsApi = {
     const targetMode = params.mode || params.audioMode;
     if (targetMode) {
       const m = targetMode.toLowerCase();
-      filtered = filtered.filter((s) => (s.audioMode || "8d").toLowerCase() === m);
+      if (m === "9d") {
+        // 9D Spatial Dimension uses 8D spatial audio tracks with 9D DSP binaural processing
+        filtered = filtered.filter(
+          (s) => (s.audioMode || "8d").toLowerCase() === "8d" || (s.audioMode || "").toLowerCase() === "9d"
+        );
+      } else {
+        filtered = filtered.filter((s) => (s.audioMode || "8d").toLowerCase() === m);
+      }
     }
     if (params.category && params.category !== "All") {
       const cat = params.category.toLowerCase();
@@ -92,16 +99,26 @@ export const songsApi = {
       filtered = filtered.filter((s) => s.genre?.toLowerCase() === gen);
     }
     if (params.search) {
-      const q = params.search.toLowerCase();
-      filtered = filtered.filter(
-        (s) =>
-          s.title?.toLowerCase().includes(q) ||
-          s.artist?.toLowerCase().includes(q) ||
-          s.composer?.toLowerCase().includes(q) ||
-          s.album?.toLowerCase().includes(q) ||
-          s.category?.toLowerCase().includes(q) ||
-          s.genre?.toLowerCase().includes(q)
-      );
+      const q = params.search.toLowerCase().trim();
+      const qNorm = q.replace(/[.\-_]/g, " ").replace(/\s+/g, " ").trim();
+      const qWords = qNorm.split(/\s+/).filter(Boolean);
+
+      filtered = filtered.filter((s) => {
+        const title = (s.title || "").toLowerCase();
+        const artist = (s.artist || "").toLowerCase();
+        const composer = (s.composer || "").toLowerCase();
+        const album = (s.album || "").toLowerCase();
+        const category = (s.category || "").toLowerCase();
+        const genre = (s.genre || "").toLowerCase();
+
+        const combined = `${title} ${artist} ${composer} ${album} ${category} ${genre}`;
+        if (combined.includes(q)) return true;
+
+        const combinedNorm = combined.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+        if (combinedNorm.includes(qNorm)) return true;
+
+        return qWords.length > 0 && qWords.every((w) => combinedNorm.includes(w));
+      });
     }
 
     return {
@@ -175,28 +192,38 @@ export const usersApi = {
 // Production-Resilient Machine Learning Recommendation Engine APIs
 export const recommendationsApi = {
   getRecommendations: async (params = {}) => {
-    try {
-      const res =
-        params && params.excludeSongIds && params.excludeSongIds.length > 5
-          ? await api.post("/recommendations", params, { timeout: 2500 })
-          : await api.get("/recommendations", { params, timeout: 2500 });
-      if (res.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
-        return res;
+    // Only attempt network requests on localhost or when explicit API_URL is set,
+    // avoiding 405 Method Not Allowed on static Vercel rewrites
+    if (isLocalhost && !SERVER_BASE_URL.startsWith("/")) {
+      try {
+        const res =
+          params && params.excludeSongIds && params.excludeSongIds.length > 5
+            ? await api.post("/recommendations", params, { timeout: 2500 })
+            : await api.get("/recommendations", { params, timeout: 2500 });
+        if (res.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
+          return res;
+        }
+      } catch (e) {
+        // Fallback to instant client-side vector recommendations
       }
-    } catch (e) {}
+    }
 
     // Client-side 10-Dimensional vector similarity ranking
     const targetMode = (params.mode || "8d").toLowerCase();
     const excludeSet = new Set((params.excludeSongIds || []).map(String));
-    let candidates = staticSongs.filter(
-      (s) => (s.audioMode || "8d").toLowerCase() === targetMode
-    );
+    let candidates = staticSongs.filter((s) => {
+      const mode = (s.audioMode || "8d").toLowerCase();
+      if (targetMode === "9d") return mode === "8d" || mode === "9d";
+      return mode === targetMode;
+    });
     candidates = candidates.filter((s) => !excludeSet.has(String(s._id || s.id)));
 
     if (candidates.length === 0) {
-      candidates = staticSongs.filter(
-        (s) => (s.audioMode || "8d").toLowerCase() === targetMode
-      );
+      candidates = staticSongs.filter((s) => {
+        const mode = (s.audioMode || "8d").toLowerCase();
+        if (targetMode === "9d") return mode === "8d" || mode === "9d";
+        return mode === targetMode;
+      });
     }
 
     const baselineVector = [0.38, 0.5, 0.5, 0.5, 0.5, 0.35, 0.5, 0.5, 0.85, 0.5];

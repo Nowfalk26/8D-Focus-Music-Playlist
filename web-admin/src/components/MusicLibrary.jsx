@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import { songsApi, categoriesApi } from "../api/api";
+import staticSongs from "../data/songsData.json";
 
 const DEFAULT_COVER =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCYHY4hp0r-GSzPdesFf5Z5mHQjlDX8zkLIjOdCA_IqUU_uw_nFr73ANifvOdaM2Q0NTsbK9ZB4CakHGH5fOSwA-_HynlD80C-hNL1oquc1m9K6gETHr9tKwpVJsxr8i3yXt8MxzxgSfUOhVYLQ8IqgfrlSGKs-61qE80eejtCqn6bE6dEiNbaAVFjYTn5bXQizoK0XcGh2VyyPyVMbGgVbr-Vnz7APr5Vg8HSuKiI1D50YhAVg3lfgaQ";
@@ -206,13 +207,13 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
     openModeSelector,
   } = usePlayer();
 
-  const [songs, setSongs] = useState([]);
+  const [songs, setSongs] = useState(() => staticSongs);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState("list"); // 'list' | 'grid'
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showCameraLens, setShowCameraLens] = useState(false);
 
   // Recent searches state persisted in localStorage
@@ -279,12 +280,12 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const [songsRes, catsRes] = await Promise.all([
           songsApi.getAll({ mode: audioMode }).catch(() => ({ data: { data: [] } })),
           categoriesApi.getAll().catch(() => ({ data: { data: [] } })),
         ]);
-        setSongs(songsRes.data?.data || []);
+        const loaded = songsRes.data?.data;
+        setSongs(Array.isArray(loaded) && loaded.length > 0 ? loaded : staticSongs);
         setCategories(catsRes.data?.data || []);
       } catch (err) {
         console.error("Error loading library data:", err);
@@ -302,15 +303,27 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
     selectedGenre !== "All";
 
   const filteredSongs = songs.filter((song) => {
-    const query = searchQuery.toLowerCase().trim();
-    const matchesSearch =
-      !query ||
-      song.title?.toLowerCase().includes(query) ||
-      song.artist?.toLowerCase().includes(query) ||
-      song.composer?.toLowerCase().includes(query) ||
-      song.album?.toLowerCase().includes(query) ||
-      song.category?.toLowerCase().includes(query) ||
-      song.genre?.toLowerCase().includes(query);
+    const rawQuery = searchQuery.toLowerCase().trim();
+    const queryNorm = rawQuery.replace(/[.\-_]/g, " ").replace(/\s+/g, " ").trim();
+    const queryWords = queryNorm.split(/\s+/).filter(Boolean);
+
+    let matchesSearch = true;
+    if (rawQuery) {
+      const title = (song.title || "").toLowerCase();
+      const artist = (song.artist || "").toLowerCase();
+      const composer = (song.composer || "").toLowerCase();
+      const album = (song.album || "").toLowerCase();
+      const category = (song.category || "").toLowerCase();
+      const genre = (song.genre || "").toLowerCase();
+
+      const combined = `${title} ${artist} ${composer} ${album} ${category} ${genre}`;
+      const combinedNorm = combined.replace(/[.\-_]/g, " ").replace(/\s+/g, " ");
+
+      matchesSearch =
+        combined.includes(rawQuery) ||
+        combinedNorm.includes(queryNorm) ||
+        (queryWords.length > 0 && queryWords.every((w) => combinedNorm.includes(w)));
+    }
 
     const matchesCategory =
       selectedCategory === "All" ||
@@ -320,6 +333,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
 
     const matchesGenre =
       selectedGenre === "All" ||
+      selectedGenre === "All Categories" ||
       song.genre?.toLowerCase() === selectedGenre.toLowerCase() ||
       song.category?.toLowerCase() === selectedGenre.toLowerCase();
 
