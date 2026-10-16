@@ -116,17 +116,17 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
       {/* Bottom Card: "Your Library" & Curated Channels Dock */}
       <div className="bg-[#121212] rounded-xl flex-1 flex flex-col p-3 overflow-hidden shadow-md border border-white/5">
         {/* Library Header */}
-        <div className="flex items-center justify-between px-2 py-1 mb-2">
+        <div className="flex items-center justify-between px-2 pt-1 pb-2 mb-3">
           <button
             onClick={() => onSelectTab("library")}
-            className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group leading-none"
+            className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors group"
           >
             <span className="material-symbols-outlined text-2xl text-[#1DB954]">library_music</span>
-            <span className="text-sm font-bold leading-none">Your Library</span>
+            <span className="text-sm font-bold tracking-tight">Your Library</span>
           </button>
           <button
             onClick={() => onSelectTab("library")}
-            className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors leading-none"
+            className="w-7 h-7 rounded-full hover:bg-[#282828] text-neutral-400 hover:text-white flex items-center justify-center transition-colors"
             title="Browse all tracks"
           >
             <span className="material-symbols-outlined text-lg">add</span>
@@ -134,7 +134,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         </div>
 
         {/* Quick Library Filter Chips */}
-        <div className="flex items-center gap-2 px-2 py-1 mb-2 overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 px-2 py-2 mb-3.5 overflow-x-auto no-scrollbar shrink-0">
           {["all", "playlists", "8D", "favorites"].map((f) => (
             <button
               key={f}
@@ -143,7 +143,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                 if (f === "favorites") onSelectTab("library", "Favorites");
                 else if (f === "8D") onSelectTab("library", "8D");
               }}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-all leading-none inline-flex items-center justify-center ${
+              className={`px-3.5 py-1.5 min-h-[30px] rounded-full text-xs font-semibold capitalize whitespace-nowrap transition-all leading-normal inline-flex items-center justify-center ${
                 libraryFilter === f
                   ? "bg-white text-black font-bold shadow-sm"
                   : "bg-[#202020] hover:bg-[#282828] text-neutral-300 hover:text-white border border-white/5 hover:border-white/10"
@@ -155,11 +155,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         </div>
 
         {/* Scrollable Channels & Playlists Container */}
-        <div className="flex-1 overflow-y-auto no-scrollbar space-y-1 mt-1 pr-1">
+        <div className="flex-1 overflow-y-auto no-scrollbar space-y-2 mt-1 pr-1">
           {/* Liked Songs Entry */}
           <div
             onClick={() => onSelectTab("library", "Favorites")}
-            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
+            className="flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-[#1a1a1a] cursor-pointer group transition-colors"
           >
             <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#450af5] to-[#8e8ee5] flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
               <span className="material-symbols-outlined text-white text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
@@ -167,11 +167,11 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
               </span>
             </div>
             <div className="min-w-0 flex-1 flex flex-col justify-center">
-              <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors leading-snug pb-0.5">
+              <h4 className="text-sm font-semibold text-white truncate group-hover:text-[#1DB954] transition-colors leading-snug">
                 Liked Songs
               </h4>
-              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5 leading-normal mt-0.5">
-                <span className="material-symbols-outlined text-[13px] text-[#1DB954]">push_pin</span>
+              <p className="text-xs text-neutral-400 truncate flex items-center gap-1.5 leading-normal mt-1">
+                <span className="material-symbols-outlined text-[14px] text-[#1DB954]">push_pin</span>
                 <span className="text-[#1DB954] font-medium">Pinned</span>
                 <span>•</span>
                 <span>{favorites.size} songs</span>
@@ -180,8 +180,8 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
           </div>
 
           {/* Section Divider: Curated Tamil Channels */}
-          <div className="pt-3 pb-1 px-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono leading-none block">
+          <div className="pt-4 pb-2 px-2.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono leading-normal block">
               Curated Tamil Channels
             </span>
           </div>

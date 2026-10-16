@@ -237,14 +237,14 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
       </div>
 
       {/* Lower Compact Pill-Style Category Filter Row */}
-      <div className="px-4 sm:px-8 pt-2 pb-3.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <div className="px-4 sm:px-8 pt-2.5 pb-4 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
         {categoryPills.map((pill) => {
           const isActive = activeCategoryPill === pill;
           return (
             <button
               key={pill}
               onClick={() => handlePillClick(pill)}
-              className={`h-8 px-4 rounded-full text-xs font-semibold shrink-0 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
+              className={`min-h-[32px] px-4 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center leading-normal ${
                 isActive
                   ? "bg-white text-black font-bold shadow-md"
                   : "bg-[#242424] hover:bg-[#2e2e2e] text-neutral-200 hover:text-white border border-white/10 hover:border-white/20"
