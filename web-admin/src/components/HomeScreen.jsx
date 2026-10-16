@@ -156,10 +156,10 @@ export default function HomeScreen({ onNavigate }) {
   ];
 
   const artists = [
-    { name: "Anirudh Ravichander", role: "Hitmaker", cover: collections[4].cover },
-    { name: "A. R. Rahman", role: "Composer", cover: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&q=80" },
+    { name: "Anirudh Ravichander", role: "Rockstar", cover: collections[4].cover },
+    { name: "Hiphop Tamizha", role: "Pioneer", cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&q=80" },
+    { name: "A. R. Rahman", role: "Mozart of Madras", cover: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&q=80" },
     { name: "Yuvan Shankar Raja", role: "Melody maker", cover: collections[5].cover },
-    { name: "Sai Abhyankkar", role: "Artist", cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&q=80" },
     { name: "Sid Sriram", role: "Vocalist", cover: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=500&q=80" },
     { name: "Ilaiyaraaja", role: "Maestro", cover: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&q=80" },
   ];
