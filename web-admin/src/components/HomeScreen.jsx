@@ -267,14 +267,28 @@ export default function HomeScreen({ onNavigate }) {
             </button>
           </div>
         </div>
-        <nav className="flex items-center gap-3 overflow-x-auto py-1.5 no-scrollbar" aria-label="Music categories">
+        <nav className="flex items-center gap-3 overflow-x-auto py-2 no-scrollbar" aria-label="Music categories">
           {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
-            <button key={filter} type="button" onClick={() => setActiveFilter(filter)} className={`shrink-0 rounded-full border px-5 py-2.5 min-h-[40px] text-xs sm:text-[13px] font-bold transition-all leading-normal inline-flex items-center justify-center tracking-wide ${activeFilter === filter ? "border-emerald-400 bg-emerald-400 text-[#04100a] font-black shadow-lg shadow-emerald-400/20 scale-[1.03]" : "border-white/10 bg-white/[0.03] text-slate-300 hover:border-white/20 hover:bg-white/[0.07]"}`}>
+            <button
+              key={filter}
+              type="button"
+              onClick={() => setActiveFilter(filter)}
+              className={`shrink-0 rounded-[14px] px-5 py-2.5 min-h-[40px] text-xs sm:text-[13px] font-semibold transition-all leading-normal inline-flex items-center justify-center tracking-wide ${
+                activeFilter === filter
+                  ? "bg-[#1ed760] text-black font-bold shadow-md shadow-[#1ed760]/20"
+                  : "bg-[#181d22] hover:bg-[#222930] text-slate-200 hover:text-white border border-white/10 hover:border-white/20"
+              }`}
+            >
               {filter}
             </button>
           ))}
           {cycleStatus && (
-            <button type="button" onClick={resetPlaybackCycle} title="Reset playback cycle" className="ml-auto shrink-0 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-4 py-2.5 min-h-[40px] text-xs font-semibold text-emerald-300 leading-normal inline-flex items-center gap-2 hover:bg-emerald-400/15 transition">
+            <button
+              type="button"
+              onClick={resetPlaybackCycle}
+              title="Reset playback cycle"
+              className="ml-auto shrink-0 rounded-[14px] border border-emerald-400/25 bg-emerald-400/[0.08] px-4 py-2.5 min-h-[40px] text-xs font-semibold text-emerald-300 leading-normal inline-flex items-center gap-2 hover:bg-emerald-400/15 transition"
+            >
               Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
             </button>
           )}

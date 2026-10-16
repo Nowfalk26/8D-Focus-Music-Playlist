@@ -143,10 +143,10 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
                 if (f === "favorites") onSelectTab("library", "Favorites");
                 else if (f === "8D") onSelectTab("library", "8D");
               }}
-              className={`px-4.5 py-2 min-h-[34px] rounded-full text-xs font-bold capitalize whitespace-nowrap transition-all leading-normal inline-flex items-center justify-center tracking-wide ${
+              className={`px-4.5 py-2 min-h-[34px] rounded-[12px] text-xs font-semibold capitalize whitespace-nowrap transition-all leading-normal inline-flex items-center justify-center tracking-wide ${
                 libraryFilter === f
-                  ? "bg-white text-black font-extrabold shadow-md scale-[1.02]"
-                  : "bg-[#202020] hover:bg-[#2a2a2a] text-neutral-300 hover:text-white border border-white/10 hover:border-white/20"
+                  ? "bg-[#1ed760] text-black font-bold shadow-md shadow-[#1ed760]/20"
+                  : "bg-[#181d22] hover:bg-[#222930] text-neutral-200 hover:text-white border border-white/10 hover:border-white/20"
               }`}
             >
               {f === "8D" ? "8D Spatial" : f === "favorites" ? "Liked" : f}
