@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { usePlayer } from "../context/PlayerContext";
+import LiveSearchAutocomplete from "./LiveSearchAutocomplete";
 
 export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }) {
   const {
@@ -70,30 +71,15 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
             </button>
           </div>
 
-          {/* Large Rounded Search Bar */}
-          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md">
-            <div className="flex items-center w-full bg-[#242424] hover:bg-[#2a2a2a] focus-within:bg-[#2a2a2a] border border-white/10 focus-within:border-[#1DB954] rounded-full h-11 px-4 gap-3 transition-all shadow-inner">
-              <span className="material-symbols-outlined text-neutral-400 text-xl shrink-0 select-none pointer-events-none">
-                search
-              </span>
-              <input
-                type="text"
-                value={topSearch}
-                onChange={(e) => setTopSearch(e.target.value)}
-                placeholder="What do you want to play?"
-                className="w-full bg-transparent border-0 text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none leading-none p-0"
-              />
-              {topSearch && (
-                <button
-                  type="button"
-                  onClick={() => setTopSearch("")}
-                  className="text-neutral-400 hover:text-white text-xs shrink-0 p-1"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-          </form>
+          {/* Large Rounded Search Bar with Instant Autocomplete */}
+          <LiveSearchAutocomplete
+            variant="topbar"
+            className="flex-1 max-w-md"
+            value={topSearch}
+            onChange={setTopSearch}
+            onNavigate={onSelectTab}
+            placeholder="What do you want to play?"
+          />
         </div>
 
         {/* Right Action Toolbar */}

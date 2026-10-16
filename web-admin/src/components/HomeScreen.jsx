@@ -3,6 +3,7 @@ import { usePlayer } from "../context/PlayerContext";
 import { songsApi, categoriesApi } from "../api/api";
 import TasteProfileModal from "./TasteProfileModal";
 import MiloCatChat from "./MiloCatChat";
+import LiveSearchAutocomplete from "./LiveSearchAutocomplete";
 
 /**
  * Flow 8D HomeScreen — redesigned to match the supplied premium dark UI reference.
@@ -241,16 +242,15 @@ export default function HomeScreen({ onNavigate }) {
       {/* Search and controls */}
       <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-7 pb-6 backdrop-blur-xl sm:px-6 lg:px-8" style={{ paddingTop: "28px", paddingBottom: "24px" }}>
         <div className="flex flex-wrap items-center gap-4 mb-6" style={{ marginBottom: "26px" }}>
-          <div className="flex min-w-0 flex-1 items-center gap-3.5 rounded-full border border-white/10 bg-[#151b21] px-5 py-3 min-h-[48px] focus-within:border-emerald-400/60 shadow-inner">
-            <span className="material-symbols-outlined text-2xl text-slate-400">search</span>
-            <input
+          <div className="flex-1 min-w-[260px]">
+            <LiveSearchAutocomplete
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={setQuery}
+              onNavigate={onNavigate}
+              catalog={songs}
               placeholder="What do you want to play?"
-              aria-label="Search songs"
-              className="w-full min-w-0 bg-transparent text-sm sm:text-base text-white outline-none placeholder:text-slate-500 leading-normal"
+              variant="default"
             />
-            {query && <button type="button" onClick={() => setQuery("")} className="text-slate-400 hover:text-white px-1.5 text-lg" aria-label="Clear search">×</button>}
           </div>
           <div className="flex items-center gap-3">
             <button
