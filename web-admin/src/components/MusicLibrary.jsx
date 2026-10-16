@@ -81,119 +81,71 @@ const GENRE_CARDS = [
   },
 ];
 
-// Stitch Browse All Spotify Category Tiles
+// Custom Requested Folders & Category Tiles
 const BROWSE_CATEGORIES = [
   {
-    id: "podcasts",
-    title: "Podcasts",
-    color: "#006450",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC1DQDS1fKVj1CLmvu6r5Er6U_hkK9kN2SXz29lH5PzKOV6kiE3HLo_QLkZ0c_PyPsfMV-NJzBnDR7KN2JB19P-i4nCy2kSAjPrylg5JM8EqNulFrshkeYBiNlwjSBSxDHffGLPZaDeYTCB-2WbreLjuAVFh-VAS0AElEUqQCCNYTzVwk5-H3BaYYbOBSZuBws4t1fIz-JUgmvwxbR-XdlexJi1QTFoL7IvC_rQx3H4FksVNH0mt7cb",
-    filter: "Podcast",
-  },
-  {
-    id: "live-events",
-    title: "Live Events",
-    color: "#8400E7",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBw5SE4E5MO15nPh20ua5oSSWNcMGtYlSGPbQpWNQOjBP7O-bBjK78l10p1qOzNFoVbmgBsT8mf2HeDtv7FE8RwAbj5wh-vC6IchpOvzdARcBgHaG832ax4yj4MgAr2HQSTvg7gp2igty-4PHWGFc-YptMW_-sl1nQkEQPJMBXq8YN84zqHAij1ln3Ng-KoeSN2d8CzHDQl5SYtnBddvCQbXJ_Si-xzzrL9EMdQ2HdPxYBYvrYLi_Ne",
-    filter: "Vibe",
-  },
-  {
-    id: "made-for-you",
-    title: "Made For You",
-    color: "#1E3264",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCmgQeVoJ17OqNBm9DOpoqgRpjxXvV1tRpLXl5UYcnLekP2b2SdYv4iw2Ur97yNIsIH9bJqdCnfxVMs3bD3EI0yEbXpIl7AuclIWQed417zWG29-3-2gHKv5bweWBtHgSr3ab5BhQIFBkIIm55qTdyoOrP05oVDLrZ_TL76jJTvsyuxlJwxHQbgOqnr94zD9E1bPEDxajk1S8jCmvZTfity-cJCFm3guuR025thTgppVcLobQK4M3Df",
-    filter: "All",
-  },
-  {
-    id: "new-releases",
-    title: "New Releases",
+    id: "all-time-trending",
+    title: "🔥 All Time Trending",
     color: "#E8115B",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDSzVyAeJSCiMGHFIMQOAjlg6g4NrYuQbWNP3z2k01Fye6oNkMlcXv_5uKskerxCrlht3j-LDv5GuC5OGMAsPLNfBhkg2-qmoZFmRIMmSvjB9WhKWr7O6pYlr6HSQlXDiO4fHdYihgdUQ403u-1avdygpfGPrDpvkhPPuMSrJG-R1Itt0Rdcu9MSgBDd8TkPkfZIpBdBSOrhpvkEg7y9bpZ8ubNDXseSXqxluuxXNcv82BTgNHHd1Qv",
-    filter: "All",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=500&q=80",
+    filter: "All Time Trending",
   },
   {
-    id: "pop",
-    title: "Pop",
+    id: "2026-trending",
+    title: "⚡ 2026 Trending",
+    color: "#8400E7",
+    image:
+      "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500&q=80",
+    filter: "2026 Trending",
+  },
+  {
+    id: "pure-melody",
+    title: "🎶 Pure Melody",
+    color: "#1E3264",
+    image:
+      "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=500&q=80",
+    filter: "Melody",
+  },
+  {
+    id: "vibe-kuthu",
+    title: "🎉 Party & Vibe",
     color: "#148A08",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCkyekbhEyt5h3-pHRNL6uk2rMkZP9_mKVnVdgRFvZ0dSrstMsilBtpeFvBbsssrG1vddc9yBJEQUckVFEAW1EvURzhLbdbyiQAlGDMQoTrw5pUHBauAZ5AS_2szHxU6ziOp44Gr6JhagBbKncN9voyruwvZlRIT4utji5Ti1ofIPZJ05-k6x-9ka8Tc9M4EqQvgVwWD9suNicimcOmOHRyQ8qlapv_vimTrLCezI_6HWlbXTl_UG4R",
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80",
     filter: "Vibe",
   },
   {
-    id: "hip-hop",
-    title: "Hip-Hop",
-    color: "#BC5900",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBzSRa7yIPhim8bg4gh0GOJQYt800I2nyDI6pT4xQwSkz8SOpmWIXEFDwFECNpCChsDnBzquxnuiqOZBUW70vglY55YOt2m-Jv-mHjsiC8WYKVi23ulOeZkrNdF4I6XDtomrk0lezGGJOYmCqpDSBVzLhXppBqjCbAP3fRScmAMq8ZSqD58pucf8Z5nvD-hUr3DTrSzS09e5GW0sh3OeH5v-vEGYyCp3OEt1_lgrDb1Q7psskbXKJIf",
-    filter: "Vibe",
-  },
-  {
-    id: "tamil-love",
-    title: "Tamil Love",
-    color: "#E91429",
-    image:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80",
-    filter: "Tamil Love",
-  },
-  {
-    id: "tamil-melodies",
-    title: "Tamil Melodies",
-    color: "#503750",
-    image:
-      "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=300&q=80",
-    filter: "Tamil Melodies",
-  },
-  {
-    id: "tamil-vibe",
-    title: "Tamil Vibe",
-    color: "#008CA0",
-    image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=300&q=80",
-    filter: "Tamil Vibe",
-  },
-  {
-    id: "spatial-8d",
-    title: "Spatial 8D Audio",
-    color: "#0D73EC",
-    image:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80",
-    filter: "8D",
-  },
-  {
-    id: "90s-classics",
-    title: "90s & Classics",
-    color: "#8D67AB",
-    image:
-      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=300&q=80",
-    filter: "90s & Classics",
-  },
-  {
-    id: "dance-electronic",
-    title: "Dance / Electronic",
-    color: "#1E7B85",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAdZpYxpQc28UwrTMMcgFQKU32eIJMl-mEGJShu0Zfirnymoby-HNs9dHFfV_qW2lYjorE6-TTpqyC2YXqyULfK_MMulme0cZbk4ADoRwm0itqV9quAhhuDk6gx0D9rlM-EoQj8IZpRuaUfAXFPmklNUbB-gUgl4EhKuK1ieVrvXqUUuxgUDCocbqbBNDMsbgTMKBojFHNzDFj7H4Y5W6pzJzZTMTqdtfXHlYXWYKQFGMKy4E2hAMW_",
-    filter: "Vibe",
-  },
-  {
-    id: "workout",
-    title: "Workout",
-    color: "#E54028",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAN4c-YytQVd4u8znQE0oVkI7Rg8NIsvPol3NgqbknOGGn9d_fyaA1Lnoa7yZYSxEXRc1dlCnJaSdicXabIHE-7M7SSJCTdHDV2o24wnL90lPsrM9jkrYUPTJffAnwqN8JuV3yEP3vEBq1B_2niS-Bhm6scqfqppJk9g4IkNu4Z60ySuL1g5RmhfAj1vb3tRfqcEYTQYPaRHdOfdS68g4NJFtO8Xr-zZjvRhBpWRLiZwwax9NiXTaYT",
-    filter: "Vibe",
-  },
-  {
-    id: "focus",
-    title: "Focus & Chill",
+    id: "sad-heartbreak",
+    title: "💔 Sad & Heartbreak",
     color: "#2E4156",
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDbvXoowRtTPhqBdm9rRrmZBtL9k_fNad97mDihEmiRdLhJsNnTLXVcOQJPQeOfqPtq_XvaNNva3KYlXcQ4dEo9LOs6_FmZXcP9WndXnsco-5zUziTvm3rM3nrDZUPWP_HGEOK550a62UW9yY_v0U-kjA0oQIiFHjIGeUbY5-3winmPgopMz5xjr9YEJ3JWpUaFSckXvOpDSebPIdll9hn9mmmeA-v0jkDNUCEi5YJPCvYsEnl0ANM7",
-    filter: "Melody",
+      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=500&q=80",
+    filter: "Sad",
+  },
+  {
+    id: "romantic-love",
+    title: "❤️ Romantic Love",
+    color: "#E91429",
+    image:
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80",
+    filter: "Love",
+  },
+  {
+    id: "love-failure",
+    title: "🥀 Love Failure Special",
+    color: "#BC5900",
+    image:
+      "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=500&q=80",
+    filter: "Love Failure",
+  },
+  {
+    id: "all-songs",
+    title: "🌐 All Songs Master Archive",
+    color: "#006450",
+    image:
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=500&q=80",
+    filter: "All",
   },
 ];
 
@@ -527,19 +479,30 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               </div>
             </div>
 
-            {/* Mood Pills Strip */}
+            {/* Mood Pills Strip with All Requested Playlists */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
               {[
-                { id: "All", label: "All Moods" },
+                { id: "All", label: "🌐 All Songs" },
+                { id: "2026 Trending", label: "⚡ 2026 Trending" },
+                { id: "All Time Trending", label: "🔥 All Time Trending" },
+                { id: "Melody", label: "🎵 Pure Melody" },
+                { id: "Vibe", label: "🎉 Party & Vibe" },
+                { id: "Sad", label: "💔 Sad" },
                 { id: "Love", label: "❤️ Love" },
-                { id: "Melody", label: "🎵 Melody" },
-                { id: "Vibe", label: "⚡ Vibe" },
+                { id: "Love Failure", label: "🥀 Love Failure" },
               ].map((m) => {
-                const isSelected = selectedGenre === m.id;
+                const isSelected = selectedGenre === m.id || selectedCategory === m.id;
                 return (
                   <button
                     key={m.id}
-                    onClick={() => setSelectedGenre(m.id)}
+                    onClick={() => {
+                      if (m.id === "2026 Trending" || m.id === "All Time Trending") {
+                        setSelectedCategory(m.id);
+                        setSelectedGenre("All");
+                      } else {
+                        setSelectedGenre(m.id);
+                      }
+                    }}
                     className={`inline-flex items-center justify-center text-center px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                       isSelected
                         ? "bg-[#1DB954] text-black font-bold shadow-md"
