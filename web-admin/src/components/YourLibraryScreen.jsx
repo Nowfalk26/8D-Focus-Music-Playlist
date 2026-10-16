@@ -287,7 +287,7 @@ export default function YourLibraryScreen({ onNavigate }) {
       {/* ============================================================== */}
       {/* 2. SUB-HEADER: Large Title & Action Buttons (Search & Add) */}
       {/* ============================================================== */}
-      <div className="px-4 sm:px-6 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
+      <div className="px-4 sm:px-8 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Your Library
         </h2>
@@ -314,7 +314,7 @@ export default function YourLibraryScreen({ onNavigate }) {
 
       {/* Optional Search bar dropdown */}
       {isSearchOpen && (
-        <div className="px-4 sm:px-6 max-w-7xl mx-auto w-full pb-2 animate-fadeIn">
+        <div className="px-4 sm:px-8 max-w-7xl mx-auto w-full pb-2 animate-fadeIn">
           <div className="flex items-center w-full bg-[#242424] rounded-xl px-3.5 py-2 border border-white/10 gap-2">
             <span className="material-symbols-outlined text-neutral-400 text-lg">search</span>
             <input
@@ -340,7 +340,7 @@ export default function YourLibraryScreen({ onNavigate }) {
       {/* ============================================================== */}
       {/* 3. FILTER PILLS SCROLLER (Exact Stitch Spec) */}
       {/* ============================================================== */}
-      <div className="px-4 sm:px-6 py-2 overflow-x-auto no-scrollbar flex items-center gap-2 max-w-7xl mx-auto w-full">
+      <div className="px-4 sm:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2 max-w-7xl mx-auto w-full">
         {filterTabs.map((tab) => {
           const isActive = activeFilter === tab;
           return (
@@ -362,7 +362,7 @@ export default function YourLibraryScreen({ onNavigate }) {
       {/* ============================================================== */}
       {/* 4. SORT ROW & LIST/GRID TOGGLE */}
       {/* ============================================================== */}
-      <div className="px-4 sm:px-6 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
+      <div className="px-4 sm:px-8 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
         <button
           onClick={handleCycleSort}
           className="flex items-center gap-1.5 text-neutral-300 hover:text-white group py-1 active:opacity-75 transition-opacity"
@@ -387,7 +387,7 @@ export default function YourLibraryScreen({ onNavigate }) {
       {/* ============================================================== */}
       {/* 5. MAIN CONTENT: PLAYLIST TRACKS OR LIBRARY LIST */}
       {/* ============================================================== */}
-      <div className="px-4 sm:px-6 max-w-7xl mx-auto w-full mt-2">
+      <div className="px-4 sm:px-8 max-w-7xl mx-auto w-full mt-2">
         {selectedPlaylistSongs ? (
           /* Sub-view: Showing songs of the selected playlist */
           <div className="flex flex-col gap-4 animate-fadeIn">

@@ -49,7 +49,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
   return (
     <header className={`sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
       {/* Upper Navigation & Search Row */}
-      <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-3">
+      <div className="h-16 px-4 sm:px-8 flex items-center justify-between gap-3">
         {/* Left: History Navigation & Large Rounded Search Bar */}
         <div className="flex items-center gap-3 flex-1 max-w-xl">
           {/* Back & Forward Controls */}
@@ -237,14 +237,14 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
       </div>
 
       {/* Lower Compact Pill-Style Category Filter Row */}
-      <div className="px-4 sm:px-6 pt-1 pb-3 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
+      <div className="px-4 sm:px-8 pt-2 pb-3.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
         {categoryPills.map((pill) => {
           const isActive = activeCategoryPill === pill;
           return (
             <button
               key={pill}
               onClick={() => handlePillClick(pill)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold shrink-0 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
+              className={`h-8 px-4 rounded-full text-xs font-semibold shrink-0 transition-all active:scale-95 shadow-sm inline-flex items-center justify-center leading-none ${
                 isActive
                   ? "bg-white text-black font-bold shadow-md"
                   : "bg-[#242424] hover:bg-[#2e2e2e] text-neutral-200 hover:text-white border border-white/10 hover:border-white/20"

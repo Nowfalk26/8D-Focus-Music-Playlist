@@ -382,7 +382,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
       {/* ============================================================== */}
       {/* 🔍 2. STITCH EXACT SEARCH INPUT BAR (Mobile & Desktop Responsive) */}
       {/* ============================================================== */}
-      <div className="sticky top-0 z-20 px-4 sm:px-6 py-2.5 bg-[#121212]/95 backdrop-blur-md transition-all border-b border-white/5">
+      <div className="sticky top-0 z-20 px-4 sm:px-8 py-2.5 bg-[#121212]/95 backdrop-blur-md transition-all border-b border-white/5">
         <form onSubmit={handleSearchSubmit} className="max-w-4xl mx-auto w-full">
           <div className="relative flex items-center w-full h-12 rounded-xl bg-[#242424] hover:bg-[#282828] focus-within:bg-[#282828] focus-within:ring-2 focus-within:ring-[#1DB954] border border-white/10 shadow-md transition-all duration-200">
             {/* Search Icon */}
@@ -428,7 +428,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
       {/* ============================================================== */}
       {/* 🎯 MAIN CONTENT AREA: DISCOVER & BROWSE vs SEARCH RESULTS */}
       {/* ============================================================== */}
-      <div className="flex-1 px-4 sm:px-6 max-w-7xl mx-auto w-full pt-4">
+      <div className="flex-1 px-4 sm:px-8 max-w-7xl mx-auto w-full pt-4">
         {/* ============================================================ */}
         {/* VIEW A: REAL-TIME SEARCH RESULTS OR CATEGORY PLAYLIST */}
         {/* ============================================================ */}

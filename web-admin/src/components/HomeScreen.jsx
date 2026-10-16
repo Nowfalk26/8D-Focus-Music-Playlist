@@ -163,33 +163,33 @@ export default function HomeScreen({ onNavigate }) {
       {/* Dynamic Top Ambient Header */}
       <div className="px-4 sm:px-8 pt-8 pb-6 bg-gradient-to-b from-[#1DB954]/20 via-[#181818]/80 to-[#121212] transition-colors duration-700">
         {/* Dynamic Spotify Greeting & Subtitle */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight font-display leading-[1.2]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
               {getGreeting()}
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-400 mt-1.5 font-medium leading-normal">
+            <p className="text-xs sm:text-sm text-neutral-400 font-normal leading-normal">
               Feel the music in a whole new dimension • Flow 8D Spatial Audio
             </p>
           </div>
 
-          {/* Smart Playback Cycle HUD */}
+          {/* Smart Playback Cycle HUD Badge - Perfectly Aligned */}
           {cycleStatus && (
-            <div className="flex items-center gap-2 self-start sm:self-auto px-4 py-2 rounded-full bg-black/60 border border-[#1DB954]/30 backdrop-blur-md text-xs font-mono shadow-sm leading-none">
-              <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse shrink-0" />
-              <span className="text-white font-bold leading-none">
-                Cycle #{cycleStatus.cycleId}
+            <div className="self-start md:self-center inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#1c1c22]/90 border border-white/10 shadow-sm backdrop-blur-md transition-colors hover:border-[#1DB954]/40">
+              <span className="w-2 h-2 rounded-full bg-[#1DB954] shadow-[0_0_8px_#1DB954] shrink-0 animate-pulse" />
+              <span className="text-xs font-semibold text-white tracking-tight">
+                Cycle #{cycleStatus.cycleId || 1}
               </span>
-              <span className="text-neutral-500 leading-none">•</span>
-              <span className="text-[#1DB954] leading-none">
+              <span className="text-neutral-500 text-xs">•</span>
+              <span className="text-xs font-bold text-[#1DB954] tracking-tight">
                 {cycleStatus.playedCount} of {cycleStatus.totalEligible || songs.length} Played
               </span>
               <button
                 onClick={resetPlaybackCycle}
-                className="text-[10px] text-[#1DB954] hover:underline font-bold ml-1.5 leading-none"
+                className="w-5 h-5 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all active:scale-90 ml-0.5"
                 title="Reset smart cycle"
               >
-                Reset ↻
+                <span className="material-symbols-outlined text-sm">restart_alt</span>
               </button>
             </div>
           )}
@@ -240,14 +240,15 @@ export default function HomeScreen({ onNavigate }) {
                   Immerse in rotating binaural acoustics calibrated for headphones. Experience spatial separation and pristine high fidelity.
                 </p>
 
-                {/* Hero Action Buttons */}
-                <div className="flex items-center gap-3 mt-5">
+                {/* Hero Action Buttons - Perfectly Aligned & Harmonized */}
+                <div className="flex items-center gap-3.5 mt-6">
+                  {/* Primary Play Button */}
                   <button
                     onClick={() => playSong(featuredSong, songs)}
-                    className="h-11 px-7 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm inline-flex items-center gap-2.5 shadow-lg shadow-[#1DB954]/25 hover:scale-105 active:scale-95 transition-all leading-none"
+                    className="h-12 px-7 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm tracking-normal inline-flex items-center justify-center gap-2 shadow-lg shadow-[#1DB954]/25 hover:scale-105 active:scale-95 transition-all select-none"
                   >
                     <span
-                      className="material-symbols-outlined text-2xl font-bold"
+                      className="material-symbols-outlined text-[26px] leading-none"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       {currentSong && (currentSong._id || currentSong.id) === (featuredSong._id || featuredSong.id) && isPlaying ? "pause" : "play_arrow"}
@@ -257,28 +258,31 @@ export default function HomeScreen({ onNavigate }) {
                     </span>
                   </button>
 
+                  {/* Favorite / Heart Button */}
                   <button
                     onClick={() => toggleFavorite(featuredSong._id || featuredSong.id)}
-                    className={`w-11 h-11 rounded-full border border-white/15 hover:border-white/40 inline-flex items-center justify-center transition-all active:scale-90 leading-none ${
+                    className={`w-12 h-12 rounded-full inline-flex items-center justify-center transition-all select-none hover:scale-105 active:scale-95 ${
                       favorites.has(featuredSong._id || featuredSong.id)
-                        ? "bg-[#1DB954]/15 text-[#1DB954] border-[#1DB954]/50 shadow-md"
-                        : "bg-[#242424] text-neutral-300 hover:text-white"
+                        ? "bg-[#1DB954]/20 text-[#1DB954] border border-[#1DB954]/50 shadow-md"
+                        : "bg-white/10 hover:bg-white/20 text-white border border-white/15 hover:border-white/30 backdrop-blur-sm"
                     }`}
                     title="Save to favorites"
                   >
                     <span
-                      className="material-symbols-outlined text-xl"
+                      className="material-symbols-outlined text-[22px] leading-none"
                       style={{ fontVariationSettings: favorites.has(featuredSong._id || featuredSong.id) ? "'FILL' 1" : "'FILL' 0" }}
                     >
                       favorite
                     </span>
                   </button>
 
+                  {/* 360° Stage Secondary Action Button */}
                   <button
                     onClick={() => onNavigate("orbit")}
-                    className="h-11 px-5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/10 text-neutral-200 hover:text-white text-xs font-semibold inline-flex items-center gap-2 transition-colors leading-none"
+                    className="h-12 px-6 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 text-white font-bold text-sm tracking-normal inline-flex items-center justify-center gap-2.5 backdrop-blur-sm transition-all hover:scale-105 active:scale-95 select-none"
+                    title="Open 360° Spatial Stage"
                   >
-                    <span className="material-symbols-outlined text-base text-[#00f2fe]">spatial_audio_off</span>
+                    <span className="material-symbols-outlined text-[20px] text-[#00f2fe] leading-none">spatial_audio_off</span>
                     <span className="leading-none">360° Stage</span>
                   </button>
                 </div>
@@ -361,8 +365,8 @@ export default function HomeScreen({ onNavigate }) {
         </div>
       </div>
 
-      {/* Main Flow Sections Container */}
-      <div className="px-4 sm:px-6 space-y-9 mt-4">
+      {/* Main Flow Sections Container - Harmonized 32px Grid Margin */}
+      <div className="px-4 sm:px-8 space-y-9 mt-6">
         {/* ============================================================== */}
         {/* 🔥 SECTION 5: TRENDING NOW (Horizontal & Responsive Grid) */}
         {/* ============================================================== */}
