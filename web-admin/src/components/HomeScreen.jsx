@@ -273,10 +273,8 @@ export default function HomeScreen({ onNavigate }) {
               key={filter}
               type="button"
               onClick={() => setActiveFilter(filter)}
-              className={`shrink-0 rounded-[14px] px-3.5 py-2.5 min-h-[38px] text-xs sm:text-[13px] font-semibold transition-all leading-none inline-flex items-center justify-center text-center tracking-normal ${
-                activeFilter === filter
-                  ? "bg-[#1ed760] text-black font-bold shadow-md shadow-[#1ed760]/20"
-                  : "bg-[#181d22] hover:bg-[#222930] text-slate-200 hover:text-white border border-white/10 hover:border-white/20"
+              className={`spotify-cat-btn ${
+                activeFilter === filter ? "spotify-cat-btn-active" : "spotify-cat-btn-inactive"
               }`}
             >
               {filter}
@@ -287,7 +285,7 @@ export default function HomeScreen({ onNavigate }) {
               type="button"
               onClick={resetPlaybackCycle}
               title="Reset playback cycle"
-              className="ml-auto shrink-0 rounded-[14px] border border-emerald-400/25 bg-emerald-400/[0.08] px-3.5 py-2.5 min-h-[38px] text-xs font-semibold text-emerald-300 leading-none inline-flex items-center justify-center text-center gap-2 hover:bg-emerald-400/15 transition"
+              className="spotify-cat-btn spotify-cat-btn-inactive ml-auto text-emerald-300 border-emerald-400/25! gap-2 hover:bg-emerald-400/10!"
             >
               Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
             </button>

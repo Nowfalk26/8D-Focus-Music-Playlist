@@ -475,3 +475,43 @@ input, select, textarea {
   border-color: #1DB954;
   box-shadow: 0 0 0 1px #1DB954;
 }
+
+/* ============================================================== */
+/* 🏷️ SPOTIFY CATEGORY BUTTONS (Exact Reference Squircle)        */
+/* ============================================================== */
+.spotify-cat-btn {
+  border-radius: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 8px 16px !important;
+  min-height: 38px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.spotify-cat-btn-active {
+  background-color: #1ed760 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 14px rgba(30, 215, 96, 0.35) !important;
+  border: 1px solid transparent !important;
+}
+
+.spotify-cat-btn-inactive {
+  background-color: #1a2026 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.spotify-cat-btn-inactive:hover {
+  background-color: #242c34 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
