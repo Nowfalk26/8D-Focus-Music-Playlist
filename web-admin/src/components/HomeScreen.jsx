@@ -4,6 +4,7 @@ import { songsApi, categoriesApi } from "../api/api";
 import TasteProfileModal from "./TasteProfileModal";
 import MiloCatChat from "./MiloCatChat";
 import LiveSearchAutocomplete from "./LiveSearchAutocomplete";
+import staticSongs from "../data/songsData.json";
 
 /**
  * Flow 8D HomeScreen — redesigned to match the supplied premium dark UI reference.
@@ -31,9 +32,9 @@ export default function HomeScreen({ onNavigate }) {
     toggleFavorite,
   } = usePlayer();
 
-  const [songs, setSongs] = useState([]);
+  const [songs, setSongs] = useState(() => staticSongs);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showTasteModal, setShowTasteModal] = useState(false);
   const [query, setQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
@@ -49,14 +50,14 @@ export default function HomeScreen({ onNavigate }) {
   useEffect(() => {
     let mounted = true;
     const fetchData = async () => {
-      setLoading(true);
       try {
         const [songsRes, catsRes] = await Promise.all([
           songsApi.getAll({ mode: audioMode }).catch(() => ({ data: { data: [] } })),
           categoriesApi.getAll().catch(() => ({ data: { data: [] } })),
         ]);
         if (!mounted) return;
-        setSongs(songsRes.data?.data || []);
+        const loaded = songsRes.data?.data;
+        setSongs(Array.isArray(loaded) && loaded.length > 0 ? loaded : staticSongs);
         setCategories(catsRes.data?.data || []);
       } catch (error) {
         console.error("Error loading home data:", error);
@@ -313,15 +314,20 @@ export default function HomeScreen({ onNavigate }) {
       <main className="mx-auto max-w-[1700px] space-y-8 px-4 py-6 sm:px-6 lg:px-8">
         {/* Greeting + featured track */}
         <section className="grid gap-4 xl:grid-cols-[0.85fr_1.5fr]">
-          <div className="flex min-h-[180px] flex-col justify-center rounded-3xl border border-white/[0.06] bg-gradient-to-br from-[#101a1c] to-[#0b1014] p-6 sm:p-8">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400">Flow 8D · Spatial Audio Experience</p>
+          <div className="flex min-h-[200px] flex-col items-center justify-center text-center rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#101a1c] to-[#0b1014] p-6 sm:p-8 shadow-xl">
+            <p className="mb-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400">
+              Flow 8D · Spatial Audio Experience
+            </p>
             <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl xl:text-5xl">
-              {greeting.split(" ").slice(0, -1).join(" ")} <span className="text-emerald-400">{greeting.split(" ").slice(-1)}</span>
+              {greeting.split(" ").slice(0, -1).join(" ")}{" "}
+              <span className="text-emerald-400">{greeting.split(" ").slice(-1)}</span>
             </h1>
-            <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">Feel the music in a whole new dimension.</p>
-            <div className="mt-5 flex items-center gap-2 text-xs text-slate-500">
+            <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-300">
+              Feel the music in a whole new dimension.
+            </p>
+            <div className="mt-4 inline-flex items-center justify-center gap-2 text-xs font-medium text-slate-400">
               <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-              {songs.length} tracks in your music library
+              <span>{(songs.length || staticSongs.length).toLocaleString()} tracks in your music library</span>
             </div>
           </div>
 
