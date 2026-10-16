@@ -349,8 +349,10 @@ export default function HomeScreen({ onNavigate }) {
               </div>
             </div>
           ) : (
-            <div className="flex min-h-[180px] items-center justify-center rounded-3xl border border-white/[0.06] bg-[#10161a] p-6 text-sm text-slate-400">
-              {loading ? "Loading your music..." : "No songs found. Try another search."}
+            <div className="flex min-h-[180px] flex-col items-center justify-center rounded-3xl border border-white/[0.06] bg-[#10161a] p-6 text-center text-sm text-slate-400">
+              <span className="material-symbols-outlined mb-2 text-3xl text-slate-600">music_off</span>
+              <p className="font-semibold text-slate-300">Your playlist is empty</p>
+              <p className="mt-1 text-xs text-slate-500">All songs have been removed. Add or upload new tracks to start listening.</p>
             </div>
           )}
         </section>
@@ -456,27 +458,34 @@ export default function HomeScreen({ onNavigate }) {
               <span>#</span><span>Title / Artist</span><span>Category</span><span className="text-right">Time</span>
             </div>
             <div className="divide-y divide-white/[0.05]">
-              {filteredSongs.slice(0, 10).map((song, index) => (
-                <div key={song._id || song.id || index} onClick={() => play(song, filteredSongs)} className={`grid cursor-pointer grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 transition hover:bg-white/[0.04] sm:grid-cols-[42px_minmax(0,1fr)_160px_70px] sm:px-4 ${isCurrent(song) ? "bg-emerald-400/[0.05]" : ""}`}>
-                  <button type="button" onClick={(event) => { event.stopPropagation(); play(song, filteredSongs); }} className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs ${isCurrent(song) ? "text-emerald-300" : "text-slate-500 hover:text-white"}`} aria-label={`Play ${song.title}`}>
-                    <span className="material-symbols-outlined">{isCurrent(song) && isPlaying ? "equalizer" : "play_arrow"}</span>
-                  </button>
-                  <div className="flex min-w-0 items-center gap-3">
-                    <img src={song.imageUrl || DEFAULT_COVER} alt="" onError={handleImgError} className="h-11 w-11 shrink-0 rounded-lg object-cover" />
-                    <div className="min-w-0">
-                      <p className={`truncate text-sm font-semibold ${isCurrent(song) ? "text-emerald-300" : "text-white"}`}>{song.title}</p>
-                      <p className="mt-1 truncate text-xs text-slate-400">{song.artist}</p>
+              {filteredSongs.length > 0 ? (
+                filteredSongs.slice(0, 10).map((song, index) => (
+                  <div key={song._id || song.id || index} onClick={() => play(song, filteredSongs)} className={`grid cursor-pointer grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 transition hover:bg-white/[0.04] sm:grid-cols-[42px_minmax(0,1fr)_160px_70px] sm:px-4 ${isCurrent(song) ? "bg-emerald-400/[0.05]" : ""}`}>
+                    <button type="button" onClick={(event) => { event.stopPropagation(); play(song, filteredSongs); }} className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs ${isCurrent(song) ? "text-emerald-300" : "text-slate-500 hover:text-white"}`} aria-label={`Play ${song.title}`}>
+                      <span className="material-symbols-outlined">{isCurrent(song) && isPlaying ? "equalizer" : "play_arrow"}</span>
+                    </button>
+                    <div className="flex min-w-0 items-center gap-3">
+                      <img src={song.imageUrl || DEFAULT_COVER} alt="" onError={handleImgError} className="h-11 w-11 shrink-0 rounded-lg object-cover" />
+                      <div className="min-w-0">
+                        <p className={`truncate text-sm font-semibold ${isCurrent(song) ? "text-emerald-300" : "text-white"}`}>{song.title}</p>
+                        <p className="mt-1 truncate text-xs text-slate-400">{song.artist}</p>
+                      </div>
+                    </div>
+                    <span className="hidden truncate text-xs text-slate-400 sm:block">{song.category || song.genre || song.audioMode || "Tamil"}</span>
+                    <div className="flex items-center justify-end gap-3 text-xs text-slate-400">
+                      <button type="button" onClick={(event) => { event.stopPropagation(); toggleFavorite(song._id || song.id); }} aria-label="Toggle favorite" className={favorites.has(song._id || song.id) ? "text-emerald-300" : "text-slate-500 hover:text-white"}>
+                        <span className="material-symbols-outlined text-lg">{favorites.has(song._id || song.id) ? "favorite" : "favorite_border"}</span>
+                      </button>
+                      <span className="hidden sm:inline">{song.duration || "—"}</span>
                     </div>
                   </div>
-                  <span className="hidden truncate text-xs text-slate-400 sm:block">{song.category || song.genre || song.audioMode || "Tamil"}</span>
-                  <div className="flex items-center justify-end gap-3 text-xs text-slate-400">
-                    <button type="button" onClick={(event) => { event.stopPropagation(); toggleFavorite(song._id || song.id); }} aria-label="Toggle favorite" className={favorites.has(song._id || song.id) ? "text-emerald-300" : "text-slate-500 hover:text-white"}>
-                      <span className="material-symbols-outlined text-lg">{favorites.has(song._id || song.id) ? "favorite" : "favorite_border"}</span>
-                    </button>
-                    <span className="hidden sm:inline">{song.duration || "—"}</span>
-                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-sm text-slate-400">
+                  <p className="font-semibold text-slate-300">No tracks in your playlist</p>
+                  <p className="mt-1 text-xs text-slate-500">All songs have been removed. Add or upload new tracks to begin.</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </section>
