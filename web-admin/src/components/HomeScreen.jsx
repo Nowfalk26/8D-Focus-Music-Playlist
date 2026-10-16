@@ -253,16 +253,33 @@ export default function HomeScreen({ onNavigate }) {
             {query && <button type="button" onClick={() => setQuery("")} className="text-slate-400 hover:text-white px-1.5 text-lg" aria-label="Clear search">×</button>}
           </div>
           <div className="flex items-center gap-3">
-            <button type="button" onClick={() => onNavigate("premium")} className="hidden rounded-full border border-amber-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-amber-300 transition hover:bg-amber-400/10 sm:inline-flex items-center justify-center leading-normal">
+            <button
+              type="button"
+              onClick={() => onNavigate("premium")}
+              className="hidden spotify-action-btn border border-amber-400/40 bg-amber-400/[0.08] text-amber-300 hover:bg-amber-400/20 sm:inline-flex"
+            >
               ♛ Go Premium
             </button>
-            <button type="button" onClick={() => setShowMiloChat(true)} className="rounded-full border border-violet-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-violet-300 transition hover:bg-violet-400/10 inline-flex items-center justify-center leading-normal">
+            <button
+              type="button"
+              onClick={() => setShowMiloChat(true)}
+              className="spotify-action-btn border border-violet-400/40 bg-violet-400/[0.08] text-violet-300 hover:bg-violet-400/20 inline-flex"
+            >
               ✦ Milo AI
             </button>
-            <button type="button" onClick={() => onNavigate("orbit")} className="rounded-full border border-cyan-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-cyan-300 transition hover:bg-cyan-400/10 inline-flex items-center justify-center leading-normal">
+            <button
+              type="button"
+              onClick={() => onNavigate("orbit")}
+              className="spotify-action-btn border border-cyan-400/40 bg-cyan-400/[0.08] text-cyan-300 hover:bg-cyan-400/20 inline-flex"
+            >
               ◉ 360°
             </button>
-            <button type="button" onClick={() => onNavigate("notifications")} className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white sm:flex" aria-label="Notifications">
+            <button
+              type="button"
+              onClick={() => onNavigate("notifications")}
+              className="hidden spotify-action-btn-icon border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white hover:bg-white/[0.08] sm:inline-flex"
+              aria-label="Notifications"
+            >
               <span className="material-symbols-outlined text-xl">notifications</span>
             </button>
           </div>

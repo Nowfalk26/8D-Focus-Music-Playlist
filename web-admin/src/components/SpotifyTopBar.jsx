@@ -101,24 +101,24 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           {/* Premium Button */}
           <button
             onClick={() => onSelectTab("orbit")}
-            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-md leading-none"
+            className="hidden lg:inline-flex spotify-action-btn bg-white hover:bg-neutral-200 text-black shadow-md"
             title="Flow 8D Premium Spatial Audio"
           >
             <span className="material-symbols-outlined text-sm font-bold text-amber-600">workspace_premium</span>
-            <span className="leading-none">Explore Premium</span>
+            <span>Explore Premium</span>
           </button>
 
           {/* Audio Universe Mode Switcher Pill */}
           <button
             onClick={openModeSelector}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-sm active:scale-95 hover:brightness-125 leading-none ${modeBadge.color}`}
+            className={`spotify-action-btn border shadow-sm hover:brightness-125 ${modeBadge.color}`}
             title="Switch Audio Experience Mode (Normal Music, 8D Audio)"
           >
             <span>{modeBadge.icon}</span>
-            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline leading-none">
+            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline">
               {modeBadge.label}
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden leading-none">
+            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden">
               {modeBadge.short}
             </span>
           </button>
@@ -126,29 +126,29 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
           {/* Milo AI Assistant Button */}
           <button
             onClick={() => setShowMiloChat(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 text-xs font-bold transition-all active:scale-95 shadow-sm leading-none"
+            className="spotify-action-btn bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 shadow-sm"
             title="Chat with Milo AI"
           >
             <span className="text-sm">🐱</span>
-            <span className="hidden md:inline leading-none">Milo AI</span>
+            <span className="hidden md:inline">Milo AI</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
           </button>
 
           {/* 360° Spatial Stage Control */}
           <button
             onClick={() => onSelectTab("orbit")}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white text-xs font-semibold transition-all leading-none"
+            className="hidden sm:inline-flex spotify-action-btn bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white"
             title="360° Binaural Stage"
           >
             <span className="material-symbols-outlined text-sm text-[#00f2fe]">spatial_audio_off</span>
-            <span className="leading-none">360° Orbit</span>
+            <span>360° Orbit</span>
           </button>
 
           {/* Notifications Bell */}
           <div className="relative">
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="w-9 h-9 rounded-full bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white inline-flex items-center justify-center transition-colors relative leading-none"
+              className="spotify-action-btn-icon bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white relative"
               title="Notifications"
             >
               <span className="material-symbols-outlined text-lg">notifications</span>
