@@ -64,20 +64,81 @@ export const authApi = {
   getProfile: () => api.get("/auth/profile"),
 };
 
-// Production-Resilient Songs API: Tries network API, gracefully falls back to embedded 312-song catalog
+// Persistent Storage for User Added Songs
+const USER_SONGS_STORAGE_KEY = "flow8d_user_added_songs";
+
+export const getUserAddedSongs = () => {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(USER_SONGS_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error("Failed to read user added songs:", e);
+    return [];
+  }
+};
+
+export const saveUserAddedSong = (songData) => {
+  if (typeof window === "undefined") return songData;
+  try {
+    const existing = getUserAddedSongs();
+    const songId =
+      songData._id ||
+      songData.id ||
+      `custom_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const completeSong = {
+      ...songData,
+      _id: songId,
+      id: songId,
+      isCustomAdded: true,
+      createdAt: songData.createdAt || new Date().toISOString(),
+    };
+
+    // Filter out if duplicate ID exists, prepend newest first
+    const updated = [
+      completeSong,
+      ...existing.filter((s) => String(s._id || s.id) !== String(songId)),
+    ];
+    localStorage.setItem(USER_SONGS_STORAGE_KEY, JSON.stringify(updated));
+
+    // Dispatch global event so all open views immediately refresh
+    window.dispatchEvent(
+      new CustomEvent("flow8d_songs_updated", { detail: completeSong })
+    );
+
+    return completeSong;
+  } catch (e) {
+    console.error("Failed to persist user added song:", e);
+    return songData;
+  }
+};
+
+// Production-Resilient Songs API: Tries network API, merges user added songs, gracefully falls back to embedded catalog
 export const songsApi = {
   getAll: async (params = {}) => {
+    const userSongs = getUserAddedSongs();
     try {
       const res = await api.get("/songs", { params, timeout: 2500 });
       if (res.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
-        return res;
+        // Merge user added songs at top so custom added songs are always available
+        const mergedApi = [...userSongs, ...res.data.data];
+        return {
+          ...res,
+          data: {
+            ...res.data,
+            data: mergedApi,
+            count: mergedApi.length,
+          },
+        };
       }
     } catch (err) {
       // Graceful fallback to production catalog when on Vercel or offline
     }
 
-    // Filter embedded production songs
-    let filtered = [...staticSongs];
+    // Filter embedded production songs merged with user added songs
+    let filtered = [...userSongs, ...staticSongs];
     const targetMode = params.mode || params.audioMode;
     if (targetMode) {
       const m = targetMode.toLowerCase();
@@ -132,6 +193,18 @@ export const songsApi = {
   },
 
   getById: async (id) => {
+    const userSongs = getUserAddedSongs();
+    const userSong = userSongs.find((s) => String(s._id || s.id) === String(id));
+    if (userSong) {
+      return {
+        status: 200,
+        data: {
+          success: true,
+          data: userSong,
+        },
+      };
+    }
+
     try {
       const res = await api.get(`/songs/${id}`, { timeout: 2500 });
       if (res.data?.data) return res;
@@ -147,9 +220,41 @@ export const songsApi = {
     };
   },
 
-  create: (songData) => api.post("/songs", songData),
+  create: async (songData) => {
+    // 1. Permanently save locally so it's guaranteed to persist across refreshes
+    const savedSong = saveUserAddedSong(songData);
+
+    // 2. Also attempt backend API call if online / MongoDB is active
+    try {
+      const res = await api.post("/songs", savedSong);
+      if (res.data?.data) {
+        return res;
+      }
+    } catch (e) {
+      // Backend may be offline or static hosting; localStorage backup is already preserved
+    }
+
+    return {
+      status: 201,
+      data: {
+        success: true,
+        data: savedSong,
+      },
+    };
+  },
   update: (id, songData) => api.put(`/songs/${id}`, songData),
-  delete: (id) => api.delete(`/songs/${id}`),
+  delete: (id) => {
+    // Also delete from local storage if present
+    if (typeof window !== "undefined") {
+      try {
+        const existing = getUserAddedSongs();
+        const updated = existing.filter((s) => String(s._id || s.id) !== String(id));
+        localStorage.setItem(USER_SONGS_STORAGE_KEY, JSON.stringify(updated));
+        window.dispatchEvent(new CustomEvent("flow8d_songs_updated"));
+      } catch (e) {}
+    }
+    return api.delete(`/songs/${id}`).catch(() => ({ status: 200, data: { success: true } }));
+  },
 };
 
 // Production-Resilient Categories API

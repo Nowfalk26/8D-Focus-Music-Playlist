@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import { songsApi, categoriesApi } from "../api/api";
 import staticSongs from "../data/songsData.json";
+import QuickAddSongModal from "./QuickAddSongModal";
 
 const DEFAULT_COVER =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuCYHY4hp0r-GSzPdesFf5Z5mHQjlDX8zkLIjOdCA_IqUU_uw_nFr73ANifvOdaM2Q0NTsbK9ZB4CakHGH5fOSwA-_HynlD80C-hNL1oquc1m9K6gETHr9tKwpVJsxr8i3yXt8MxzxgSfUOhVYLQ8IqgfrlSGKs-61qE80eejtCqn6bE6dEiNbaAVFjYTn5bXQizoK0XcGh2VyyPyVMbGgVbr-Vnz7APr5Vg8HSuKiI1D50YhAVg3lfgaQ";
@@ -215,6 +216,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
   const [viewMode, setViewMode] = useState("list"); // 'list' | 'grid'
   const [loading, setLoading] = useState(false);
   const [showCameraLens, setShowCameraLens] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Recent searches state persisted in localStorage
   const [recentSearches, setRecentSearches] = useState(() => {
@@ -294,6 +296,13 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
       }
     };
     fetchData();
+
+    // Listen for custom song additions
+    const handleUpdate = () => {
+      fetchData();
+    };
+    window.addEventListener("flow8d_songs_updated", handleUpdate);
+    return () => window.removeEventListener("flow8d_songs_updated", handleUpdate);
   }, [audioMode]);
 
   // Determine if user is in Active Search/Filter Results view
@@ -545,17 +554,37 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
 
             {/* Results Grid / List */}
             {filteredSongs.length === 0 ? (
-              <div className="py-20 text-center flex flex-col items-center justify-center gap-3">
-                <span className="material-symbols-outlined text-5xl text-neutral-600">search_off</span>
-                <p className="text-neutral-400 text-sm">
-                  No matching tracks found for "{searchQuery}".
+              <div className="py-16 text-center flex flex-col items-center justify-center gap-3">
+                <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-1 text-neutral-400">
+                  <span className="material-symbols-outlined text-3xl">search_off</span>
+                </div>
+                <h3 className="text-base font-bold text-white">
+                  No matching tracks found {searchQuery ? `for "${searchQuery}"` : ""}
+                </h3>
+                <p className="text-neutral-400 text-xs max-w-sm">
+                  {searchQuery
+                    ? `"${searchQuery}" is not in the library yet. You can add it directly to Flow 8D right now!`
+                    : "No songs match the current category or genre filters."}
                 </p>
-                <button
-                  onClick={handleClearFilters}
-                  className="px-4 py-2 rounded-full bg-[#1DB954] text-black text-xs font-bold hover:scale-105 transition-transform"
-                >
-                  Browse All Categories
-                </button>
+
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-3">
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setIsAddModalOpen(true)}
+                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all"
+                    >
+                      <span className="material-symbols-outlined text-base">library_add</span>
+                      <span>+ Add &ldquo;{searchQuery}&rdquo; to Music Library</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={handleClearFilters}
+                    className="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all"
+                  >
+                    Browse All Categories
+                  </button>
+                </div>
               </div>
             ) : viewMode === "grid" ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5">
@@ -931,6 +960,18 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
           </div>
         </div>
       )}
+
+      {/* Quick Add Song Modal */}
+      <QuickAddSongModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        initialTitle={searchQuery}
+        onSongAdded={(newSong) => {
+          if (newSong && newSong.title) {
+            setSearchQuery(newSong.title);
+          }
+        }}
+      />
     </div>
   );
 }

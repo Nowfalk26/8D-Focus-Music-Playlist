@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import staticSongs from "../data/songsData.json";
+import { getUserAddedSongs } from "../api/api";
+import QuickAddSongModal from "./QuickAddSongModal";
 
 /**
  * Escapes regex special characters safely
@@ -64,6 +66,8 @@ export default function LiveSearchAutocomplete({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [customSongs, setCustomSongs] = useState(() => getUserAddedSongs());
 
   const containerRef = useRef(null);
   const inputRef = useRef(null);
@@ -76,10 +80,23 @@ export default function LiveSearchAutocomplete({
     }
   }, [value]);
 
-  // Use provided catalog or default static catalog (1,920 songs)
+  // Listen for dynamic song additions across components
+  useEffect(() => {
+    const handleSongsUpdated = () => {
+      setCustomSongs(getUserAddedSongs());
+    };
+    window.addEventListener("flow8d_songs_updated", handleSongsUpdated);
+    return () => window.removeEventListener("flow8d_songs_updated", handleSongsUpdated);
+  }, []);
+
+  // Use provided catalog merged with user added songs, or default static catalog
   const allSongs = useMemo(() => {
-    return Array.isArray(catalog) && catalog.length > 0 ? catalog : staticSongs;
-  }, [catalog]);
+    const base = Array.isArray(catalog) && catalog.length > 0 ? catalog : staticSongs;
+    // Prepend user added songs
+    const custom = customSongs || [];
+    const customIds = new Set(custom.map((s) => String(s._id || s.id)));
+    return [...custom, ...base.filter((s) => !customIds.has(String(s._id || s.id)))];
+  }, [catalog, customSongs]);
 
   // Handle Input Change
   const handleInputChange = (e) => {
@@ -506,30 +523,49 @@ export default function LiveSearchAutocomplete({
                 })}
               </div>
 
-              {/* Footer: "See all results" if more matches exist */}
-              {totalMatchCount > suggestions.length && (
-                <div
-                  data-result-item
-                  role="option"
-                  aria-selected={selectedIndex === suggestions.length}
-                  onClick={handleSeeAllResults}
-                  onMouseEnter={() => setSelectedIndex(suggestions.length)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 mt-1 rounded-xl cursor-pointer text-xs font-medium transition-all ${
-                    selectedIndex === suggestions.length
-                      ? "bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-500/40"
-                      : "text-emerald-400 hover:bg-emerald-500/10"
-                  }`}
+              {/* Footer: "See all results" or "Add song to library" */}
+              <div className="flex flex-col gap-1 mt-1 border-t border-white/5 pt-1.5">
+                {totalMatchCount > suggestions.length && (
+                  <div
+                    data-result-item
+                    role="option"
+                    aria-selected={selectedIndex === suggestions.length}
+                    onClick={handleSeeAllResults}
+                    onMouseEnter={() => setSelectedIndex(suggestions.length)}
+                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer text-xs font-medium transition-all ${
+                      selectedIndex === suggestions.length
+                        ? "bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-500/40"
+                        : "text-emerald-400 hover:bg-emerald-500/10"
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm">manage_search</span>
+                      <span>See all {totalMatchCount} matching songs in library</span>
+                    </span>
+                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsAddModalOpen(true);
+                  }}
+                  className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all text-left"
                 >
-                  <span className="flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-sm">manage_search</span>
-                    <span>See all {totalMatchCount} matching songs in library</span>
+                  <span className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sm text-emerald-400">add_circle</span>
+                    <span>Don't see what you want? <strong className="text-emerald-400 font-semibold">+ Add &ldquo;{query}&rdquo;</strong></span>
                   </span>
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </div>
-              )}
+                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Add Song
+                  </span>
+                </button>
+              </div>
             </div>
           ) : (
-            /* No Results State */
+            /* No Results State with Dynamic Add Button */
             <div className="flex flex-col items-center justify-center p-6 text-center select-none">
               <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-3 text-neutral-400">
                 <span className="material-symbols-outlined text-2xl">search_off</span>
@@ -538,12 +574,40 @@ export default function LiveSearchAutocomplete({
                 No songs found for &ldquo;{query}&rdquo;
               </p>
               <p className="text-xs text-neutral-400 mt-1 max-w-xs">
-                Try searching by a different song title, artist name, or genre keyword.
+                This song is not in the app yet. You can add it directly to the music library right now!
               </p>
+
+              {/* Dynamic Add Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsAddModalOpen(true);
+                }}
+                className="mt-4 px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all"
+              >
+                <span className="material-symbols-outlined text-base">library_add</span>
+                <span>+ Add &ldquo;{query}&rdquo; to Music Library</span>
+              </button>
             </div>
           )}
         </div>
       )}
+
+      {/* Quick Add Song Modal */}
+      <QuickAddSongModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        initialTitle={query}
+        onSongAdded={(newSong) => {
+          // Keep query updated so the new song immediately appears
+          if (newSong && newSong.title) {
+            if (onChange) onChange(newSong.title);
+            else setInternalQuery(newSong.title);
+            setIsOpen(true);
+          }
+        }}
+      />
     </div>
   );
 }
