@@ -239,42 +239,42 @@ export default function HomeScreen({ onNavigate }) {
   return (
     <div className="min-h-full select-none bg-[#080d10] pb-36 font-sans text-slate-100">
       {/* Search and controls */}
-      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-4 pb-4.5 backdrop-blur-xl sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-3.5 mb-3.5">
-          <div className="flex min-w-0 flex-1 items-center gap-3 rounded-full border border-white/10 bg-[#151b21] px-4 py-2.5 min-h-[44px] focus-within:border-emerald-400/50 shadow-inner">
-            <span className="material-symbols-outlined text-xl text-slate-400">search</span>
+      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-5 pb-5 backdrop-blur-xl sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center gap-4 mb-4.5">
+          <div className="flex min-w-0 flex-1 items-center gap-3.5 rounded-full border border-white/10 bg-[#151b21] px-5 py-3 min-h-[48px] focus-within:border-emerald-400/60 shadow-inner">
+            <span className="material-symbols-outlined text-2xl text-slate-400">search</span>
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="What do you want to play?"
               aria-label="Search songs"
-              className="w-full min-w-0 bg-transparent text-sm text-white outline-none placeholder:text-slate-500 leading-normal"
+              className="w-full min-w-0 bg-transparent text-sm sm:text-base text-white outline-none placeholder:text-slate-500 leading-normal"
             />
-            {query && <button type="button" onClick={() => setQuery("")} className="text-slate-400 hover:text-white px-1 text-base" aria-label="Clear search">×</button>}
+            {query && <button type="button" onClick={() => setQuery("")} className="text-slate-400 hover:text-white px-1.5 text-lg" aria-label="Clear search">×</button>}
           </div>
-          <div className="flex items-center gap-2.5">
-            <button type="button" onClick={() => onNavigate("premium")} className="hidden rounded-full border border-amber-400/40 px-3.5 py-2 min-h-[36px] text-xs font-semibold text-amber-300 transition hover:bg-amber-400/10 sm:inline-flex items-center justify-center leading-normal">
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={() => onNavigate("premium")} className="hidden rounded-full border border-amber-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-amber-300 transition hover:bg-amber-400/10 sm:inline-flex items-center justify-center leading-normal">
               ♛ Go Premium
             </button>
-            <button type="button" onClick={() => setShowMiloChat(true)} className="rounded-full border border-violet-400/40 px-3.5 py-2 min-h-[36px] text-xs font-semibold text-violet-300 transition hover:bg-violet-400/10 inline-flex items-center justify-center leading-normal">
+            <button type="button" onClick={() => setShowMiloChat(true)} className="rounded-full border border-violet-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-violet-300 transition hover:bg-violet-400/10 inline-flex items-center justify-center leading-normal">
               ✦ Milo AI
             </button>
-            <button type="button" onClick={() => onNavigate("orbit")} className="rounded-full border border-cyan-400/40 px-3.5 py-2 min-h-[36px] text-xs font-semibold text-cyan-300 transition hover:bg-cyan-400/10 inline-flex items-center justify-center leading-normal">
+            <button type="button" onClick={() => onNavigate("orbit")} className="rounded-full border border-cyan-400/40 px-4 py-2.5 min-h-[40px] text-xs font-bold text-cyan-300 transition hover:bg-cyan-400/10 inline-flex items-center justify-center leading-normal">
               ◉ 360°
             </button>
-            <button type="button" onClick={() => onNavigate("notifications")} className="hidden h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white sm:flex" aria-label="Notifications">
-              <span className="material-symbols-outlined">notifications</span>
+            <button type="button" onClick={() => onNavigate("notifications")} className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white sm:flex" aria-label="Notifications">
+              <span className="material-symbols-outlined text-xl">notifications</span>
             </button>
           </div>
         </div>
-        <nav className="flex items-center gap-2.5 overflow-x-auto py-1 no-scrollbar" aria-label="Music categories">
+        <nav className="flex items-center gap-3 overflow-x-auto py-1.5 no-scrollbar" aria-label="Music categories">
           {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
-            <button key={filter} type="button" onClick={() => setActiveFilter(filter)} className={`shrink-0 rounded-full border px-4 py-2 min-h-[34px] text-xs font-semibold transition leading-normal inline-flex items-center justify-center ${activeFilter === filter ? "border-emerald-400 bg-emerald-400 text-[#04100a] font-bold shadow-md" : "border-white/10 bg-white/[0.03] text-slate-300 hover:border-white/20 hover:bg-white/[0.07]"}`}>
+            <button key={filter} type="button" onClick={() => setActiveFilter(filter)} className={`shrink-0 rounded-full border px-5 py-2.5 min-h-[40px] text-xs sm:text-[13px] font-bold transition-all leading-normal inline-flex items-center justify-center tracking-wide ${activeFilter === filter ? "border-emerald-400 bg-emerald-400 text-[#04100a] font-black shadow-lg shadow-emerald-400/20 scale-[1.03]" : "border-white/10 bg-white/[0.03] text-slate-300 hover:border-white/20 hover:bg-white/[0.07]"}`}>
               {filter}
             </button>
           ))}
           {cycleStatus && (
-            <button type="button" onClick={resetPlaybackCycle} title="Reset playback cycle" className="ml-auto shrink-0 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-2 min-h-[34px] text-[11px] font-medium text-emerald-300 leading-normal inline-flex items-center gap-1.5 hover:bg-emerald-400/10 transition">
+            <button type="button" onClick={resetPlaybackCycle} title="Reset playback cycle" className="ml-auto shrink-0 rounded-full border border-emerald-400/25 bg-emerald-400/[0.08] px-4 py-2.5 min-h-[40px] text-xs font-semibold text-emerald-300 leading-normal inline-flex items-center gap-2 hover:bg-emerald-400/15 transition">
               Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
             </button>
           )}
