@@ -180,7 +180,7 @@ export default function HomeScreen({ onNavigate }) {
     >
       <div className={`relative overflow-hidden rounded-xl bg-[#20282c] ${compact ? "aspect-[1.2/1]" : "aspect-square"}`}>
         <img src={song.imageUrl || DEFAULT_COVER} alt={song.title || "Song artwork"} onError={handleImgError} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <span className="absolute left-2 top-2 rounded-md border border-emerald-400/40 bg-black/75 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-300 backdrop-blur">
+        <span className="absolute left-2 top-2 rounded-md border border-emerald-400/40 bg-black/75 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-300 backdrop-blur inline-flex items-center justify-center text-center leading-none">
           {song.audioMode || audioMode || "8D"}
         </span>
         <span className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
@@ -402,9 +402,9 @@ export default function HomeScreen({ onNavigate }) {
               <button key={collection.id} type="button" onClick={() => collection.category ? onNavigate("library", collection.category) : onNavigate("library", collection.filter)} className="group relative min-h-[190px] overflow-hidden rounded-2xl border border-white/10 bg-[#11171b] text-left transition hover:-translate-y-0.5 hover:border-emerald-400/30 sm:min-h-[220px]">
                 <img src={collection.cover} alt="" onError={handleImgError} className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-85" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${collection.tone} via-black/35 to-black/10`} />
-                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-                  <h3 className="text-sm font-bold leading-snug text-white sm:text-base">{collection.title}</h3>
-                  <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-slate-200">{collection.subtitle}</p>
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 flex flex-col items-center justify-center text-center">
+                  <h3 className="text-sm font-bold leading-snug text-white sm:text-base text-center">{collection.title}</h3>
+                  <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-slate-200 text-center">{collection.subtitle}</p>
                   <span className="mt-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400 text-black shadow-lg transition group-hover:scale-110"><span className="material-symbols-outlined">play_arrow</span></span>
                 </div>
               </button>

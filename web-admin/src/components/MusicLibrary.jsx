@@ -517,7 +517,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                   <button
                     key={m.id}
                     onClick={() => setSelectedGenre(m.id)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                    className={`inline-flex items-center justify-center text-center px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                       isSelected
                         ? "bg-[#1DB954] text-black font-bold shadow-md"
                         : "bg-[#1f1f1f] hover:bg-[#282828] text-neutral-300 border border-white/5"
@@ -757,7 +757,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     <div
                       key={chip.id}
                       onClick={() => handleSelectRecent(chip.name)}
-                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#201f26] hover:bg-[#2a2930] border border-white/5 shadow-sm shrink-0 cursor-pointer transition-all active:scale-95 group"
+                      className="inline-flex items-center justify-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#201f26] hover:bg-[#2a2930] border border-white/5 shadow-sm shrink-0 cursor-pointer transition-all active:scale-95 group text-center"
                     >
                       <div className="w-6 h-6 rounded-full overflow-hidden bg-neutral-800 shrink-0">
                         <img
@@ -800,13 +800,13 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                       setSelectedGenre(card.query);
                       setSearchQuery("");
                     }}
-                    className={`relative overflow-hidden h-28 sm:h-32 rounded-2xl bg-gradient-to-br ${card.gradient} border border-white/10 shadow-lg p-3.5 flex flex-col justify-between cursor-pointer active:scale-[0.98] hover:border-white/20 transition-all group`}
+                    className={`relative overflow-hidden h-28 sm:h-32 rounded-2xl bg-gradient-to-br ${card.gradient} border border-white/10 shadow-lg p-3.5 flex flex-col items-center justify-center text-center cursor-pointer active:scale-[0.98] hover:border-white/20 transition-all group`}
                   >
-                    <span className="text-sm sm:text-base font-black text-white z-10 tracking-tight group-hover:text-[#1DB954] transition-colors leading-snug">
+                    <span className="text-sm sm:text-base font-black text-white z-10 tracking-tight group-hover:text-[#1DB954] transition-colors leading-snug text-center">
                       {card.title}
                     </span>
 
-                    <div className="flex items-center gap-1.5 z-10">
+                    <div className="flex items-center justify-center gap-1.5 z-10 mt-1.5">
                       <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse"></span>
                       <span className="text-[11px] font-bold text-[#1DB954] uppercase tracking-wider">
                         {card.badge}
@@ -850,9 +850,9 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                       }
                     }}
                     style={{ backgroundColor: cat.color }}
-                    className="relative h-28 sm:h-32 rounded-2xl p-3.5 overflow-hidden shadow-lg select-none cursor-pointer active:scale-[0.97] hover:scale-[1.02] transition-all group"
+                    className="relative h-28 sm:h-32 rounded-2xl p-3.5 overflow-hidden shadow-lg select-none cursor-pointer active:scale-[0.97] hover:scale-[1.02] transition-all group flex flex-col items-center justify-center text-center"
                   >
-                    <span className="text-sm sm:text-base font-black text-white tracking-tight block max-w-[70%] leading-tight drop-shadow-sm">
+                    <span className="text-base sm:text-lg font-black text-white tracking-tight leading-tight drop-shadow-sm text-center z-10">
                       {cat.title}
                     </span>
 

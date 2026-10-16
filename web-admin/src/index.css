@@ -569,3 +569,23 @@ input, select, textarea {
 .spotify-action-btn-icon:active {
   transform: translateY(0);
 }
+
+/* ============================================================== */
+/* 🎯 CENTERED CARD & SHAPE CONTENT UTILITIES                     */
+/* ============================================================== */
+.shape-content-center {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.shape-badge-center {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+

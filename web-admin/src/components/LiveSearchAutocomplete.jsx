@@ -296,20 +296,20 @@ export default function LiveSearchAutocomplete({
     const m = (mode || "").toLowerCase();
     if (m === "8d") {
       return (
-        <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+        <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 inline-flex items-center justify-center text-center leading-none">
           8D
         </span>
       );
     }
     if (m === "9d") {
       return (
-        <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30">
+        <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30 inline-flex items-center justify-center text-center leading-none">
           9D
         </span>
       );
     }
     return (
-      <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-white/10 text-neutral-300 border border-white/10">
+      <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-white/10 text-neutral-300 border border-white/10 inline-flex items-center justify-center text-center leading-none">
         Normal
       </span>
     );

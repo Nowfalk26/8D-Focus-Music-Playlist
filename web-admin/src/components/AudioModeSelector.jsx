@@ -147,7 +147,7 @@ export default function AudioModeSelector({
                 {/* Top Pill Badges */}
                 <div className="flex items-center justify-between z-10">
                   <span
-                    className="text-[11px] font-mono uppercase tracking-wider font-bold px-3 py-1 rounded-full border shadow-sm"
+                    className="text-[11px] font-mono uppercase tracking-wider font-bold px-3 py-1 rounded-full border shadow-sm inline-flex items-center justify-center text-center"
                     style={{
                       color: mode.accent,
                       borderColor: `rgba(${mode.accentRgb}, 0.4)`,
@@ -158,7 +158,7 @@ export default function AudioModeSelector({
                   </span>
 
                   {isCurrent && (
-                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5 shadow-sm font-mono">
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 inline-flex items-center justify-center text-center gap-1.5 shadow-sm font-mono">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                       <span>CURRENT</span>
                     </span>
@@ -166,12 +166,12 @@ export default function AudioModeSelector({
                 </div>
 
                 {/* Center Visual Representation */}
-                <div className="my-auto py-6 flex flex-col items-center justify-center z-10">
+                <div className="my-auto py-6 flex flex-col items-center justify-center text-center z-10">
                   {mode.id === "normal" && <NormalModeVisual />}
                   {mode.id === "8d" && <EightDModeVisual />}
                   {mode.id === "9d" && <NineDModeVisual />}
 
-                  <h3 className="text-2xl font-black text-white mt-5 tracking-tight group-hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans',sans-serif]">
+                  <h3 className="text-2xl font-black text-white mt-5 tracking-tight group-hover:scale-105 transition-transform duration-300 font-['Plus_Jakarta_Sans',sans-serif] text-center">
                     {mode.label}
                   </h3>
 
@@ -184,15 +184,15 @@ export default function AudioModeSelector({
                 </div>
 
                 {/* Bottom Details & Action Button */}
-                <div className="space-y-4 z-10 pt-2 border-t border-white/5">
-                  <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
+                <div className="space-y-4 z-10 pt-2 border-t border-white/5 flex flex-col items-center justify-center text-center">
+                  <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed text-center">
                     {mode.description}
                   </p>
 
                   <button
                     type="button"
                     disabled={isLocked}
-                    className="w-full py-3 px-4 rounded-2xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-lg active:scale-95 group-hover:brightness-125 font-mono"
+                    className="w-full py-3 px-4 rounded-2xl text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center text-center gap-2 shadow-lg active:scale-95 group-hover:brightness-125 font-mono"
                     style={{
                       backgroundColor: isCurrent ? mode.accent : `rgba(${mode.accentRgb}, 0.18)`,
                       color: isCurrent ? "#000000" : "#ffffff",
