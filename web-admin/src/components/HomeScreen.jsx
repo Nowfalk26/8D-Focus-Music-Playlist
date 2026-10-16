@@ -239,8 +239,8 @@ export default function HomeScreen({ onNavigate }) {
   return (
     <div className="min-h-full select-none bg-[#080d10] pb-36 font-sans text-slate-100">
       {/* Search and controls */}
-      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-5 pb-5 backdrop-blur-xl sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-4 mb-4.5">
+      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-7 pb-6 backdrop-blur-xl sm:px-6 lg:px-8" style={{ paddingTop: "28px", paddingBottom: "24px" }}>
+        <div className="flex flex-wrap items-center gap-4 mb-6" style={{ marginBottom: "26px" }}>
           <div className="flex min-w-0 flex-1 items-center gap-3.5 rounded-full border border-white/10 bg-[#151b21] px-5 py-3 min-h-[48px] focus-within:border-emerald-400/60 shadow-inner">
             <span className="material-symbols-outlined text-2xl text-slate-400">search</span>
             <input
@@ -267,7 +267,7 @@ export default function HomeScreen({ onNavigate }) {
             </button>
           </div>
         </div>
-        <nav className="flex items-center gap-3 overflow-x-auto py-2 no-scrollbar" aria-label="Music categories">
+        <nav className="flex items-center gap-3 overflow-x-auto py-2 no-scrollbar" style={{ marginTop: "12px", paddingBottom: "8px" }} aria-label="Music categories">
           {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
             <button
               key={filter}
