@@ -340,20 +340,22 @@ export default function YourLibraryScreen({ onNavigate }) {
       {/* ============================================================== */}
       {/* 3. FILTER PILLS SCROLLER (Exact Stitch Spec) */}
       {/* ============================================================== */}
-      <div className="px-4 sm:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2 max-w-7xl mx-auto w-full">
+      <div className="px-4 sm:px-8 py-2.5 overflow-x-auto no-scrollbar flex items-center gap-2.5 max-w-7xl mx-auto w-full">
         {filterTabs.map((tab) => {
           const isActive = activeFilter === tab;
           return (
             <button
               key={tab}
               onClick={() => setActiveFilter(tab)}
-              className={`shrink-0 px-4 py-1.5 rounded-full font-semibold text-xs transition-all active:scale-95 shadow-sm ${
+              className={`shrink-0 inline-flex items-center justify-center text-center px-5 py-2.5 rounded-full font-semibold text-xs transition-all active:scale-95 select-none leading-none min-h-[38px] whitespace-nowrap shadow-sm ${
                 isActive
-                  ? "bg-[#1DB954] text-black font-bold shadow-[0_2px_8px_rgba(29,185,84,0.3)]"
+                  ? "bg-[#1DB954] text-black font-bold shadow-[0_2px_10px_rgba(29,185,84,0.35)]"
                   : "bg-[#242424] text-neutral-300 hover:bg-[#2e2e2e] hover:text-white border border-white/5"
               }`}
             >
-              {tab}
+              <span className="inline-flex items-center justify-center text-center leading-none px-1">
+                {tab}
+              </span>
             </button>
           );
         })}
@@ -365,17 +367,17 @@ export default function YourLibraryScreen({ onNavigate }) {
       <div className="px-4 sm:px-8 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
         <button
           onClick={handleCycleSort}
-          className="flex items-center gap-1.5 text-neutral-300 hover:text-white group py-1 active:opacity-75 transition-opacity"
+          className="inline-flex items-center justify-center gap-1.5 text-neutral-300 hover:text-white group px-3 py-1.5 rounded-full hover:bg-white/5 active:opacity-75 transition-all text-center leading-none"
         >
-          <span className="material-symbols-outlined text-[18px] text-neutral-400 group-hover:text-[#1DB954] transition-colors">
+          <span className="material-symbols-outlined text-[18px] text-neutral-400 group-hover:text-[#1DB954] transition-colors leading-none flex items-center justify-center">
             swap_vert
           </span>
-          <span className="text-xs font-semibold">{sortOption}</span>
+          <span className="text-xs font-semibold leading-none">{sortOption}</span>
         </button>
 
         <button
           onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
-          className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-white active:scale-90 transition-transform"
+          className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-white active:scale-90 transition-transform rounded-full hover:bg-white/5"
           title={`Switch to ${viewMode === "list" ? "Grid" : "List"} View`}
         >
           <span className="material-symbols-outlined text-[20px]">
@@ -412,10 +414,10 @@ export default function YourLibraryScreen({ onNavigate }) {
 
               <button
                 onClick={() => playSong(selectedPlaylistSongs[0], selectedPlaylistSongs)}
-                className="px-4 py-2 rounded-full bg-[#1DB954] text-black font-bold text-xs flex items-center gap-1.5 hover:scale-105 active:scale-95 transition-transform"
+                className="px-5 py-2.5 rounded-full bg-[#1DB954] text-black font-bold text-xs inline-flex items-center justify-center text-center gap-1.5 hover:scale-105 active:scale-95 transition-transform leading-none shadow-md"
               >
-                <span className="material-symbols-outlined text-base">play_arrow</span>
-                <span>Play</span>
+                <span className="material-symbols-outlined text-base leading-none">play_arrow</span>
+                <span className="leading-none px-0.5">Play</span>
               </button>
             </div>
 
