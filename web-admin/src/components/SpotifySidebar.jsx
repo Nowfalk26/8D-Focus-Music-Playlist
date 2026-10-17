@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { categoriesApi } from "../api/api";
 import { usePlayer } from "../context/PlayerContext";
 
-export default function SpotifySidebar({ activeTab, onSelectTab }) {
+export default function SpotifySidebar({ activeTab, onSelectTab, isSidebarOpen = true, onToggleSidebar }) {
   const { audioMode, favorites } = usePlayer();
   const [categories, setCategories] = useState([]);
   const [libraryFilter, setLibraryFilter] = useState("all");
@@ -54,28 +54,50 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
   });
 
   return (
-    <aside className="hidden md:flex w-72 lg:w-80 h-full flex-col gap-2 shrink-0 select-none font-sans">
+    <aside
+      className={`hidden md:flex h-full flex-col gap-2.5 shrink-0 select-none font-sans transition-all duration-300 ease-in-out ${
+        isSidebarOpen
+          ? "w-72 lg:w-80 opacity-100"
+          : "w-0 p-0 m-0 overflow-hidden opacity-0 pointer-events-none -mr-2.5 sm:-mr-3.5"
+      }`}
+    >
       {/* Top Card: Brand & Primary Navigation */}
-      <div className="bg-[#121212] rounded-xl p-4 flex flex-col gap-3 shadow-md border border-white/5">
+      <div className="bg-[#121212] rounded-2xl p-4 flex flex-col gap-3 shadow-md border border-white/10">
         {/* Brand Header */}
-        <div
-          onClick={() => onSelectTab("home")}
-          className="flex items-center gap-3 cursor-pointer group pb-2 border-b border-white/5"
-        >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1DB954] to-[#128a3c] flex items-center justify-center shadow-lg shadow-[#1DB954]/20 group-hover:scale-105 transition-transform shrink-0">
-            <span className="material-symbols-outlined text-black text-2xl font-black">graphic_eq</span>
-          </div>
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-black text-white tracking-tight font-display">Flow 8D</span>
-              <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[#1DB954] text-black tracking-wide">
-                SPATIAL
+        <div className="flex items-center justify-between pb-2 border-b border-white/10">
+          <div
+            onClick={() => onSelectTab("home")}
+            className="flex items-center gap-3 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1DB954] to-[#128a3c] flex items-center justify-center shadow-lg shadow-[#1DB954]/20 group-hover:scale-105 transition-transform shrink-0">
+              <span className="material-symbols-outlined text-black text-2xl font-black">graphic_eq</span>
+            </div>
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-black text-white tracking-tight font-display">Flow 8D</span>
+                <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-[#1DB954] text-black tracking-wide">
+                  SPATIAL
+                </span>
+              </div>
+              <span className="text-[11px] font-semibold text-neutral-400 tracking-wide truncate">
+                Spatial Audio Experience
               </span>
             </div>
-            <span className="text-[11px] font-semibold text-neutral-400 tracking-wide truncate">
-              Spatial Audio Experience
-            </span>
           </div>
+
+          {/* Close Sidebar Button (ChatGPT / Antigravity style) */}
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="w-8 h-8 rounded-lg hover:bg-white/10 text-neutral-400 hover:text-white flex items-center justify-center transition-all active:scale-90 shrink-0"
+              title="Close sidebar"
+              aria-label="Close sidebar"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                dock_to_left
+              </span>
+            </button>
+          )}
         </div>
 
         {/* Primary Links */}
@@ -114,7 +136,7 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
       </div>
 
       {/* Bottom Card: "Your Library" & Curated Channels Dock */}
-      <div className="bg-[#121212] rounded-xl flex-1 flex flex-col p-3.5 overflow-hidden shadow-md border border-white/5">
+      <div className="bg-[#121212] rounded-2xl flex-1 flex flex-col p-3.5 overflow-hidden shadow-md border border-white/10">
         {/* Library Header */}
         <div className="flex items-center justify-between px-2 pt-1 pb-2 mb-4" style={{ marginBottom: "16px" }}>
           <button

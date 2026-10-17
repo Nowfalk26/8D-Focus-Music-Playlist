@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import LiveSearchAutocomplete from "./LiveSearchAutocomplete";
 
-export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }) {
+export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, isSidebarOpen, onToggleSidebar }) {
   const {
     audioMode,
     openModeSelector,
@@ -53,6 +53,25 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout }
       <div className="h-16 px-4 sm:px-8 flex items-center justify-between gap-3">
         {/* Left: History Navigation & Large Rounded Search Bar */}
         <div className="flex items-center gap-3 flex-1 max-w-xl">
+          {/* Sidebar Toggle Button (like ChatGPT & Antigravity) */}
+          {onToggleSidebar && (
+            <button
+              type="button"
+              onClick={onToggleSidebar}
+              className={`w-9 h-9 rounded-xl hidden md:flex items-center justify-center transition-all active:scale-90 shrink-0 ${
+                !isSidebarOpen
+                  ? "bg-[#1ed760] text-black font-bold shadow-lg shadow-[#1ed760]/30 hover:scale-105"
+                  : "bg-[#232323] hover:bg-[#2e2e2e] text-neutral-300 hover:text-white border border-white/5"
+              }`}
+              title={isSidebarOpen ? "Close menu" : "Open menu"}
+              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+            >
+              <span className="material-symbols-outlined text-[20px] leading-none">
+                {isSidebarOpen ? "dock_to_left" : "menu"}
+              </span>
+            </button>
+          )}
+
           {/* Back & Forward Controls */}
           <div className="flex items-center gap-1.5 shrink-0">
             <button

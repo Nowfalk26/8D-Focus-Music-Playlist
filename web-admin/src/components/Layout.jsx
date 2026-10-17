@@ -31,6 +31,9 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isConnectOpen, setIsConnectOpen] = useState(false);
   const [show360Visualizer, setShow360Visualizer] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   const mobileNavTabs = [
     { id: "home", label: "Home", icon: "home" },
@@ -41,20 +44,27 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   ];
 
   return (
-    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-0 sm:p-2 gap-0 sm:gap-2 overflow-hidden text-white font-sans select-none">
+    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-0 sm:p-2.5 gap-0 sm:gap-2.5 overflow-hidden text-white font-sans select-none">
       {/* Upper Section: Spotify Sidebar + Main Content Stage */}
-      <div className="flex-1 flex gap-2 min-h-0 overflow-hidden">
+      <div className="flex-1 flex gap-2.5 sm:gap-3.5 min-h-0 overflow-hidden">
         {/* Spotify Sidebar (Left Navigation & Your Library Dock on Desktop) */}
-        <SpotifySidebar activeTab={activeTab} onSelectTab={onSelectTab} />
+        <SpotifySidebar
+          activeTab={activeTab}
+          onSelectTab={onSelectTab}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={toggleSidebar}
+        />
 
         {/* Spotify Main Content Window */}
-        <div className="flex-1 flex flex-col bg-[#121212] sm:rounded-lg overflow-hidden shadow-2xl relative border-0 sm:border border-white/5">
+        <div className="flex-1 flex flex-col bg-[#121212] sm:rounded-2xl overflow-hidden shadow-2xl relative border-0 sm:border border-white/10 transition-all duration-300">
           {/* Top Sticky Bar with History, Search, Mode Pill, Profile */}
           <SpotifyTopBar
             activeTab={activeTab}
             onSelectTab={onSelectTab}
             user={user}
             onLogout={onLogout}
+            isSidebarOpen={isSidebarOpen}
+            onToggleSidebar={toggleSidebar}
           />
 
           {/* Main Scrollable View Area */}
