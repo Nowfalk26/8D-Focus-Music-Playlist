@@ -176,28 +176,43 @@ export default function HomeScreen({ onNavigate }) {
       key={song._id || song.id || `${song.title}-${index}`}
       type="button"
       onClick={() => play(song, filteredSongs)}
-      className={`group min-w-0 text-left rounded-2xl border border-white/[0.07] bg-[#10161a] hover:bg-[#151e22] hover:border-emerald-400/30 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${compact ? "p-2.5" : "p-3"}`}
+      className={`group min-w-0 text-left rounded-2xl border border-white/5 bg-[#181818] hover:bg-[#222222] hover:border-white/10 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] shadow-md ${
+        compact ? "p-2.5" : "p-3"
+      }`}
     >
-      <div className={`relative overflow-hidden rounded-xl bg-[#20282c] ${compact ? "aspect-[1.2/1]" : "aspect-square"}`}>
-        <img src={song.imageUrl || DEFAULT_COVER} alt={song.title || "Song artwork"} onError={handleImgError} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <span className="absolute left-2 top-2 rounded-md border border-emerald-400/40 bg-black/75 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-300 backdrop-blur inline-flex items-center justify-center text-center leading-none">
+      <div className={`relative overflow-hidden rounded-xl bg-[#202020] shadow-md ${compact ? "aspect-[1.15/1]" : "aspect-square"}`}>
+        <img
+          src={song.imageUrl || DEFAULT_COVER}
+          alt={song.title || "Song artwork"}
+          onError={handleImgError}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className="absolute left-2 top-2 rounded-md border border-[#1DB954]/40 bg-black/80 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-[#1DB954] backdrop-blur inline-flex items-center justify-center text-center leading-none">
           {song.audioMode || audioMode || "8D"}
         </span>
-        <span className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
-        <span className="absolute bottom-2 right-2 flex h-10 w-10 translate-y-1 items-center justify-center rounded-full bg-emerald-400 text-black opacity-0 shadow-lg shadow-emerald-500/20 transition-all group-hover:translate-y-0 group-hover:opacity-100">
-          <span className="material-symbols-outlined">{isCurrent(song) && isPlaying ? "pause" : "play_arrow"}</span>
-        </span>
-        <span className="absolute bottom-3 left-3 right-12 line-clamp-2 text-sm font-bold leading-snug text-white">
-          {song.title}
+        <span
+          className={`absolute bottom-2.5 right-2.5 flex h-11 w-11 items-center justify-center rounded-full bg-[#1DB954] text-black shadow-xl shadow-black/60 transition-all duration-200 ${
+            isCurrent(song) && isPlaying
+              ? "opacity-100 translate-y-0 scale-100"
+              : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-105 active:scale-95"
+          }`}
+        >
+          <span className="material-symbols-outlined text-2xl font-bold ml-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>
+            {isCurrent(song) && isPlaying ? "pause" : "play_arrow"}
+          </span>
         </span>
       </div>
-      <div className="mt-2.5 min-w-0">
-        <p className="truncate text-xs font-semibold text-slate-100">{song.title}</p>
-        <p className="mt-1 truncate text-[11px] text-slate-400">{song.artist}</p>
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <span className="flex min-w-0 items-center gap-1.5 text-[11px] text-slate-400">
-            <span className={`h-1.5 w-1.5 rounded-full ${isCurrent(song) && isPlaying ? "bg-emerald-400" : "bg-slate-600"}`} />
-            {song.category || song.genre || "Tamil"}
+      <div className="mt-3 min-w-0">
+        <p className={`truncate text-sm font-bold leading-snug ${isCurrent(song) ? "text-[#1DB954]" : "text-white group-hover:text-white"}`}>
+          {song.title}
+        </p>
+        <p className="mt-1 truncate text-xs text-neutral-400 group-hover:text-neutral-300">
+          {song.artist || "Flow 8D Artist"}
+        </p>
+        <div className="mt-2.5 flex items-center justify-between gap-2 pt-1 border-t border-white/5">
+          <span className="flex min-w-0 items-center gap-1.5 text-[11px] text-neutral-400">
+            <span className={`h-1.5 w-1.5 rounded-full ${isCurrent(song) && isPlaying ? "bg-[#1DB954] animate-pulse" : "bg-neutral-600"}`} />
+            <span className="truncate">{song.category || song.genre || "Tamil"}</span>
           </span>
           <span
             role="button"
@@ -213,10 +228,13 @@ export default function HomeScreen({ onNavigate }) {
                 toggleFavorite(song._id || song.id);
               }
             }}
-            className={`material-symbols-outlined text-base ${favorites.has(song._id || song.id) ? "text-emerald-400" : "text-slate-500 hover:text-white"}`}
+            className={`material-symbols-outlined text-base transition-colors ${
+              favorites.has(song._id || song.id) ? "text-[#1DB954]" : "text-neutral-500 hover:text-white"
+            }`}
+            style={{ fontVariationSettings: favorites.has(song._id || song.id) ? "'FILL' 1" : "'FILL' 0" }}
             aria-label="Toggle favorite"
           >
-            {favorites.has(song._id || song.id) ? "favorite" : "favorite_border"}
+            favorite
           </span>
         </div>
       </div>
@@ -457,30 +475,7 @@ export default function HomeScreen({ onNavigate }) {
         </section>
       </div>
 
-      {/* Persistent player affordance: the actual global player may already be rendered by the app shell. */}
-      {currentSong && (
-        <div className="fixed bottom-3 left-3 right-3 z-30 rounded-2xl border border-white/10 bg-[#0b1115]/95 p-3 shadow-2xl shadow-black/50 backdrop-blur-xl sm:bottom-4 sm:left-6 sm:right-6">
-          <div className="flex items-center gap-3">
-            <img src={currentSong.imageUrl || DEFAULT_COVER} alt="" onError={handleImgError} className="h-12 w-12 shrink-0 rounded-xl object-cover" />
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-bold text-white">{currentSong.title}</p>
-              <p className="truncate text-xs text-slate-400">{currentSong.artist}</p>
-            </div>
-            <button type="button" onClick={() => toggleFavorite(currentSong._id || currentSong.id)} className={`hidden h-9 w-9 items-center justify-center rounded-full sm:flex ${favorites.has(currentSong._id || currentSong.id) ? "text-emerald-300" : "text-slate-400 hover:text-white"}`} aria-label="Favorite current song">
-              <span className="material-symbols-outlined">{favorites.has(currentSong._id || currentSong.id) ? "favorite" : "favorite_border"}</span>
-            </button>
-            <button type="button" onClick={playNext} className="hidden h-9 w-9 items-center justify-center rounded-full text-slate-300 hover:bg-white/10 hover:text-white sm:flex" aria-label="Next track">
-              <span className="material-symbols-outlined">skip_next</span>
-            </button>
-            <button type="button" onClick={togglePlay} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-400 text-black transition hover:scale-105 hover:bg-emerald-300" aria-label={isPlaying ? "Pause" : "Play"}>
-              <span className="material-symbols-outlined text-2xl">{isPlaying ? "pause" : "play_arrow"}</span>
-            </button>
-            <button type="button" onClick={() => setShowFullPlayer(true)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white" aria-label="Open full player">
-              <span className="material-symbols-outlined">open_in_full</span>
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {showMiloChat && <MiloCatChat initialQuery={miloInitialQuery} onClose={() => setShowMiloChat(false)} />}
       {showTasteModal && <TasteProfileModal onClose={() => setShowTasteModal(false)} />}
