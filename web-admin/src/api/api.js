@@ -371,18 +371,25 @@ export const recommendationsApi = {
   },
 
   recordInteraction: async (data) => {
-    try {
-      return await api.post("/recommendations/interaction", data, { timeout: 2000 });
-    } catch (e) {
-      return { data: { success: true } };
+    // Only dispatch network POST if running on a real backend (localhost or custom server),
+    // preventing 405 Method Not Allowed on static Vercel single-page rewrites
+    if (isLocalhost && !SERVER_BASE_URL.startsWith("/")) {
+      try {
+        return await api.post("/recommendations/interaction", data, { timeout: 2000 });
+      } catch (e) {
+        // Ignored in fallback
+      }
     }
+    return { data: { success: true } };
   },
 
   getProfile: async (params) => {
-    try {
-      const res = await api.get("/recommendations/profile", { params, timeout: 2000 });
-      if (res.data?.data) return res;
-    } catch (e) {}
+    if (isLocalhost && !SERVER_BASE_URL.startsWith("/")) {
+      try {
+        const res = await api.get("/recommendations/profile", { params, timeout: 2000 });
+        if (res.data?.data) return res;
+      } catch (e) {}
+    }
 
     return {
       status: 200,
@@ -398,18 +405,21 @@ export const recommendationsApi = {
   },
 
   resetProfile: async (data) => {
-    try {
-      return await api.post("/recommendations/reset", data, { timeout: 2000 });
-    } catch (e) {
-      return { data: { success: true } };
+    if (isLocalhost && !SERVER_BASE_URL.startsWith("/")) {
+      try {
+        return await api.post("/recommendations/reset", data, { timeout: 2000 });
+      } catch (e) {}
     }
+    return { data: { success: true } };
   },
 
   getSimilarSongs: async (id, params) => {
-    try {
-      const res = await api.get(`/recommendations/similar/${id}`, { params, timeout: 2500 });
-      if (res.data?.data) return res;
-    } catch (e) {}
+    if (isLocalhost && !SERVER_BASE_URL.startsWith("/")) {
+      try {
+        const res = await api.get(`/recommendations/similar/${id}`, { params, timeout: 2500 });
+        if (res.data?.data) return res;
+      } catch (e) {}
+    }
 
     const pool = staticSongs.filter((s) => String(s._id || s.id) !== String(id));
     return { data: { success: true, data: pool.slice(0, 5) } };
