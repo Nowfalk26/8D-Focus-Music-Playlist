@@ -54,7 +54,7 @@ export default function TasteProfileScreen() {
   const totalInteractions = tasteProfile?.totalInteractions || 36;
 
   return (
-    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-5 sm:p-8 md:p-10 space-y-8 sm:space-y-10 pb-32 max-w-7xl mx-auto">
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-6 lg:p-8 space-y-6 pb-32 max-w-[1700px] mx-auto">
       {/* Section Title & Meta Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-5 border-b border-white/10">
         <div className="flex items-center gap-4">

@@ -239,87 +239,39 @@ export default function HomeScreen({ onNavigate }) {
   );
 
   return (
-    <div className="min-h-full select-none bg-[#080d10] pb-36 font-sans text-slate-100">
-      {/* Search and controls */}
-      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 py-2.5 backdrop-blur-xl sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-3.5 pb-2.5">
-          <div className="flex-1 min-w-[260px]">
-            <LiveSearchAutocomplete
-              value={query}
-              onChange={setQuery}
-              onNavigate={onNavigate}
-              catalog={songs}
-              placeholder="What do you want to play?"
-              variant="default"
-            />
-          </div>
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={() => onNavigate("premium")}
-              className="hidden spotify-action-btn border border-amber-400/40 bg-amber-400/[0.08] text-amber-300 hover:bg-amber-400/20 sm:inline-flex"
-            >
-              <span className="inline-flex items-center justify-center leading-none">♛ Go Premium</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowMiloChat(true)}
-              className="spotify-action-btn border border-violet-400/40 bg-violet-400/[0.08] text-violet-300 hover:bg-violet-400/20 inline-flex"
-            >
-              <span className="inline-flex items-center justify-center leading-none">✦ Milo AI</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate("orbit")}
-              className="spotify-action-btn border border-cyan-400/40 bg-cyan-400/[0.08] text-cyan-300 hover:bg-cyan-400/20 inline-flex"
-            >
-              <span className="inline-flex items-center justify-center leading-none">◉ 360°</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate("notifications")}
-              className="hidden spotify-action-btn-icon border border-white/10 bg-white/[0.03] text-slate-300 hover:text-white hover:bg-white/[0.08] sm:inline-flex"
-              aria-label="Notifications"
-            >
-              <span className="material-symbols-outlined text-xl">notifications</span>
-            </button>
-          </div>
-        </div>
+    <div className="min-h-full select-none bg-[#080d10] p-4 sm:p-6 lg:p-8 space-y-8 pb-36 font-sans text-slate-100 max-w-[1700px] mx-auto">
+      {/* Category Filter Pills (Matching Spotify Reference) */}
+      <nav className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pt-1" aria-label="Music categories">
+        {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
+          <button
+            key={filter}
+            type="button"
+            onClick={() => setActiveFilter(filter)}
+            className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
+              activeFilter === filter ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
+            }`}
+          >
+            <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
+              {filter}
+            </span>
+          </button>
+        ))}
+        {cycleStatus && (
+          <button
+            type="button"
+            onClick={resetPlaybackCycle}
+            title="Reset playback cycle"
+            className="spotify-cat-btn spotify-cat-btn-inactive ml-auto text-emerald-300 !border-emerald-400/25 !gap-2 hover:!bg-emerald-400/10 !text-xs !min-h-[32px] !py-1.5 !px-4"
+          >
+            <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
+              Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
+            </span>
+          </button>
+        )}
+      </nav>
 
-        {/* Separated Category Filter Row with Clear Identification */}
-        <div className="border-t border-white/5 pt-2.5">
-          <nav className="flex items-center gap-2.5 overflow-x-auto no-scrollbar" aria-label="Music categories">
-            {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActiveFilter(filter)}
-                className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
-                  activeFilter === filter ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
-                }`}
-              >
-                <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
-                  {filter}
-                </span>
-              </button>
-            ))}
-            {cycleStatus && (
-              <button
-                type="button"
-                onClick={resetPlaybackCycle}
-                title="Reset playback cycle"
-                className="spotify-cat-btn spotify-cat-btn-inactive ml-auto text-emerald-300 !border-emerald-400/25 !gap-2 hover:!bg-emerald-400/10 !text-xs !min-h-[32px] !py-1.5 !px-4"
-              >
-                <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
-                  Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
-                </span>
-              </button>
-            )}
-          </nav>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-[1700px] space-y-8 px-4 py-6 sm:px-6 lg:px-8">
+      {/* Main Content Area */}
+      <div className="space-y-8">
         {/* Greeting + featured track */}
         <section className="grid gap-4 xl:grid-cols-[0.85fr_1.5fr]">
           <div className="flex min-h-[200px] flex-col items-center justify-center text-center rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#101a1c] to-[#0b1014] p-6 sm:p-8 shadow-xl">
@@ -503,7 +455,7 @@ export default function HomeScreen({ onNavigate }) {
             </div>
           </div>
         </section>
-      </main>
+      </div>
 
       {/* Persistent player affordance: the actual global player may already be rendered by the app shell. */}
       {currentSong && (

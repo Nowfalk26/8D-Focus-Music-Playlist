@@ -88,9 +88,9 @@ export default function OrbitStageScreen({ onNavigate }) {
     "https://lh3.googleusercontent.com/aida-public/AB6AXuBJzfIrngvyWKGooeq-g6tZChw8oYnythmtW12SCMjbs9Owm1PH0pP7lL3ZFByOQ-_jIJk7r83py0YjVUHEuyG0eXpgRTHXsdiRN1c-4d79W_6huQXCX4EqT3oRh9MFgPgRfed6OSj_Ylqx6THm-B-NV59C19abE9xNVX3xCWCKUPFh1TImwBqdMsXfI6kUAtryFqKoEETWrf45SdUP3HtJjf_RM6vLaB7mFuqg9v8PW-9dc6QgeXafjw";
 
   return (
-    <div className="w-full flex flex-col min-h-screen text-slate-200 font-sans pb-24">
+    <div className="w-full flex flex-col min-h-screen text-slate-200 font-sans p-4 sm:p-6 lg:p-8 space-y-6 pb-32 max-w-[1700px] mx-auto">
       {/* Top Header / Telemetry Bar */}
-      <div className="px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-[#0a0a14]/80 backdrop-blur-xl border-b border-white/5 rounded-2xl mb-6">
+      <div className="px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-[#0a0a14]/80 backdrop-blur-xl border border-white/5 rounded-2xl shadow-xl">
         <div className="flex items-center gap-4 flex-1 max-w-xl w-full">
           <div className="flex items-center w-full min-h-[48px] h-12 px-5 py-2.5 rounded-full bg-[#151b21] hover:bg-[#1a222a] focus-within:bg-[#1a222a] border border-white/10 focus-within:border-cyan-400/80 shadow-inner group transition-all duration-200">
             <span className="material-symbols-outlined shrink-0 select-none pointer-events-none transition-colors text-slate-400 text-2xl mr-3 group-focus-within:text-cyan-400">
@@ -155,7 +155,7 @@ export default function OrbitStageScreen({ onNavigate }) {
       </div>
 
       {/* Stage Sub-header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center justify-center text-center px-4 py-1.5 rounded-full text-[11px] font-mono font-bold text-cyan-400 bg-[#131322] border border-cyan-400/30 tracking-widest uppercase leading-none min-h-[30px]">
             STAGE 01

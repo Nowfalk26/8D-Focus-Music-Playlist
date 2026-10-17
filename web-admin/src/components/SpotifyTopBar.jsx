@@ -240,26 +240,6 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
           </div>
         </div>
       </div>
-
-      {/* Lower Compact Pill-Style Category Filter Row */}
-      <div className="px-4 sm:px-8 py-2.5 flex items-center gap-2.5 overflow-x-auto no-scrollbar border-t border-white/5 bg-[#121212]/40">
-        {categoryPills.map((pill) => {
-          const isActive = activeCategoryPill === pill;
-          return (
-            <button
-              key={pill}
-              onClick={() => handlePillClick(pill)}
-              className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
-                isActive ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
-              }`}
-            >
-              <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
-                {pill}
-              </span>
-            </button>
-          );
-        })}
-      </div>
     </header>
   );
 }

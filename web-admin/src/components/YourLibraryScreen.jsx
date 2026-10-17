@@ -247,7 +247,7 @@ export default function YourLibraryScreen({ onNavigate }) {
   };
 
   return (
-    <div className="w-full flex flex-col font-sans text-white select-none pb-32 md:pb-24 bg-[#121212] min-h-full">
+    <div className="w-full flex flex-col font-sans text-white select-none p-4 sm:p-6 lg:p-8 space-y-4 pb-32 bg-[#121212] min-h-full max-w-[1700px] mx-auto">
       {/* ============================================================== */}
       {/* 📱 1. STITCH ANDROID YOUR LIBRARY TOP HEADER (Mobile View) */}
       {/* ============================================================== */}

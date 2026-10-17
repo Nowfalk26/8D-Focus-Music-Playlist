@@ -403,7 +403,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
       {/* ============================================================== */}
       {/* 🎯 MAIN CONTENT AREA: DISCOVER & BROWSE vs SEARCH RESULTS */}
       {/* ============================================================== */}
-      <div className="flex-1 px-4 sm:px-8 max-w-7xl mx-auto w-full pt-4">
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 pb-32 max-w-[1700px] mx-auto w-full">
         {/* ============================================================ */}
         {/* VIEW A: REAL-TIME SEARCH RESULTS OR CATEGORY PLAYLIST */}
         {/* ============================================================ */}

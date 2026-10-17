@@ -87,7 +87,7 @@ export default function Studio8D({ onNavigate }) {
   };
 
   return (
-    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-8 space-y-6 pb-28">
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-6 lg:p-8 space-y-6 pb-32 max-w-[1700px] mx-auto">
       {/* Top Header & Telemetry */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
         <div>
