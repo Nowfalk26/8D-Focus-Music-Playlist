@@ -357,15 +357,15 @@ export default function LiveSearchAutocomplete({
       <div
         className={`flex items-center w-full transition-all duration-200 ${
           isTopBar
-            ? "h-11 px-4 rounded-full bg-[#242424] hover:bg-[#2a2a2a] focus-within:bg-[#2a2a2a] border border-white/10 focus-within:border-[#1DB954] shadow-inner"
+            ? "h-11 px-4 sm:px-4.5 rounded-full bg-[#242424] hover:bg-[#2a2a2a] focus-within:bg-[#2a2a2a] border border-white/10 focus-within:border-[#1DB954] shadow-inner"
             : "min-h-[48px] px-5 py-3 rounded-full bg-[#151b21] hover:bg-[#1a222a] border border-white/10 focus-within:border-emerald-400/80 shadow-inner"
         }`}
       >
         <span
           className={`material-symbols-outlined shrink-0 select-none pointer-events-none transition-colors ${
             isTopBar
-              ? "text-neutral-400 text-xl mr-3"
-              : "text-slate-400 text-2xl mr-3.5 group-focus-within:text-emerald-400"
+              ? "text-neutral-400 text-xl mr-2.5"
+              : "text-slate-400 text-2xl mr-3 group-focus-within:text-emerald-400"
           }`}
         >
           search
@@ -389,7 +389,7 @@ export default function LiveSearchAutocomplete({
           autoFocus={autoFocus}
           autoComplete="off"
           spellCheck="false"
-          className={`w-full min-w-0 bg-transparent text-white outline-none placeholder:text-neutral-400 leading-normal ${
+          className={`w-full min-w-0 bg-transparent text-white outline-none placeholder:text-neutral-400 leading-none py-1.5 px-1 ${
             isTopBar ? "text-xs sm:text-sm" : "text-sm sm:text-base"
           }`}
         />

@@ -371,7 +371,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="What do you want to listen to?"
-              className="w-full h-full bg-transparent text-white placeholder:text-neutral-400 font-medium text-sm outline-none pr-2 leading-none flex items-center"
+              className="w-full h-full bg-transparent text-white placeholder:text-neutral-400 font-medium text-sm outline-none px-2 leading-none flex items-center"
             />
 
             {/* Clear Input Button (when text entered) */}

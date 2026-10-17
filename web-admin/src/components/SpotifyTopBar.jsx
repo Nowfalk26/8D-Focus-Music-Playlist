@@ -50,7 +50,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
   return (
     <header className={`sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
       {/* Upper Navigation & Search Row */}
-      <div className="h-16 px-4 sm:px-8 flex items-center justify-between gap-3">
+      <div className="py-2.5 sm:py-3 px-4 sm:px-8 flex items-center justify-between gap-3 min-h-[64px]">
         {/* Left: History Navigation & Large Rounded Search Bar */}
         <div className="flex items-center gap-3 flex-1 max-w-xl">
           {/* Sidebar Toggle Button (like ChatGPT & Antigravity) */}
@@ -242,18 +242,20 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
       </div>
 
       {/* Lower Compact Pill-Style Category Filter Row */}
-      <div className="px-4 sm:px-8 pt-3 pb-6 flex items-center gap-3 overflow-x-auto no-scrollbar" style={{ paddingBottom: "24px" }}>
+      <div className="px-4 sm:px-8 py-2.5 flex items-center gap-2.5 overflow-x-auto no-scrollbar border-t border-white/5 bg-[#121212]/40">
         {categoryPills.map((pill) => {
           const isActive = activeCategoryPill === pill;
           return (
             <button
               key={pill}
               onClick={() => handlePillClick(pill)}
-              className={`spotify-cat-btn ${
-                isActive ? "spotify-cat-btn-active" : "spotify-cat-btn-inactive"
+              className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
+                isActive ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
               }`}
             >
-              {pill}
+              <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
+                {pill}
+              </span>
             </button>
           );
         })}

@@ -241,8 +241,8 @@ export default function HomeScreen({ onNavigate }) {
   return (
     <div className="min-h-full select-none bg-[#080d10] pb-36 font-sans text-slate-100">
       {/* Search and controls */}
-      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 pt-7 pb-6 backdrop-blur-xl sm:px-6 lg:px-8" style={{ paddingTop: "28px", paddingBottom: "24px" }}>
-        <div className="flex flex-wrap items-center gap-4 mb-6" style={{ marginBottom: "26px" }}>
+      <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#080d10]/95 px-4 py-2.5 backdrop-blur-xl sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center gap-3.5 pb-2.5">
           <div className="flex-1 min-w-[260px]">
             <LiveSearchAutocomplete
               value={query}
@@ -253,27 +253,27 @@ export default function HomeScreen({ onNavigate }) {
               variant="default"
             />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={() => onNavigate("premium")}
               className="hidden spotify-action-btn border border-amber-400/40 bg-amber-400/[0.08] text-amber-300 hover:bg-amber-400/20 sm:inline-flex"
             >
-              ♛ Go Premium
+              <span className="inline-flex items-center justify-center leading-none">♛ Go Premium</span>
             </button>
             <button
               type="button"
               onClick={() => setShowMiloChat(true)}
               className="spotify-action-btn border border-violet-400/40 bg-violet-400/[0.08] text-violet-300 hover:bg-violet-400/20 inline-flex"
             >
-              ✦ Milo AI
+              <span className="inline-flex items-center justify-center leading-none">✦ Milo AI</span>
             </button>
             <button
               type="button"
               onClick={() => onNavigate("orbit")}
               className="spotify-action-btn border border-cyan-400/40 bg-cyan-400/[0.08] text-cyan-300 hover:bg-cyan-400/20 inline-flex"
             >
-              ◉ 360°
+              <span className="inline-flex items-center justify-center leading-none">◉ 360°</span>
             </button>
             <button
               type="button"
@@ -285,30 +285,38 @@ export default function HomeScreen({ onNavigate }) {
             </button>
           </div>
         </div>
-        <nav className="flex items-center gap-3 overflow-x-auto py-2 no-scrollbar" style={{ marginTop: "12px", paddingBottom: "8px" }} aria-label="Music categories">
-          {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => setActiveFilter(filter)}
-              className={`spotify-cat-btn ${
-                activeFilter === filter ? "spotify-cat-btn-active" : "spotify-cat-btn-inactive"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
-          {cycleStatus && (
-            <button
-              type="button"
-              onClick={resetPlaybackCycle}
-              title="Reset playback cycle"
-              className="spotify-cat-btn spotify-cat-btn-inactive ml-auto text-emerald-300 border-emerald-400/25! gap-2 hover:bg-emerald-400/10!"
-            >
-              Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
-            </button>
-          )}
-        </nav>
+
+        {/* Separated Category Filter Row with Clear Identification */}
+        <div className="border-t border-white/5 pt-2.5">
+          <nav className="flex items-center gap-2.5 overflow-x-auto no-scrollbar" aria-label="Music categories">
+            {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
+                  activeFilter === filter ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
+                }`}
+              >
+                <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
+                  {filter}
+                </span>
+              </button>
+            ))}
+            {cycleStatus && (
+              <button
+                type="button"
+                onClick={resetPlaybackCycle}
+                title="Reset playback cycle"
+                className="spotify-cat-btn spotify-cat-btn-inactive ml-auto text-emerald-300 !border-emerald-400/25 !gap-2 hover:!bg-emerald-400/10 !text-xs !min-h-[32px] !py-1.5 !px-4"
+              >
+                <span className="inline-flex items-center justify-center text-center leading-none px-0.5">
+                  Cycle #{cycleStatus.cycleId || 1} · {cycleStatus.playedCount}/{cycleStatus.totalEligible || songs.length} played ↻
+                </span>
+              </button>
+            )}
+          </nav>
+        </div>
       </header>
 
       <main className="mx-auto max-w-[1700px] space-y-8 px-4 py-6 sm:px-6 lg:px-8">

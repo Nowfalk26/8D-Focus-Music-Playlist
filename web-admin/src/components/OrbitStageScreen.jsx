@@ -93,13 +93,13 @@ export default function OrbitStageScreen({ onNavigate }) {
       <div className="px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-[#0a0a14]/80 backdrop-blur-xl border-b border-white/5 rounded-2xl mb-6">
         <div className="flex items-center gap-4 flex-1 max-w-xl w-full">
           <div className="relative w-full flex items-center">
-            <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-lg">search</span>
+            <span className="material-symbols-outlined absolute left-4 text-slate-400 text-lg flex items-center justify-center leading-none">search</span>
             <input
-              className="w-full bg-[#131322]/80 text-white placeholder:text-slate-400 text-xs rounded-full py-2.5 pl-10 pr-12 focus:outline-none focus:ring-1 focus:ring-cyan-400 border border-white/5 transition-all"
+              className="w-full bg-[#131322] text-white placeholder:text-slate-400 text-xs rounded-full py-2.5 pl-11 pr-14 focus:outline-none focus:ring-1 focus:ring-cyan-400 border border-white/10 shadow-inner leading-none"
               placeholder="Search spatial stems, binaural tracks, HRTF presets..."
               type="text"
             />
-            <span className="absolute right-3 text-[10px] font-mono text-slate-400 bg-[#1b1b30] px-2 py-0.5 rounded-full border border-white/5">
+            <span className="absolute right-3.5 text-[10px] font-mono text-slate-400 bg-[#1b1b30] px-2.5 py-1 rounded-full border border-white/10 leading-none">
               ⌘K
             </span>
           </div>
@@ -107,9 +107,9 @@ export default function OrbitStageScreen({ onNavigate }) {
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap justify-end">
           {/* 8D DSP Active Toggle */}
-          <div className="flex items-center gap-2 bg-[#131322] border border-cyan-400/30 px-3 py-1.5 rounded-full shadow-glow-cyan">
+          <div className="inline-flex items-center justify-center text-center gap-2.5 bg-[#131322] border border-cyan-400/40 px-4 py-2 rounded-full shadow-glow-cyan leading-none min-h-[34px]">
             <span className={`w-2 h-2 rounded-full ${is8DActive ? "bg-cyan-400 animate-ping" : "bg-slate-500"}`}></span>
-            <span className="text-[11px] font-mono font-bold text-cyan-300 tracking-wider">
+            <span className="text-[11px] font-mono font-bold text-cyan-300 tracking-wider leading-none">
               {is8DActive ? "8D DSP ACTIVE" : "8D DSP OFF"}
             </span>
             <button
@@ -130,10 +130,10 @@ export default function OrbitStageScreen({ onNavigate }) {
           {/* Milo AI Assistant */}
           <button
             onClick={() => setShowMiloChat(true)}
-            className="flex items-center gap-2 bg-[#1b1b30] hover:bg-purple-900/40 border border-purple-500/30 text-purple-200 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all shadow-glow-purple"
+            className="inline-flex items-center justify-center text-center gap-2 bg-[#1b1b30] hover:bg-purple-900/40 border border-purple-500/30 text-purple-200 px-4 py-2 rounded-full text-xs font-semibold leading-none min-h-[34px] transition-all shadow-glow-purple active:scale-95"
           >
-            <span className="material-symbols-outlined text-pink-400 text-sm">smart_toy</span>
-            <span>MILO AI</span>
+            <span className="material-symbols-outlined text-pink-400 text-sm leading-none">smart_toy</span>
+            <span className="inline-flex items-center justify-center leading-none">MILO AI</span>
             <span className="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse"></span>
           </button>
 
@@ -141,12 +141,12 @@ export default function OrbitStageScreen({ onNavigate }) {
 
           {/* Admin Profile */}
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center font-bold text-xs text-white ring-2 ring-cyan-400/20">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center font-bold text-xs text-white ring-2 ring-cyan-400/20 leading-none">
               A
             </div>
             <div className="hidden lg:flex flex-col text-left">
-              <span className="text-xs font-bold text-white">Admin Master</span>
-              <span className="text-[10px] font-mono text-cyan-400">STUDIO ENGINEER</span>
+              <span className="text-xs font-bold text-white leading-tight">Admin Master</span>
+              <span className="text-[10px] font-mono text-cyan-400 leading-tight">STUDIO ENGINEER</span>
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default function OrbitStageScreen({ onNavigate }) {
       {/* Stage Sub-header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
-          <span className="text-[11px] font-mono font-bold text-cyan-400 px-3 py-1 rounded-full bg-[#131322] border border-cyan-400/30 tracking-widest uppercase">
+          <span className="inline-flex items-center justify-center text-center px-4 py-1.5 rounded-full text-[11px] font-mono font-bold text-cyan-400 bg-[#131322] border border-cyan-400/30 tracking-widest uppercase leading-none min-h-[30px]">
             STAGE 01
           </span>
           <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2 font-display">
@@ -170,7 +170,7 @@ export default function OrbitStageScreen({ onNavigate }) {
             </span>
           </h2>
         </div>
-        <div className="flex items-center gap-2 bg-[#0a0a14] border border-white/5 px-4 py-1.5 rounded-full text-[10px] font-mono text-slate-400">
+        <div className="inline-flex items-center justify-center text-center gap-2 bg-[#0a0a14] border border-white/10 px-4 py-2 rounded-full text-[10px] font-mono text-slate-300 leading-none min-h-[30px]">
           <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
           <span>HRTF BINAURAL MATRIX • 96kHz 32-bit FLOAT</span>
         </div>
@@ -258,33 +258,39 @@ export default function OrbitStageScreen({ onNavigate }) {
             <span className="text-[10px] font-mono font-bold text-slate-400 tracking-wider uppercase">
               ACOUSTIC ROOM PROFILES
             </span>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2.5">
               {acousticProfiles.map((p) => {
                 const isSelected = activeProfile === p.id;
                 return (
                   <button
                     key={p.id}
                     onClick={() => setActiveProfile(p.id)}
-                    className={`flex items-center justify-between p-3 rounded-xl text-left transition-all ${
+                    className={`flex items-center justify-between px-4 py-3 rounded-2xl text-left transition-all ${
                       isSelected
-                        ? "bg-[#1b1b30] border border-cyan-400/40 shadow-glow-cyan"
-                        : "bg-[#0a0a14] hover:bg-[#131322] border border-white/5"
+                        ? "bg-[#1b1b30] border-2 border-cyan-400 shadow-glow-cyan text-white"
+                        : "bg-[#0a0a14] hover:bg-[#131322] border border-white/10 text-neutral-300 hover:text-white"
                     }`}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className={`material-symbols-outlined text-lg ${
-                          isSelected ? "text-cyan-400" : "text-slate-400"
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                          isSelected
+                            ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/40"
+                            : "bg-white/5 text-slate-400 border border-white/5"
                         }`}
                       >
-                        {p.icon}
-                      </span>
+                        <span className="material-symbols-outlined text-lg leading-none">
+                          {p.icon}
+                        </span>
+                      </div>
                       <div>
-                        <div className="text-xs font-bold text-white leading-tight">{p.name}</div>
-                        <div className="text-[10px] font-mono text-slate-400">{p.sub}</div>
+                        <div className="text-xs font-bold leading-tight">{p.name}</div>
+                        <div className="text-[10px] font-mono text-slate-400 mt-0.5 leading-tight">{p.sub}</div>
                       </div>
                     </div>
-                    {isSelected && <span className="w-2 h-2 rounded-full bg-cyan-400"></span>}
+                    {isSelected && (
+                      <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#00f2fe] shrink-0"></span>
+                    )}
                   </button>
                 );
               })}
