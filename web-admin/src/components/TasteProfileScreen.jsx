@@ -54,47 +54,47 @@ export default function TasteProfileScreen() {
   const totalInteractions = tasteProfile?.totalInteractions || 36;
 
   return (
-    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-4 sm:p-8 space-y-6 pb-28">
+    <div className="w-full flex flex-col font-sans text-neutral-200 select-none p-5 sm:p-8 md:p-10 space-y-8 sm:space-y-10 pb-32 max-w-7xl mx-auto">
       {/* Section Title & Meta Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/5">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-[#1DB954]/15 text-[#1DB954] flex items-center justify-center shrink-0 border border-[#1DB954]/20 shadow-md">
-            <span className="material-symbols-outlined text-2xl">insights</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-5 border-b border-white/10">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl bg-[#1DB954]/15 text-[#1DB954] flex items-center justify-center shrink-0 border border-[#1DB954]/25 shadow-md">
+            <span className="material-symbols-outlined text-3xl">insights</span>
           </div>
-          <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#1DB954] font-mono">
+          <div className="space-y-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#1DB954] font-mono block">
               Machine Learning Vector Space
             </span>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-0.5">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
               Music Taste DNA
             </h1>
           </div>
         </div>
 
         {/* Telemetry Count Badge */}
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#181818] border border-white/10 text-[#1DB954] font-mono text-xs shadow-sm self-start sm:self-auto">
+        <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#181818] border border-white/10 text-[#1DB954] font-mono text-xs shadow-sm self-start sm:self-auto leading-none">
           <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-ping" />
-          <span>{totalInteractions} Interactions Processed</span>
+          <span className="font-semibold">{totalInteractions} Interactions Processed</span>
         </div>
       </div>
 
       {/* Dynamic Shift Alert Card */}
-      <section className="bg-[#181818] border border-white/10 rounded-2xl p-5 relative overflow-hidden shadow-lg">
+      <section className="bg-[#181818] border border-white/10 rounded-2xl p-6 sm:p-7 relative overflow-hidden shadow-lg">
         <div className="absolute -right-10 -bottom-10 w-44 h-44 bg-[#1DB954]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="flex items-start gap-4">
-          <div className="p-2.5 rounded-xl bg-[#1DB954]/15 border border-[#1DB954]/30 text-[#1DB954] shrink-0 mt-0.5">
+        <div className="flex items-start gap-4 sm:gap-5">
+          <div className="p-3 rounded-xl bg-[#1DB954]/15 border border-[#1DB954]/30 text-[#1DB954] shrink-0 mt-0.5">
             <span className="material-symbols-outlined text-2xl">autorenew</span>
           </div>
-          <div className="space-y-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-bold text-sm text-[#1DB954] tracking-wide">
+          <div className="space-y-3 min-w-0 flex-1">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h3 className="font-bold text-sm sm:text-base text-[#1DB954] tracking-wide leading-normal">
                 {shiftDetected ? "DYNAMIC PREFERENCE SHIFT DETECTED!" : "STABLE FOCUS TRAJECTORY EQUILIBRIUM"}
               </h3>
-              <span className="font-mono text-[10px] text-white bg-black/50 px-2 py-0.5 rounded border border-white/10 font-bold">
+              <span className="font-mono text-[11px] text-white bg-black/60 px-2.5 py-1 rounded-md border border-white/10 font-bold tracking-wider">
                 MAGNITUDE: {shiftMagnitude}
               </span>
             </div>
-            <p className="text-xs text-neutral-300 leading-relaxed pt-0.5">
+            <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed sm:leading-loose">
               {shiftDetected
                 ? "The model recognized that your latest selection departs from prior tracks (e.g. switching from energetic rhythm to calm melody). Short-term recency weighting (85%) has adapted recommendations to your new mood direction, while preserving foundational preferences."
                 : "Your sequential listening patterns demonstrate harmonic consistency. The dual-horizon ML model maintains an optimal 60/40 balance between core acoustic affinity and subtle adaptive exploratory discovery."}
@@ -104,37 +104,37 @@ export default function TasteProfileScreen() {
       </section>
 
       {/* Acoustic Feature Fingerprint Matrix */}
-      <section className="bg-[#181818] border border-white/5 rounded-2xl p-6 shadow-lg space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/5 pb-3 gap-2">
-          <div>
-            <h3 className="text-base font-bold text-white tracking-tight">
+      <section className="bg-[#181818] border border-white/5 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-3">
+          <div className="space-y-1">
+            <h3 className="text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
               Acoustic Feature Fingerprint (10-Dimensional Vector)
             </h3>
-            <p className="text-xs text-neutral-400 font-mono mt-0.5">
+            <p className="text-xs sm:text-sm text-neutral-400 font-mono leading-normal">
               Real-time weights mapped from audio neural embeddings and binaural spatial analysis
             </p>
           </div>
-          <span className="text-[11px] font-mono text-neutral-400 bg-[#242424] px-3 py-1 rounded-full border border-white/5 self-start sm:self-auto">
+          <span className="text-xs font-mono text-neutral-300 bg-[#242424] px-3.5 py-1.5 rounded-full border border-white/5 self-start sm:self-auto leading-none">
             DSP Normalized
           </span>
         </div>
 
         {/* 10-Dimensional Vector Telemetry Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 pt-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-7 sm:gap-y-8 pt-3 pb-2">
           {dimensions.map((m, idx) => (
-            <div key={idx} className="space-y-1.5">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-medium text-neutral-200 flex items-center gap-1.5">
+            <div key={idx} className="space-y-2.5">
+              <div className="flex justify-between items-center text-xs sm:text-sm">
+                <span className="font-semibold text-neutral-200 flex items-center gap-2">
                   {m.dimension}
                   {m.isSpatial && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-[#1DB954] animate-pulse" />
                   )}
                 </span>
                 <span className={`font-mono font-bold ${m.textCol}`}>{m.value}%</span>
               </div>
-              <div className="w-full bg-[#242424] h-2 rounded-full overflow-hidden p-0.5 border border-white/5">
+              <div className="w-full bg-[#242424] h-2.5 rounded-full overflow-hidden p-0.5 border border-white/5">
                 <div
-                  className={`h-full rounded-full bg-gradient-to-r ${m.color}`}
+                  className={`h-full rounded-full bg-gradient-to-r ${m.color} transition-all duration-500`}
                   style={{
                     width: `${m.value}%`,
                     boxShadow: `0 0 10px ${m.shadow}`,
@@ -147,18 +147,18 @@ export default function TasteProfileScreen() {
       </section>
 
       {/* Selection Sequence & Learning Event Log */}
-      <section className="bg-[#181818] border border-white/5 rounded-2xl p-6 shadow-lg space-y-4">
-        <div className="border-b border-white/5 pb-3">
-          <h3 className="text-base font-bold text-white tracking-tight">
+      <section className="bg-[#181818] border border-white/5 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
+        <div className="border-b border-white/10 pb-4 space-y-1">
+          <h3 className="text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
             Selection Sequence &amp; Learning Event Log
           </h3>
-          <p className="text-xs text-neutral-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-neutral-400 leading-normal">
             Chronological sequence of tracks played, skipped, and favorited that trained this model profile:
           </p>
         </div>
 
         {/* Event Log Table */}
-        <div className="space-y-2 font-mono text-xs">
+        <div className="space-y-3 font-mono text-xs">
           {recentEvents.map((evt, idx) => {
             const badgeStyles = {
               emerald: "bg-[#1DB954]/15 text-[#1DB954] border-[#1DB954]/30",
@@ -169,22 +169,22 @@ export default function TasteProfileScreen() {
             return (
               <div
                 key={idx}
-                className="p-3 rounded-xl bg-[#242424] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-white/10 transition-colors"
+                className="p-3.5 sm:p-4 rounded-xl bg-[#242424] border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-white/15 transition-all shadow-sm"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="w-5 text-neutral-500 text-center font-bold">{idx + 1}</span>
-                  <div className="min-w-0">
-                    <p className="text-white font-sans font-semibold text-xs truncate">{evt.title}</p>
-                    <p className="text-neutral-400 text-[10px] truncate">{evt.category}</p>
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <span className="w-6 text-neutral-500 text-center font-bold text-xs">{idx + 1}</span>
+                  <div className="min-w-0 space-y-1">
+                    <p className="text-white font-sans font-bold text-xs sm:text-sm truncate leading-snug">{evt.title}</p>
+                    <p className="text-neutral-400 text-[11px] sm:text-xs truncate leading-normal">{evt.category}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${badgeStyles}`}>
+                <div className="flex items-center gap-3.5 shrink-0 self-end sm:self-auto">
+                  <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border leading-none ${badgeStyles}`}>
                     {evt.type}
                   </span>
                   <span
-                    className={`font-bold text-xs ${
+                    className={`font-bold text-xs sm:text-sm ${
                       evt.score.startsWith("+") ? "text-[#1DB954]" : "text-red-400"
                     }`}
                   >
@@ -198,14 +198,14 @@ export default function TasteProfileScreen() {
       </section>
 
       {/* Model Reset Action */}
-      <div className="flex items-center justify-between p-5 rounded-2xl bg-[#181818] border border-white/5">
-        <div>
-          <h4 className="text-sm font-bold text-white">Reset Neural Taste Profile</h4>
-          <p className="text-xs text-neutral-400 mt-0.5">Clear interaction history and re-calibrate from scratch</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-6 sm:p-7 rounded-2xl bg-[#181818] border border-white/5 gap-4">
+        <div className="space-y-1">
+          <h4 className="text-sm sm:text-base font-bold text-white leading-snug">Reset Neural Taste Profile</h4>
+          <p className="text-xs sm:text-sm text-neutral-400 leading-normal">Clear interaction history and re-calibrate from scratch</p>
         </div>
         <button
           onClick={() => setShowConfirm(true)}
-          className="px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white text-xs font-semibold transition-all active:scale-95 border border-red-500/20"
+          className="px-5 py-2.5 rounded-full bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white text-xs sm:text-sm font-semibold transition-all active:scale-95 border border-red-500/20 self-start sm:self-auto leading-none min-h-[38px] inline-flex items-center justify-center text-center"
         >
           Reset Profile
         </button>
