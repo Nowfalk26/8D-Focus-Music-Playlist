@@ -92,14 +92,16 @@ export default function OrbitStageScreen({ onNavigate }) {
       {/* Top Header / Telemetry Bar */}
       <div className="px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-[#0a0a14]/80 backdrop-blur-xl border-b border-white/5 rounded-2xl mb-6">
         <div className="flex items-center gap-4 flex-1 max-w-xl w-full">
-          <div className="relative w-full flex items-center">
-            <span className="material-symbols-outlined absolute left-4 text-slate-400 text-lg flex items-center justify-center leading-none">search</span>
+          <div className="flex items-center w-full min-h-[48px] h-12 px-5 py-2.5 rounded-full bg-[#151b21] hover:bg-[#1a222a] focus-within:bg-[#1a222a] border border-white/10 focus-within:border-cyan-400/80 shadow-inner group transition-all duration-200">
+            <span className="material-symbols-outlined shrink-0 select-none pointer-events-none transition-colors text-slate-400 text-2xl mr-3 group-focus-within:text-cyan-400">
+              search
+            </span>
             <input
-              className="w-full bg-[#131322] text-white placeholder:text-slate-400 text-xs rounded-full py-2.5 pl-11 pr-14 focus:outline-none focus:ring-1 focus:ring-cyan-400 border border-white/10 shadow-inner leading-none"
+              className="w-full min-w-0 bg-transparent text-white outline-none placeholder:text-neutral-400 leading-none py-1.5 px-1 text-sm sm:text-base"
               placeholder="Search spatial stems, binaural tracks, HRTF presets..."
               type="text"
             />
-            <span className="absolute right-3.5 text-[10px] font-mono text-slate-400 bg-[#1b1b30] px-2.5 py-1 rounded-full border border-white/10 leading-none">
+            <span className="shrink-0 ml-2 text-[10px] font-mono text-slate-400 bg-[#1b1b30] px-2.5 py-1 rounded-full border border-white/10 leading-none">
               ⌘K
             </span>
           </div>

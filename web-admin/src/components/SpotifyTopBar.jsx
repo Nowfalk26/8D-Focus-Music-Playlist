@@ -52,7 +52,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
       {/* Upper Navigation & Search Row */}
       <div className="py-2.5 sm:py-3 px-4 sm:px-8 flex items-center justify-between gap-3 min-h-[64px]">
         {/* Left: History Navigation & Large Rounded Search Bar */}
-        <div className="flex items-center gap-3 flex-1 max-w-xl">
+        <div className="flex items-center gap-3 flex-1 max-w-2xl">
           {/* Sidebar Toggle Button (like ChatGPT & Antigravity) */}
           {onToggleSidebar && (
             <button
@@ -93,7 +93,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
           {/* Large Rounded Search Bar with Instant Autocomplete */}
           <LiveSearchAutocomplete
             variant="topbar"
-            className="flex-1 max-w-md"
+            className="flex-1 max-w-xl w-full"
             value={topSearch}
             onChange={setTopSearch}
             onNavigate={onSelectTab}
