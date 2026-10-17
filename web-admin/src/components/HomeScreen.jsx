@@ -239,7 +239,7 @@ export default function HomeScreen({ onNavigate }) {
   );
 
   return (
-    <div className="min-h-full select-none bg-[#080d10] p-4 sm:p-6 lg:p-8 space-y-8 pb-36 font-sans text-slate-100 max-w-[1700px] mx-auto">
+    <div className="min-h-full select-none bg-transparent p-4 sm:p-6 lg:p-8 space-y-8 pb-36 font-sans text-slate-100 max-w-[1700px] mx-auto">
       {/* Category Filter Pills (Matching Spotify Reference) */}
       <nav className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pt-1" aria-label="Music categories">
         {["All", "Music", "Podcasts", "Audiobooks", "Tamil Hits", "Spatial 8D"].map((filter) => (

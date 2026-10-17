@@ -44,10 +44,20 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   ];
 
   return (
-    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-0 sm:p-2.5 gap-0 sm:gap-2.5 overflow-hidden text-white font-sans select-none">
-      {/* Upper Section: Spotify Sidebar + Main Content Stage */}
-      <div className="flex-1 flex gap-2.5 sm:gap-3.5 min-h-0 overflow-hidden">
-        {/* Spotify Sidebar (Left Navigation & Your Library Dock on Desktop) */}
+    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-1.5 sm:p-2.5 gap-1.5 sm:gap-2.5 overflow-hidden text-white font-sans select-none">
+      {/* Top Global Navigation Bar (Spanning across top with Image 2 search bar) */}
+      <SpotifyTopBar
+        activeTab={activeTab}
+        onSelectTab={onSelectTab}
+        user={user}
+        onLogout={onLogout}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={toggleSidebar}
+      />
+
+      {/* Middle Section: Floating Left Sidebar Card + Floating Main Content Card */}
+      <div className="flex-1 flex gap-2 sm:gap-2.5 min-h-0 overflow-hidden">
+        {/* Left Card: Spotify Sidebar (Black Rounded Square Shape) */}
         <SpotifySidebar
           activeTab={activeTab}
           onSelectTab={onSelectTab}
@@ -55,19 +65,9 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
           onToggleSidebar={toggleSidebar}
         />
 
-        {/* Spotify Main Content Window */}
-        <div className="flex-1 flex flex-col bg-[#121212] sm:rounded-2xl overflow-hidden shadow-2xl relative border-0 sm:border border-white/10 transition-all duration-300">
-          {/* Top Sticky Bar with History, Search, Mode Pill, Profile */}
-          <SpotifyTopBar
-            activeTab={activeTab}
-            onSelectTab={onSelectTab}
-            user={user}
-            onLogout={onLogout}
-            isSidebarOpen={isSidebarOpen}
-            onToggleSidebar={toggleSidebar}
-          />
-
-          {/* Main Scrollable View Area */}
+        {/* Center Card: Main Stage (Black Rounded Square Shape containing all UI options) */}
+        <div className="flex-1 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-2xl relative border border-white/10 transition-all duration-300 min-h-0">
+          {/* Main Scrollable View Area: all UI design & options are inside this black card */}
           <main className="flex-1 overflow-y-auto no-scrollbar">
             {children}
           </main>

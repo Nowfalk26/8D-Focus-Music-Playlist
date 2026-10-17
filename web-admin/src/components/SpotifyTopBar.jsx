@@ -48,9 +48,9 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
   };
 
   return (
-    <header className={`sticky top-0 z-30 bg-[#121212]/95 backdrop-blur-xl border-b border-white/5 select-none transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
+    <header className={`w-full z-30 bg-[#000000] select-none shrink-0 transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
       {/* Upper Navigation & Search Row */}
-      <div className="py-2.5 sm:py-3 px-4 sm:px-8 flex items-center justify-between gap-3 min-h-[64px]">
+      <div className="py-1 px-1 sm:px-2 flex items-center justify-between gap-3 min-h-[52px]">
         {/* Left: History Navigation & Large Rounded Search Bar */}
         <div className="flex items-center gap-3 flex-1 max-w-2xl">
           {/* Sidebar Toggle Button (like ChatGPT & Antigravity) */}
