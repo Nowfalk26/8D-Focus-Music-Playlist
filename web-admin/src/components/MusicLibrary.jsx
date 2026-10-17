@@ -361,8 +361,8 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
         <form onSubmit={handleSearchSubmit} className="max-w-4xl mx-auto w-full">
           <div className="relative flex items-center w-full h-12 rounded-xl bg-[#242424] hover:bg-[#282828] focus-within:bg-[#282828] focus-within:ring-2 focus-within:ring-[#1DB954] border border-white/10 shadow-md transition-all duration-200">
             {/* Search Icon */}
-            <div className="flex items-center pl-3.5 pr-2 pointer-events-none text-neutral-300">
-              <span className="material-symbols-outlined text-[24px]">search</span>
+            <div className="flex items-center justify-center pl-3.5 pr-2 pointer-events-none text-neutral-300">
+              <span className="material-symbols-outlined text-[24px] flex items-center justify-center leading-none">search</span>
             </div>
 
             {/* Main Input Text */}
@@ -371,7 +371,7 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="What do you want to listen to?"
-              className="w-full bg-transparent text-white placeholder:text-neutral-400 font-medium text-sm outline-none pr-2 leading-none"
+              className="w-full h-full bg-transparent text-white placeholder:text-neutral-400 font-medium text-sm outline-none pr-2 leading-none flex items-center"
             />
 
             {/* Clear Input Button (when text entered) */}
@@ -379,10 +379,10 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white mr-1 active:scale-90 transition-transform"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white mr-1 active:scale-90 transition-transform leading-none"
                 title="Clear input"
               >
-                <span className="material-symbols-outlined text-base">close</span>
+                <span className="material-symbols-outlined text-base flex items-center justify-center leading-none">close</span>
               </button>
             )}
 
@@ -391,10 +391,10 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               type="button"
               onClick={() => setShowCameraLens(true)}
               aria-label="Scan audio or Flow 8D code"
-              className="flex items-center justify-center w-11 h-11 text-neutral-300 mr-1 hover:text-[#1DB954] transition-colors active:scale-95"
+              className="flex items-center justify-center w-11 h-11 text-neutral-300 mr-1 hover:text-[#1DB954] transition-colors active:scale-95 leading-none"
               title="Flow 8D Camera Lens"
             >
-              <span className="material-symbols-outlined text-[22px]">photo_camera</span>
+              <span className="material-symbols-outlined text-[22px] flex items-center justify-center leading-none">photo_camera</span>
             </button>
           </div>
         </form>
@@ -441,40 +441,40 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                 {filteredSongs.length > 0 && (
                   <button
                     onClick={() => playSong(filteredSongs[0], filteredSongs)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1DB954] text-black text-xs font-bold hover:scale-105 active:scale-95 transition-transform shadow-lg"
+                    className="inline-flex items-center justify-center text-center gap-1.5 px-4 py-2 rounded-full bg-[#1DB954] text-black text-xs font-bold hover:scale-105 active:scale-95 transition-transform shadow-lg leading-none min-h-[34px]"
                   >
-                    <span className="material-symbols-outlined text-base font-black">play_arrow</span>
-                    <span>Play All</span>
+                    <span className="material-symbols-outlined text-base font-black flex items-center justify-center leading-none">play_arrow</span>
+                    <span className="inline-flex items-center justify-center leading-none">Play All</span>
                   </button>
                 )}
 
                 {/* View Mode Toggle */}
-                <div className="flex items-center bg-[#242424] rounded-full p-0.5 border border-white/5">
+                <div className="flex items-center justify-center bg-[#242424] rounded-full p-0.5 border border-white/5">
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`p-1.5 rounded-full transition-colors ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors leading-none ${
                       viewMode === "list" ? "bg-white/20 text-white" : "text-neutral-400 hover:text-white"
                     }`}
                     title="List View"
                   >
-                    <span className="material-symbols-outlined text-lg">view_list</span>
+                    <span className="material-symbols-outlined text-lg flex items-center justify-center leading-none">view_list</span>
                   </button>
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`p-1.5 rounded-full transition-colors ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors leading-none ${
                       viewMode === "grid" ? "bg-white/20 text-white" : "text-neutral-400 hover:text-white"
                     }`}
                     title="Grid View"
                   >
-                    <span className="material-symbols-outlined text-lg">grid_view</span>
+                    <span className="material-symbols-outlined text-lg flex items-center justify-center leading-none">grid_view</span>
                   </button>
                 </div>
 
                 <button
                   onClick={handleClearFilters}
-                  className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs text-neutral-300 hover:text-white transition-colors"
+                  className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs text-neutral-300 hover:text-white transition-colors inline-flex items-center justify-center text-center leading-none min-h-[34px]"
                 >
-                  Clear All
+                  <span className="inline-flex items-center justify-center leading-none">Clear All</span>
                 </button>
               </div>
             </div>
@@ -503,13 +503,13 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                         setSelectedGenre(m.id);
                       }
                     }}
-                    className={`inline-flex items-center justify-center text-center px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                    className={`inline-flex items-center justify-center text-center px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all select-none leading-none min-h-[36px] ${
                       isSelected
                         ? "bg-[#1DB954] text-black font-bold shadow-md"
                         : "bg-[#1f1f1f] hover:bg-[#282828] text-neutral-300 border border-white/5"
                     }`}
                   >
-                    {m.label}
+                    <span className="inline-flex items-center justify-center text-center leading-none">{m.label}</span>
                   </button>
                 );
               })}
@@ -521,10 +521,10 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                 <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-1 text-neutral-400">
                   <span className="material-symbols-outlined text-3xl">search_off</span>
                 </div>
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold text-white text-center">
                   No matching tracks found {searchQuery ? `for "${searchQuery}"` : ""}
                 </h3>
-                <p className="text-neutral-400 text-xs max-w-sm">
+                <p className="text-neutral-400 text-xs max-w-sm text-center">
                   {searchQuery
                     ? `"${searchQuery}" is not in the library yet. You can add it directly to Flow 8D right now!`
                     : "No songs match the current category or genre filters."}
@@ -535,17 +535,17 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     <button
                       type="button"
                       onClick={() => setIsAddModalOpen(true)}
-                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all"
+                      className="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-bold text-xs inline-flex items-center justify-center text-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all min-h-[38px] leading-none"
                     >
                       <span className="material-symbols-outlined text-base">library_add</span>
-                      <span>+ Add &ldquo;{searchQuery}&rdquo; to Music Library</span>
+                      <span className="inline-flex items-center justify-center text-center leading-none">+ Add &ldquo;{searchQuery}&rdquo; to Music Library</span>
                     </button>
                   )}
                   <button
                     onClick={handleClearFilters}
-                    className="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all"
+                    className="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold inline-flex items-center justify-center text-center transition-all min-h-[38px] leading-none"
                   >
-                    Browse All Categories
+                    <span className="inline-flex items-center justify-center text-center leading-none">Browse All Categories</span>
                   </button>
                 </div>
               </div>
