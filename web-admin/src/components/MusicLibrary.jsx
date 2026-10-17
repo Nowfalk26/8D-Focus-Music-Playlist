@@ -437,59 +437,59 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
               </div>
 
               {/* Action Toolbar */}
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 {filteredSongs.length > 0 && (
                   <button
                     onClick={() => playSong(filteredSongs[0], filteredSongs)}
-                    className="inline-flex items-center justify-center text-center gap-2 px-5 py-2 rounded-full bg-[#1DB954] text-black text-xs font-bold hover:scale-105 active:scale-95 transition-transform shadow-lg leading-none min-h-[36px]"
+                    className="spotify-cat-btn spotify-cat-btn-active !text-xs !min-h-[32px] !py-1.5 !px-4 font-bold gap-1.5"
                   >
                     <span className="material-symbols-outlined text-base font-black flex items-center justify-center leading-none">play_arrow</span>
-                    <span className="inline-flex items-center justify-center leading-none px-1">Play All</span>
+                    <span className="inline-flex items-center justify-center leading-none">Play All</span>
                   </button>
                 )}
 
                 {/* View Mode Toggle */}
-                <div className="flex items-center justify-center bg-[#242424] rounded-full p-1 border border-white/5 gap-0.5">
+                <div className="flex items-center justify-center bg-[#232323] rounded-full p-0.5 border border-white/5 gap-0.5">
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors leading-none ${
+                    className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors leading-none ${
                       viewMode === "list" ? "bg-white/20 text-white" : "text-neutral-400 hover:text-white"
                     }`}
                     title="List View"
                   >
-                    <span className="material-symbols-outlined text-lg flex items-center justify-center leading-none">view_list</span>
+                    <span className="material-symbols-outlined text-base flex items-center justify-center leading-none">view_list</span>
                   </button>
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors leading-none ${
+                    className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors leading-none ${
                       viewMode === "grid" ? "bg-white/20 text-white" : "text-neutral-400 hover:text-white"
                     }`}
                     title="Grid View"
                   >
-                    <span className="material-symbols-outlined text-lg flex items-center justify-center leading-none">grid_view</span>
+                    <span className="material-symbols-outlined text-base flex items-center justify-center leading-none">grid_view</span>
                   </button>
                 </div>
 
                 <button
                   onClick={handleClearFilters}
-                  className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-xs text-neutral-300 hover:text-white transition-colors inline-flex items-center justify-center text-center leading-none min-h-[36px]"
+                  className="spotify-cat-btn spotify-cat-btn-inactive !text-xs !min-h-[32px] !py-1.5 !px-3.5 font-bold"
                 >
-                  <span className="inline-flex items-center justify-center leading-none px-1">Clear All</span>
+                  <span className="inline-flex items-center justify-center leading-none">Clear All</span>
                 </button>
               </div>
             </div>
 
             {/* Mood Pills Strip with All Requested Playlists */}
-            <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1.5">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2">
               {[
-                { id: "All", label: "🌐 All Songs" },
-                { id: "2026 Trending", label: "⚡ 2026 Trending" },
-                { id: "All Time Trending", label: "🔥 All Time Trending" },
-                { id: "Melody", label: "🎵 Pure Melody" },
-                { id: "Vibe", label: "🎉 Party & Vibe" },
-                { id: "Sad", label: "💔 Sad" },
-                { id: "Love", label: "❤️ Love" },
-                { id: "Love Failure", label: "🥀 Love Failure" },
+                { id: "All", label: "All Songs" },
+                { id: "2026 Trending", label: "2026 Trending" },
+                { id: "All Time Trending", label: "All Time Trending" },
+                { id: "Melody", label: "Pure Melody" },
+                { id: "Vibe", label: "Party & Vibe" },
+                { id: "Sad", label: "Sad" },
+                { id: "Love", label: "Love" },
+                { id: "Love Failure", label: "Love Failure" },
               ].map((m) => {
                 const isSelected = selectedGenre === m.id || selectedCategory === m.id;
                 return (
@@ -497,19 +497,19 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     key={m.id}
                     onClick={() => {
                       if (m.id === "2026 Trending" || m.id === "All Time Trending") {
-                         setSelectedCategory(m.id);
+                        setSelectedCategory(m.id);
                         setSelectedGenre("All");
                       } else {
                         setSelectedGenre(m.id);
                       }
                     }}
-                    className={`inline-flex items-center justify-center text-center px-5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all select-none leading-none min-h-[38px] ${
-                      isSelected
-                        ? "bg-[#1DB954] text-black font-bold shadow-md"
-                        : "bg-[#1f1f1f] hover:bg-[#282828] text-neutral-300 border border-white/5"
+                    className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
+                      isSelected ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
                     }`}
                   >
-                    <span className="inline-flex items-center justify-center text-center leading-none px-1">{m.label}</span>
+                    <span className="inline-flex items-center justify-center text-center leading-none">
+                      {m.label}
+                    </span>
                   </button>
                 );
               })}
@@ -530,22 +530,26 @@ export default function MusicLibrary({ onNavigate, initialCategory = "All" }) {
                     : "No songs match the current category or genre filters."}
                 </p>
 
-                <div className="flex flex-wrap items-center justify-center gap-3.5 mt-3">
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
                   {searchQuery && (
                     <button
                       type="button"
                       onClick={() => setIsAddModalOpen(true)}
-                      className="px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-bold text-xs inline-flex items-center justify-center text-center gap-2.5 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all min-h-[40px] leading-none"
+                      className="spotify-cat-btn spotify-cat-btn-active !text-xs !min-h-[36px] !py-2 !px-5 font-bold gap-2"
                     >
-                      <span className="material-symbols-outlined text-base">library_add</span>
-                      <span className="inline-flex items-center justify-center text-center leading-none px-1">+ Add &ldquo;{searchQuery}&rdquo; to Music Library</span>
+                      <span className="material-symbols-outlined text-[18px] leading-none flex items-center justify-center">library_add</span>
+                      <span className="inline-flex items-center justify-center text-center leading-none">
+                        + Add &ldquo;{searchQuery}&rdquo; to Music Library
+                      </span>
                     </button>
                   )}
                   <button
                     onClick={handleClearFilters}
-                    className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold inline-flex items-center justify-center text-center transition-all min-h-[40px] leading-none"
+                    className="spotify-cat-btn spotify-cat-btn-inactive !text-xs !min-h-[36px] !py-2 !px-5 font-bold"
                   >
-                    <span className="inline-flex items-center justify-center text-center leading-none px-1">Browse All Categories</span>
+                    <span className="inline-flex items-center justify-center text-center leading-none">
+                      Browse All Categories
+                    </span>
                   </button>
                 </div>
               </div>
