@@ -477,16 +477,17 @@ input, select, textarea {
 }
 
 /* ============================================================== */
-/* 🏷️ SPOTIFY CATEGORY BUTTONS (Exact Reference Squircle)        */
+/* ============================================================== */
+/* 🏷️ SPOTIFY CATEGORY BUTTONS (Exact Reference Pill)             */
 /* ============================================================== */
 .spotify-cat-btn {
-  border-radius: 14px !important;
+  border-radius: 9999px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
-  padding: 8px 22px !important;
-  min-height: 38px !important;
+  padding: 6px 16px !important;
+  min-height: 32px !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   line-height: 1 !important;
@@ -495,25 +496,26 @@ input, select, textarea {
   flex-shrink: 0 !important;
   cursor: pointer !important;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  user-select: none !important;
 }
 
 .spotify-cat-btn-active {
   background-color: #1ed760 !important;
   color: #000000 !important;
-  box-shadow: 0 4px 14px rgba(30, 215, 96, 0.35) !important;
+  box-shadow: 0 2px 10px rgba(30, 215, 96, 0.35) !important;
   border: 1px solid transparent !important;
 }
 
 .spotify-cat-btn-inactive {
-  background-color: #1a2026 !important;
-  color: #e2e8f0 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background-color: #232323 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
 .spotify-cat-btn-inactive:hover {
-  background-color: #242c34 !important;
+  background-color: #2a2a2a !important;
   color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* ============================================================== */

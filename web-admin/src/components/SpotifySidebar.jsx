@@ -134,22 +134,28 @@ export default function SpotifySidebar({ activeTab, onSelectTab }) {
         </div>
 
         {/* Quick Library Filter Chips */}
-        <div className="flex items-center gap-3 px-2 py-2 mb-5 overflow-x-auto no-scrollbar shrink-0" style={{ marginBottom: "20px" }}>
-          {["all", "playlists", "8D", "favorites"].map((f) => (
-            <button
-              key={f}
-              onClick={() => {
-                setLibraryFilter(f);
-                if (f === "favorites") onSelectTab("library", "Favorites");
-                else if (f === "8D") onSelectTab("library", "8D");
-              }}
-              className={`spotify-cat-btn !text-xs !min-h-[34px] !py-2 !px-4 capitalize ${
-                libraryFilter === f ? "spotify-cat-btn-active" : "spotify-cat-btn-inactive"
-              }`}
-            >
-              {f === "8D" ? "8D Spatial" : f === "favorites" ? "Liked" : f}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 px-2 py-2 mb-4 overflow-x-auto no-scrollbar shrink-0">
+          {["all", "playlists", "8D", "favorites"].map((f) => {
+            const isActive = libraryFilter === f;
+            const label = f === "all" ? "All" : f === "playlists" ? "Playlists" : f === "8D" ? "8D Spatial" : "Liked";
+            return (
+              <button
+                key={f}
+                onClick={() => {
+                  setLibraryFilter(f);
+                  if (f === "favorites") onSelectTab("library", "Favorites");
+                  else if (f === "8D") onSelectTab("library", "8D");
+                }}
+                className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-3.5 ${
+                  isActive ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
+                }`}
+              >
+                <span className="inline-flex items-center justify-center text-center leading-none">
+                  {label}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Scrollable Channels & Playlists Container */}

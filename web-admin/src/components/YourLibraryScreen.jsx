@@ -16,7 +16,7 @@ export default function YourLibraryScreen({ onNavigate }) {
     openModeSelector,
   } = usePlayer();
 
-  const [activeFilter, setActiveFilter] = useState("Playlists"); // 'Playlists' | 'Podcasts' | 'Albums' | 'Artists' | 'Downloaded'
+  const [activeFilter, setActiveFilter] = useState("All"); // 'All' | 'Playlists' | 'Podcasts & Shows' | 'Albums' | 'Artists' | 'Downloaded'
   const [sortOption, setSortOption] = useState("Recents"); // 'Recents' | 'Recently Added' | 'Alphabetical' | 'Creator'
   const [viewMode, setViewMode] = useState("list"); // 'list' | 'grid'
   const [librarySearch, setLibrarySearch] = useState("");
@@ -197,12 +197,14 @@ export default function YourLibraryScreen({ onNavigate }) {
     },
   ];
 
-  const filterTabs = ["Playlists", "Podcasts & Shows", "Albums", "Artists", "Downloaded"];
+  const filterTabs = ["All", "Playlists", "Podcasts & Shows", "Albums", "Artists", "Downloaded"];
 
   // Filter items based on active pill and search query
   const filteredEntries = libraryEntries.filter((item) => {
     const matchesFilter =
-      activeFilter === "Playlists"
+      activeFilter === "All"
+        ? true
+        : activeFilter === "Playlists"
         ? item.categoryType === "Playlists"
         : activeFilter === "Podcasts & Shows"
         ? item.categoryType === "Podcasts & Shows"
@@ -338,22 +340,18 @@ export default function YourLibraryScreen({ onNavigate }) {
       )}
 
       {/* ============================================================== */}
-      {/* 3. FILTER PILLS SCROLLER (Exact Stitch Spec) */}
-      {/* ============================================================== */}
-      <div className="px-4 sm:px-8 py-2.5 overflow-x-auto no-scrollbar flex items-center gap-2.5 max-w-7xl mx-auto w-full">
+      <div className="px-4 sm:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2 max-w-7xl mx-auto w-full">
         {filterTabs.map((tab) => {
           const isActive = activeFilter === tab;
           return (
             <button
               key={tab}
               onClick={() => setActiveFilter(tab)}
-              className={`shrink-0 inline-flex items-center justify-center text-center px-5 py-2.5 rounded-full font-semibold text-xs transition-all active:scale-95 select-none leading-none min-h-[38px] whitespace-nowrap shadow-sm ${
-                isActive
-                  ? "bg-[#1DB954] text-black font-bold shadow-[0_2px_10px_rgba(29,185,84,0.35)]"
-                  : "bg-[#242424] text-neutral-300 hover:bg-[#2e2e2e] hover:text-white border border-white/5"
+              className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
+                isActive ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
               }`}
             >
-              <span className="inline-flex items-center justify-center text-center leading-none px-1">
+              <span className="inline-flex items-center justify-center text-center leading-none">
                 {tab}
               </span>
             </button>
