@@ -20,44 +20,88 @@ export default function SpotifyTopBar({
   return (
     <header className="w-full z-30 select-none shrink-0 px-2 sm:px-4 py-2">
       <div className="flex items-center justify-between gap-3 min-h-[48px]">
-        {/* Left: Sidebar Toggle (on mobile / smaller screens) + Search Bar */}
-        <div className="flex items-center gap-3 flex-1 max-w-xl">
+        {/* Left: Mobile Toggle & Desktop History Navigation Arrows */}
+        <div className="flex items-center gap-2 shrink-0">
           {onToggleSidebar && (
             <button
               type="button"
               onClick={onToggleSidebar}
-              className="w-9 h-9 rounded-xl md:hidden flex items-center justify-center bg-[#181818] hover:bg-[#222222] text-neutral-300 hover:text-white border border-[#262626] transition-all shrink-0"
+              className="w-10 h-10 rounded-full md:hidden flex items-center justify-center bg-[#181818] hover:bg-[#222222] text-neutral-300 hover:text-white border border-[#262626] transition-all shrink-0"
               title="Toggle sidebar"
             >
               <span className="material-symbols-outlined text-xl">menu</span>
             </button>
           )}
 
-          {/* Search Input matching GreenWave screenshot */}
-          <div className="relative flex-1">
+          {/* Spotify-style Previous / Next History Buttons */}
+          <div className="hidden sm:flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => window.history.back()}
+              className="w-8 h-8 rounded-full bg-[#181818] hover:bg-[#222222] text-neutral-400 hover:text-white border border-[#262626] flex items-center justify-center transition-colors"
+              title="Go back"
+            >
+              <span className="material-symbols-outlined text-lg">chevron_left</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => window.history.forward()}
+              className="w-8 h-8 rounded-full bg-[#181818] hover:bg-[#222222] text-neutral-400 hover:text-white border border-[#262626] flex items-center justify-center transition-colors"
+              title="Go forward"
+            >
+              <span className="material-symbols-outlined text-lg">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Center: Spotify-Style Single Horizontal Navigation Group (Circular Home + Wider Search Bar) */}
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-1 max-w-xl sm:max-w-2xl justify-center mx-auto">
+          {/* Circular Home Button */}
+          <button
+            type="button"
+            onClick={() => onSelectTab("home")}
+            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all shrink-0 shadow-sm ${
+              activeTab === "home"
+                ? "bg-[#282828] text-white ring-1 ring-white/20 shadow-md"
+                : "bg-[#181818] hover:bg-[#222222] text-neutral-400 hover:text-white border border-[#262626]"
+            }`}
+            title="Home"
+          >
+            <span
+              className={`material-symbols-outlined text-2xl ${
+                activeTab === "home" ? "text-white" : "text-neutral-400"
+              }`}
+              style={{ fontVariationSettings: activeTab === "home" ? "'FILL' 1" : "'FILL' 0" }}
+            >
+              home
+            </span>
+          </button>
+
+          {/* Wider Search Bar with balanced padding and rounded corners */}
+          <div className="relative flex-1 min-w-0">
             <LiveSearchAutocomplete
               variant="topbar"
               className="w-full"
               value={topSearch}
               onChange={setTopSearch}
               onNavigate={onSelectTab}
-              placeholder="Search your Song"
+              placeholder="What do you want to play?"
             />
           </div>
         </div>
 
-        {/* Right Toolbar: Notifications, Settings, User Profile */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        {/* Right Toolbar: Notifications, Settings, Profile Controls neatly aligned */}
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           {/* Notifications Bell */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setShowNotifications(!showNotifications)}
-              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center relative transition-colors"
+              className="w-10 h-10 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center relative transition-colors shadow-sm"
               title="Notifications"
             >
               <span className="material-symbols-outlined text-lg">notifications</span>
-              <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#10b981]" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#10b981]" />
             </button>
 
             {showNotifications && (
@@ -85,7 +129,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={() => setShowSettings(!showSettings)}
-              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center transition-colors shadow-sm"
               title="Settings"
             >
               <span className="material-symbols-outlined text-lg">settings</span>
@@ -125,7 +169,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={onToggleRightPanel}
-              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center xl:hidden transition-colors"
+              className="w-10 h-10 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center xl:hidden transition-colors shadow-sm"
               title="Toggle Playlist & Player"
             >
               <span className="material-symbols-outlined text-lg">queue_music</span>
@@ -137,7 +181,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2.5 p-1 pr-3 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-left transition-colors"
+              className="h-10 flex items-center gap-2.5 p-1 pr-3.5 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-left transition-colors shadow-sm"
             >
               <img
                 src={

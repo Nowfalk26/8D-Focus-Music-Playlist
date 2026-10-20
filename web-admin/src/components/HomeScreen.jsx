@@ -20,6 +20,7 @@ export default function HomeScreen({ onNavigate }) {
   const [songs, setSongs] = useState(() => staticSongs);
   const [categories, setCategories] = useState([]);
   const [showTasteModal, setShowTasteModal] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("all"); // 'all' | 'music' | 'podcasts'
   const [isFollowingHero, setIsFollowingHero] = useState(true);
   const [followingArtists, setFollowingArtists] = useState(
     new Set(["Leonard Cohen.", "Dazara Wilde", "Jackson Wang", "Billie Eilish"])
@@ -141,237 +142,346 @@ export default function HomeScreen({ onNavigate }) {
     isPlaying;
 
   return (
-    <div className="w-full min-w-0 flex flex-col font-sans text-neutral-100 select-none p-4 sm:p-6 lg:p-7 space-y-7 pb-36 max-w-[1300px] mx-auto box-border">
+    <div className="w-full min-w-0 flex flex-col font-sans text-neutral-100 select-none p-4 sm:p-5 lg:p-6 space-y-6 sm:space-y-7 pb-36 max-w-[1300px] mx-auto box-border">
+      {/* ============================================================== */}
+      {/* 🔘 TOP FILTER PILL BUTTONS (All, Music, Podcasts)              */}
+      {/* ============================================================== */}
+      <div className="flex items-center gap-2 shrink-0 pt-0.5 pb-0.5">
+        {[
+          { id: "all", label: "All" },
+          { id: "music", label: "Music" },
+          { id: "podcasts", label: "Podcasts" },
+        ].map((filter) => {
+          const isActive = activeFilter === filter.id;
+          return (
+            <button
+              key={filter.id}
+              type="button"
+              onClick={() => setActiveFilter(filter.id)}
+              className={`h-8 px-4 rounded-full text-xs font-semibold transition-all duration-150 inline-flex items-center justify-center whitespace-nowrap shadow-sm select-none ${
+                isActive
+                  ? "bg-white text-black font-bold shadow-md"
+                  : "bg-[#222222] hover:bg-[#2c2c2c] text-neutral-200 hover:text-white border border-white/5"
+              }`}
+            >
+              {filter.label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* ============================================================== */}
       {/* 🌟 1. REDESIGNED HERO BANNER (Compact & Balanced Alignment)     */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#141b17] via-[#111613] to-[#151a17] border border-[#262626] p-5 sm:p-6 lg:p-7 shadow-xl">
-        {/* Subtle dark ambient aura */}
-        <div className="absolute right-0 bottom-0 w-80 h-80 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
+      {activeFilter !== "podcasts" && (
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#141b17] via-[#111613] to-[#151a17] border border-[#262626] p-5 sm:p-6 lg:p-7 shadow-xl">
+          {/* Subtle dark ambient aura */}
+          <div className="absolute right-0 bottom-0 w-80 h-80 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-5 lg:gap-8">
-          {/* Left Metadata & Actions */}
-          <div className="flex-1 min-w-0 text-left py-0.5">
-            {/* Verified Artist Pill */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-2.5">
-              <span className="material-symbols-outlined text-sm text-[#10b981]">verified</span>
-              <span>Verified Artist</span>
-            </div>
+          <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-5 lg:gap-8">
+            {/* Left Metadata & Actions */}
+            <div className="flex-1 min-w-0 text-left py-0.5">
+              {/* Verified Artist Pill */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-2.5">
+                <span className="material-symbols-outlined text-sm text-[#10b981]">verified</span>
+                <span>Verified Artist</span>
+              </div>
 
-            {/* Oversized Bold Artist Name */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              Billie Eilish
-            </h1>
+              {/* Oversized Bold Artist Name */}
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                Billie Eilish
+              </h1>
 
-            {/* Monthly Listeners / Metadata */}
-            <p className="mt-1.5 text-xs sm:text-sm text-[#a1a1aa] font-medium">
-              109,482,631 monthly listeners
-            </p>
+              {/* Monthly Listeners / Metadata */}
+              <p className="mt-1.5 text-xs sm:text-sm text-[#a1a1aa] font-medium">
+                109,482,631 monthly listeners
+              </p>
 
-            {/* Action Buttons: Standard 38px height + Circular Play Button */}
-            <div className="mt-5 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setIsFollowingHero(!isFollowingHero)}
-                className={`h-[38px] px-5 rounded-full text-[13px] font-bold inline-flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm whitespace-nowrap ${
-                  isFollowingHero
-                    ? "bg-[#dcfce7] text-[#064e3b] hover:bg-[#bbf7d0]"
-                    : "bg-white/10 text-white hover:bg-white/15"
-                }`}
-              >
-                <span>{isFollowingHero ? "Following" : "+ Follow"}</span>
-                <span className="material-symbols-outlined text-sm font-bold">north_east</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (currentSong && isHeroPlaying) {
-                    togglePlay();
-                  } else {
-                    playSong(heroTrack, trendingAlbums);
-                  }
-                }}
-                className="w-[42px] h-[42px] rounded-full bg-[#10b981] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25 shrink-0"
-                title={isHeroPlaying ? "Pause" : "Play Billie Eilish"}
-              >
-                <span
-                  className="material-symbols-outlined text-2xl font-bold ml-0.5"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
+              {/* Action Buttons: Following Pill + Circular Play Button */}
+              <div className="mt-5 flex items-center gap-3 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setIsFollowingHero(!isFollowingHero)}
+                  className={`h-9 px-4.5 sm:px-5 rounded-full text-xs sm:text-[13px] font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-sm shrink-0 whitespace-nowrap select-none ${
+                    isFollowingHero
+                      ? "bg-[#dcfce7] text-[#064e3b] hover:bg-[#bbf7d0]"
+                      : "bg-white/10 text-white hover:bg-white/15"
+                  }`}
                 >
-                  {isHeroPlaying ? "pause" : "play_arrow"}
-                </span>
-              </button>
-            </div>
-          </div>
+                  <span>{isFollowingHero ? "Following" : "+ Follow"}</span>
+                  <span className="material-symbols-outlined text-sm font-bold">north_east</span>
+                </button>
 
-          {/* Right Featured Artist Cut-Out Artwork (Proportionate & Sleek) */}
-          <div className="relative shrink-0 flex items-center justify-center w-full md:w-auto">
-            <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:w-64 md:h-48 lg:w-72 lg:h-52 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-[#0e1712]">
-              <img
-                src="/billie-hero.png"
-                alt="Billie Eilish"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentSong && isHeroPlaying) {
+                      togglePlay();
+                    } else {
+                      playSong(heroTrack, trendingAlbums);
+                    }
+                  }}
+                  className="w-10 h-10 rounded-full bg-[#10b981] hover:bg-[#059669] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25 shrink-0"
+                  title={isHeroPlaying ? "Pause" : "Play Billie Eilish"}
+                >
+                  <span
+                    className="material-symbols-outlined text-xl font-bold ml-0.5"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    {isHeroPlaying ? "pause" : "play_arrow"}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Right Featured Artist Cut-Out Artwork (Proportionate & Sleek) */}
+            <div className="relative shrink-0 flex items-center justify-center w-full md:w-auto">
+              <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:w-64 md:h-48 lg:w-72 lg:h-52 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-[#0e1712]">
+                <img
+                  src="/billie-hero.png"
+                  alt="Billie Eilish"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ============================================================== */}
       {/* 💿 2. TRENDING ALBUMS (Full-Width Even Distribution & Uniform)  */}
       {/* ============================================================== */}
-      <section className="w-full">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
-            Trending Albums
-          </h2>
-          <button
-            type="button"
-            onClick={() => onNavigate("library")}
-            className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center transition-colors whitespace-nowrap"
-          >
-            See All
-          </button>
-        </div>
+      {activeFilter !== "podcasts" && (
+        <section className="w-full">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              Trending Albums
+            </h2>
+            <button
+              type="button"
+              onClick={() => onNavigate("library")}
+              className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center transition-colors whitespace-nowrap"
+            >
+              See All
+            </button>
+          </div>
 
-        {/* 4 Cards evenly distributed across full width with 1:1 Aspect Ratio */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
-          {trendingAlbums.map((album) => {
-            const isPlayingThis =
-              currentSong &&
-              (currentSong.title === album.title || currentSong._id === album.id) &&
-              isPlaying;
+          {/* 4 Cards evenly distributed across full width with 1:1 Aspect Ratio */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
+            {trendingAlbums.map((album) => {
+              const isPlayingThis =
+                currentSong &&
+                (currentSong.title === album.title || currentSong._id === album.id) &&
+                isPlaying;
 
-            return (
-              <div
-                key={album.id}
-                onClick={() => playSong(album, trendingAlbums)}
-                className="group flex flex-col justify-between bg-[#181818] border border-[#262626] hover:border-white/20 rounded-2xl p-3 transition-all duration-200 cursor-pointer shadow-md hover:-translate-y-0.5 w-full h-full"
-              >
-                {/* 1:1 Square Aspect Ratio Cover */}
-                <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#202020] mb-2.5 shrink-0">
-                  <img
-                    src={album.cover}
-                    alt={album.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity" />
+              return (
+                <div
+                  key={album.id}
+                  onClick={() => playSong(album, trendingAlbums)}
+                  className="group flex flex-col justify-between bg-[#181818] border border-[#262626] hover:border-white/20 rounded-2xl p-3 transition-all duration-200 cursor-pointer shadow-md hover:-translate-y-0.5 w-full h-full"
+                >
+                  {/* 1:1 Square Aspect Ratio Cover */}
+                  <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#202020] mb-2.5 shrink-0">
+                    <img
+                      src={album.cover}
+                      alt={album.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Floating Circular Play FAB */}
-                  <div
-                    className={`absolute right-2 bottom-2 transition-all duration-200 ${
-                      isPlayingThis
-                        ? "opacity-100 translate-y-0 scale-100"
-                        : "opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-105"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        playSong(album, trendingAlbums);
-                      }}
-                      className="w-8 h-8 rounded-full bg-[#10b981] text-black flex items-center justify-center shadow-lg"
+                    {/* Floating Circular Play FAB */}
+                    <div
+                      className={`absolute right-2 bottom-2 transition-all duration-200 ${
+                        isPlayingThis
+                          ? "opacity-100 translate-y-0 scale-100"
+                          : "opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-105"
+                      }`}
                     >
-                      <span
-                        className="material-symbols-outlined text-lg font-bold ml-0.5"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playSong(album, trendingAlbums);
+                        }}
+                        className="w-8 h-8 rounded-full bg-[#10b981] text-black flex items-center justify-center shadow-lg"
                       >
-                        {isPlayingThis ? "pause" : "play_arrow"}
-                      </span>
-                    </button>
+                        <span
+                          className="material-symbols-outlined text-lg font-bold ml-0.5"
+                          style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                          {isPlayingThis ? "pause" : "play_arrow"}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Song/Album Title with Truncation to prevent clipping */}
+                  <div className="flex flex-col min-w-0 w-full">
+                    <h3
+                      className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#10b981] transition-colors"
+                      title={album.title}
+                    >
+                      {album.title}
+                    </h3>
+
+                    {/* Muted Play Count Label Directly Beneath */}
+                    <p className="text-[11px] text-[#a1a1aa] font-medium mt-1 truncate">
+                      {album.plays}
+                    </p>
                   </div>
                 </div>
-
-                {/* Song/Album Title with Truncation to prevent clipping */}
-                <div className="flex flex-col min-w-0 w-full">
-                  <h3
-                    className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#10b981] transition-colors"
-                    title={album.title}
-                  >
-                    {album.title}
-                  </h3>
-
-                  {/* Muted Play Count Label Directly Beneath */}
-                  <p className="text-[11px] text-[#a1a1aa] font-medium mt-1 truncate">
-                    {album.plays}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ============================================================== */}
       {/* 🎤 3. TOP ARTISTS (Full-Width Responsive Grid)                 */}
       {/* ============================================================== */}
-      <section className="w-full">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
-            Top Artist
-          </h2>
-          <button
-            type="button"
-            onClick={() => onNavigate("library")}
-            className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center gap-1 transition-colors whitespace-nowrap"
-          >
-            <span>See All</span>
-            <span className="material-symbols-outlined text-sm">expand_more</span>
-          </button>
-        </div>
+      {activeFilter !== "podcasts" && (
+        <section className="w-full">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              Top Artist
+            </h2>
+            <button
+              type="button"
+              onClick={() => onNavigate("library")}
+              className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center gap-1 transition-colors whitespace-nowrap"
+            >
+              <span>See All</span>
+              <span className="material-symbols-outlined text-sm">expand_more</span>
+            </button>
+          </div>
 
-        {/* 2x2 Grid spanning full width */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3.5 w-full">
-          {topArtists.map((art) => {
-            const isFollowing = followingArtists.has(art.name);
+          {/* 2x2 Grid spanning full width */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3.5 w-full">
+            {topArtists.map((art) => {
+              const isFollowing = followingArtists.has(art.name);
 
-            return (
+              return (
+                <div
+                  key={art.name}
+                  onClick={() => onNavigate("library", art.name)}
+                  className="flex items-center justify-between p-3 rounded-2xl bg-[#181818] border border-[#262626] hover:border-white/15 transition-all cursor-pointer group"
+                >
+                  {/* Avatar & Metadata */}
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <img
+                      src={art.avatar}
+                      alt={art.name}
+                      className="w-12 h-12 rounded-xl object-cover border border-white/5 shrink-0 group-hover:scale-105 transition-transform"
+                    />
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <h4 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#10b981] transition-colors">
+                        {art.name}
+                      </h4>
+                      <p className="text-[11px] text-[#a1a1aa] mt-0.5">{art.role}</p>
+                    </div>
+                  </div>
+
+                  {/* Follow Button: Standardized 32px height with ample padding */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleArtistFollow(art.name);
+                    }}
+                    className={`h-8 min-w-[92px] px-3.5 rounded-full text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap ${
+                      isFollowing
+                        ? "bg-white/5 hover:bg-white/10 text-neutral-300 border border-[#262626]"
+                        : "bg-[#10b981] hover:bg-[#059669] text-black shadow-sm"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-sm font-bold">
+                      {isFollowing ? "check" : "add"}
+                    </span>
+                    <span>{isFollowing ? "Following" : "Follow"}</span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ============================================================== */}
+      {/* 🎙️ 4. PODCAST SHOWS (Visible when Podcasts filter is active)     */}
+      {/* ============================================================== */}
+      {activeFilter === "podcasts" && (
+        <section className="w-full">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              Podcasts & Spatial Audio Shows
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+            {[
+              {
+                id: "pod-1",
+                title: "8D Binaural Science & Spatial Audio",
+                host: "GreenWave Sound Labs",
+                episodes: "Episode 14 • 28 mins",
+                cover: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=240&q=80",
+                desc: "An exploration of how 8D audio interacts with neural oscillation and deep focus.",
+              },
+              {
+                id: "pod-2",
+                title: "Studio Deconstructions",
+                host: "Billie Eilish & FINNEAS",
+                episodes: "Episode 06 • 42 mins",
+                cover: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=240&q=80",
+                desc: "Behind the mixes of Hit Me Hard and Soft and spatial production techniques.",
+              },
+              {
+                id: "pod-3",
+                title: "Neuro-Acoustic States",
+                host: "Dr. Alistair Vance",
+                episodes: "Episode 21 • 35 mins",
+                cover: "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=240&q=80",
+                desc: "Using theta waves and binaural motion to enter creative flow states.",
+              },
+            ].map((pod) => (
               <div
-                key={art.name}
-                onClick={() => onNavigate("library", art.name)}
-                className="flex items-center justify-between p-3 rounded-2xl bg-[#181818] border border-[#262626] hover:border-white/15 transition-all cursor-pointer group"
+                key={pod.id}
+                className="p-4 rounded-2xl bg-[#181818] border border-[#262626] hover:border-white/20 transition-all flex flex-col justify-between group cursor-pointer shadow-md"
               >
-                {/* Avatar & Metadata */}
-                <div className="flex items-center gap-3.5 min-w-0">
+                <div className="flex gap-3 mb-3">
                   <img
-                    src={art.avatar}
-                    alt={art.name}
-                    className="w-12 h-12 rounded-xl object-cover border border-white/5 shrink-0 group-hover:scale-105 transition-transform"
+                    src={pod.cover}
+                    alt={pod.title}
+                    className="w-16 h-16 rounded-xl object-cover shrink-0"
                   />
-                  <div className="min-w-0 flex flex-col justify-center">
-                    <h4 className="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#10b981] transition-colors">
-                      {art.name}
-                    </h4>
-                    <p className="text-[11px] text-[#a1a1aa] mt-0.5">{art.role}</p>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[10px] font-mono text-[#10b981] uppercase font-bold">
+                      Podcast Show
+                    </span>
+                    <h3 className="text-sm font-bold text-white truncate group-hover:text-[#10b981] transition-colors mt-0.5">
+                      {pod.title}
+                    </h3>
+                    <p className="text-xs text-neutral-400 truncate mt-0.5">{pod.host}</p>
                   </div>
                 </div>
-
-                {/* Follow Button: Standardized 32px height with ample padding */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleArtistFollow(art.name);
-                  }}
-                  className={`h-8 min-w-[92px] px-3.5 rounded-full text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap ${
-                    isFollowing
-                      ? "bg-white/5 hover:bg-white/10 text-neutral-300 border border-[#262626]"
-                      : "bg-[#10b981] hover:bg-[#059669] text-black shadow-sm"
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-sm font-bold">
-                    {isFollowing ? "check" : "add"}
-                  </span>
-                  <span>{isFollowing ? "Following" : "Follow"}</span>
-                </button>
+                <p className="text-xs text-neutral-400 line-clamp-2 mb-3 leading-relaxed">
+                  {pod.desc}
+                </p>
+                <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[11px] text-neutral-400 font-mono">
+                  <span>{pod.episodes}</span>
+                  <button
+                    type="button"
+                    className="h-7 px-3 rounded-full bg-[#10b981] text-black font-sans font-bold text-xs inline-flex items-center gap-1 hover:scale-105 transition-transform"
+                  >
+                    <span className="material-symbols-outlined text-sm font-bold">play_arrow</span>
+                    <span>Listen</span>
+                  </button>
+                </div>
               </div>
-            );
-          })}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Add Custom Songs Affordance */}
       <section className="pt-1">

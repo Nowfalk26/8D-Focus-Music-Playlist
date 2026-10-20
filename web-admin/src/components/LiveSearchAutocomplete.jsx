@@ -353,12 +353,12 @@ export default function LiveSearchAutocomplete({
       ref={containerRef}
       className={`relative w-full ${className}`}
     >
-      {/* Search Input Bar (Matching Image 2 Reference) */}
+      {/* Search Input Bar (Matching Spotify Desktop Reference) */}
       <div
-        className="flex items-center w-full min-h-[48px] h-12 px-5 py-2.5 rounded-full bg-[#151b21] hover:bg-[#1a222a] focus-within:bg-[#1a222a] border border-white/10 focus-within:border-emerald-400/80 shadow-inner group transition-all duration-200"
+        className="flex items-center w-full min-h-[44px] h-11 px-4 rounded-full bg-[#1f1f1f] hover:bg-[#282828] focus-within:bg-[#282828] border border-white/10 focus-within:border-white/30 shadow-sm group transition-all duration-200"
       >
         <span
-          className="material-symbols-outlined shrink-0 select-none pointer-events-none transition-colors text-slate-400 text-2xl mr-3 group-focus-within:text-emerald-400"
+          className="material-symbols-outlined shrink-0 select-none pointer-events-none transition-colors text-neutral-400 text-xl mr-2.5 group-focus-within:text-white"
         >
           search
         </span>
@@ -381,7 +381,7 @@ export default function LiveSearchAutocomplete({
           autoFocus={autoFocus}
           autoComplete="off"
           spellCheck="false"
-          className="w-full min-w-0 bg-transparent text-white outline-none placeholder:text-neutral-400 leading-none py-1.5 px-1 text-sm sm:text-base"
+          className="w-full min-w-0 bg-transparent text-white outline-none placeholder:text-neutral-400 leading-none py-1.5 px-1 text-xs sm:text-sm font-normal"
         />
 
         {/* Clear Button */}
@@ -394,6 +394,18 @@ export default function LiveSearchAutocomplete({
             aria-label="Clear search query"
           >
             <span className="material-symbols-outlined text-base">close</span>
+          </button>
+        )}
+
+        {/* Browse Library Quick-Access Icon matching Spotify desktop search bar */}
+        {!query && (
+          <button
+            type="button"
+            onClick={() => onNavigate && onNavigate("search")}
+            className="hidden sm:flex items-center justify-center pl-2 ml-1 text-neutral-400 hover:text-white border-l border-white/10 transition-colors"
+            title="Browse all files & categories"
+          >
+            <span className="material-symbols-outlined text-lg">folder_open</span>
           </button>
         )}
       </div>
