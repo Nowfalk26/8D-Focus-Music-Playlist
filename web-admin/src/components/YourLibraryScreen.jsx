@@ -37,167 +37,71 @@ export default function YourLibraryScreen({ onNavigate }) {
     e.target.src = DEFAULT_COVER;
   };
 
-  // Base library items matching exact Stitch screen bbacfd9e2b104c74841c39314f790dcf
+  // Dynamic library items based on user's songs & liked songs (sample/dummy playlists removed)
   const libraryEntries = [
     {
       id: "liked-songs",
       title: "Liked Songs",
       type: "Playlist",
       categoryType: "Playlists",
-      subtitle: `Playlist • ${favorites.size > 0 ? favorites.size : 104} songs`,
+      subtitle: `Playlist • ${favorites.size} songs`,
       isPinned: true,
       isDownloaded: true,
       isSpecialLiked: true,
       image: null,
-      filterAction: () => {
-        const favSongs = songs.filter((s) => favorites.has(s._id || s.id));
-        return favSongs.length > 0 ? favSongs : songs.slice(0, 10);
-      },
+      filterAction: () => songs.filter((s) => favorites.has(s._id || s.id)),
     },
-    {
-      id: "your-episodes",
-      title: "Your Episodes",
-      type: "Podcast",
-      categoryType: "Podcasts & Shows",
-      subtitle: "Saved & downloaded • 14 episodes",
-      isPinned: false,
-      isDownloaded: true,
-      isSpecialEpisodes: true,
-      image: null,
-      filterAction: () => songs.filter((s) => s.category?.toLowerCase().includes("vibe")).slice(0, 14),
-    },
-    {
-      id: "tamil-love-playlist",
-      title: "Tamil Love 8D Masterpiece",
-      type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: "Playlist • Flow 8D Spatial",
-      isPinned: true,
-      isDownloaded: true,
-      image:
-        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80",
-      filterAction: () => songs.filter((s) => s.category === "Tamil Love" || s.genre === "Love"),
-    },
-    {
-      id: "tamil-melodies-playlist",
-      title: "Tamil Melodies Collection",
-      type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: "Playlist • 104 songs",
-      isPinned: false,
-      isDownloaded: true,
-      image:
-        "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=300&q=80",
-      filterAction: () => songs.filter((s) => s.category === "Tamil Melodies" || s.genre === "Melody"),
-    },
-    {
-      id: "tamil-vibe-playlist",
-      title: "Tamil Vibe & Energy 8D",
-      type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: "Playlist • 104 songs",
-      isPinned: false,
-      isDownloaded: true,
-      image:
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=300&q=80",
-      filterAction: () => songs.filter((s) => s.category === "Tamil Vibe" || s.genre === "Vibe"),
-    },
-    {
-      id: "night-drive",
-      title: "Night Drive Synthwave",
-      type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: "Playlist • Alex Vance",
-      isPinned: false,
-      isDownloaded: true,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCpXhx6z655TP0xUNlwtaHAQJqmw4_akPwjnF4r_WTViJcHt5jcCBcg8qUPsIvVYRV3bSmjhG9OxTvYu65LemNkZRUlDCWZQMlC35sLDwaCbQpZ89bqU30PskXOxK37FQZwmMkiYAYnqD1QcPwuc-Q5lXLCKXvoZusq8vbqVbfGiqL6lxw0MwiakzV_asRNcgM-UuSWck9wgTpVwjfic450z1DV3UB8KQ0YIlhxACndsQ1SFqajDAt5",
-      filterAction: () => songs.slice(0, 20),
-    },
-    {
-      id: "anirudh",
-      title: "Anirudh Ravichander",
-      type: "Artist",
-      categoryType: "Artists",
-      subtitle: "Artist • 5.2M Monthly Listeners",
-      isArtist: true,
-      isDownloaded: false,
-      image:
-        "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=300&q=80",
-      filterAction: () => songs.filter((s) => s.artist?.toLowerCase().includes("anirudh")),
-    },
-    {
-      id: "kendrick-lamar",
-      title: "Kendrick Lamar",
-      type: "Artist",
-      categoryType: "Artists",
-      subtitle: "Artist",
-      isArtist: true,
-      isDownloaded: false,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCHx6rXeWEY-skSLf6ypeIa_VRAP3kUyp5MYX1nmZaf9cItakvi76LMiYwm2Rr7DVaxs7GIwa783ddggAZT2bq20FVldvBZ6XPFp1i1AONh_6b50rq7fW5FkjsxrO_V-Y0vTBK5aFN6s3DlMjrQrd6VjUo4Fj0r5fzjrnV76grOPkRWkWqunsZg6xGFMeFkPFHnG3HWFaxu8LN9zlPo8ErAg5ojqkZw541WK-jMN_rdF02L-7hP2gJF",
-      filterAction: () => songs.slice(10, 25),
-    },
-    {
-      id: "after-hours",
-      title: "After Hours (Deluxe)",
-      type: "Album",
-      categoryType: "Albums",
-      subtitle: "Album • The Weeknd",
-      isDownloaded: false,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCUbASltRFh9VGNBtS-cHDUP2uWSx1wEdEmvGIz8rhCkYwSuZ0zXyev9pw5JFW4YNWbSS24jAoOtmHrOtca24bU-CS1g8K0q5E9K5BEjHqsLVy_l1RVNXyLMGT6Ldml-ZQmjLUp9p4mwGAxd-Kc6bMDh38RKhlKLZK4wpz1Y2YLxEdzEYGITEh3wNpWbE8DcjRRhFoxQWBBaqWoIU7A5TY4vUT7IHPw3lsvI7OvWEo08jzvjAEU13xR",
-      filterAction: () => songs.slice(25, 40),
-    },
-    {
-      id: "ar-rahman",
-      title: "A.R. Rahman",
-      type: "Artist",
-      categoryType: "Artists",
-      subtitle: "Artist • Oscar Winning Maestro",
-      isArtist: true,
-      isDownloaded: false,
-      image:
-        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=300&q=80",
-      filterAction: () => songs.filter((s) => s.artist?.toLowerCase().includes("rahman")),
-    },
-    {
-      id: "lofi-study",
-      title: "Lo-Fi Study Session",
-      type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: "Playlist • 94 songs",
-      isDownloaded: true,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuA3iXH5LZ-GO6hVq6et5mLyKt8CqrzOpIYBprYJTVHAXE7seiDVmO5iPkE-nv6clNSXzK2tZhR1_jfq3C42IXA71cnpExbIz0NNKcQMrms1A1ibfdW10iKrjjRf0D1h-8nU3t--Eh7coaZ0BSbKphq5GYDJ4MSZMFfD_74zwd7aE9l8OfdNXbV-86SX9YMeoINCWbMNz1M3yr72M9kY6Ggf0ue-TUIKOZdV8v2vGFRY54dZ2Ceq3MV5",
-      filterAction: () => songs.slice(30, 50),
-    },
-    {
-      id: "huberman-lab",
-      title: "Huberman Lab",
-      type: "Podcast",
-      categoryType: "Podcasts & Shows",
-      subtitle: "Podcast • Scicomm Media",
-      isDownloaded: false,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCtGtw9NvJMnvjkYEkoXxHN8EDBdVSjL37Uz1KpXL1uRKnMV-VRg2YUA6dN3XT6-EGQ4I-Vmymu2PLG5SmGXr5qh5n_v_kTm8HCtYYR-inABeHSebeoV5A2bpOEIUhq78XgoRjeTT3-eM7zIgpB670n_bdNX_Fr7vjOEQdOHWYmYj7XLfbN7w9CpU_S8mAAjy70YOGjv7eMz99DJUq0mSRzNa_dewDDEf-fjvNrhbMR3gZAyN3oQUkC",
-      filterAction: () => songs.slice(5, 15),
-    },
-    {
-      id: "billie-eilish",
-      title: "Billie Eilish",
-      type: "Artist",
-      categoryType: "Artists",
-      subtitle: "Artist",
-      isArtist: true,
-      isDownloaded: false,
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBlz085Zu9BpiN0wpluXseI_4JEiDIHdNdE-55kosmAM7UDLBk3k6R6vreYn8OFSk1ec-GNUra7RSGhiBYg9LdH13RYKD2lqGAf2LqmGWz7Wz9thhEGYSY4rFovSYQdTrGUCwE8mJke74oo80rqfGmro2DJ-Do-GmFaIEwm4WH0zwx1pROBnBD8MGxSaBxjLRr_ZP_nT5lW6Mx8BNyHa4HteVVGHIqZlE9qWoPYTy5gopT2IexQkvTs",
-      filterAction: () => songs.slice(40, 55),
-    },
+    ...(songs.some((s) => s.category === "Tamil Love" || s.genre === "Love")
+      ? [
+          {
+            id: "tamil-love-playlist",
+            title: "Tamil Love",
+            type: "Playlist",
+            categoryType: "Playlists",
+            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Love" || s.genre === "Love").length} songs`,
+            isPinned: false,
+            isDownloaded: true,
+            image:
+              "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80",
+            filterAction: () => songs.filter((s) => s.category === "Tamil Love" || s.genre === "Love"),
+          },
+        ]
+      : []),
+    ...(songs.some((s) => s.category === "Tamil Melodies" || s.genre === "Melody")
+      ? [
+          {
+            id: "tamil-melodies-playlist",
+            title: "Tamil Melodies",
+            type: "Playlist",
+            categoryType: "Playlists",
+            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Melodies" || s.genre === "Melody").length} songs`,
+            isPinned: false,
+            isDownloaded: true,
+            image:
+              "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=300&q=80",
+            filterAction: () => songs.filter((s) => s.category === "Tamil Melodies" || s.genre === "Melody"),
+          },
+        ]
+      : []),
+    ...(songs.some((s) => s.category === "Tamil Vibe" || s.genre === "Vibe")
+      ? [
+          {
+            id: "tamil-vibe-playlist",
+            title: "Tamil Vibe",
+            type: "Playlist",
+            categoryType: "Playlists",
+            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Vibe" || s.genre === "Vibe").length} songs`,
+            isPinned: false,
+            isDownloaded: true,
+            image:
+              "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=300&q=80",
+            filterAction: () => songs.filter((s) => s.category === "Tamil Vibe" || s.genre === "Vibe"),
+          },
+        ]
+      : []),
   ];
 
-  const filterTabs = ["All", "Playlists", "Podcasts & Shows", "Albums", "Artists", "Downloaded"];
+  const filterTabs = ["All", "Playlists", "Artists", "Albums"];
 
   // Filter items based on active pill and search query
   const filteredEntries = libraryEntries.filter((item) => {

@@ -333,74 +333,86 @@ export default function HomeScreen({ onNavigate }) {
               </div>
             </div>
           ) : (
-            <div className="flex min-h-[180px] flex-col items-center justify-center rounded-3xl border border-white/[0.06] bg-[#10161a] p-6 text-center text-sm text-slate-400">
-              <span className="material-symbols-outlined mb-2 text-3xl text-slate-600">music_off</span>
-              <p className="font-semibold text-slate-300">Your playlist is empty</p>
-              <p className="mt-1 text-xs text-slate-500">All songs have been removed. Add or upload new tracks to start listening.</p>
+            <div className="flex min-h-[220px] flex-col items-center justify-center rounded-3xl border border-white/10 bg-gradient-to-br from-[#121212] to-[#181818] p-8 text-center shadow-xl">
+              <div className="w-16 h-16 rounded-full bg-[#1DB954]/15 border border-[#1DB954]/30 flex items-center justify-center mb-3 text-[#1DB954]">
+                <span className="material-symbols-outlined text-3xl">music_note</span>
+              </div>
+              <h3 className="text-xl font-bold text-white">Your Music Library is Ready</h3>
+              <p className="mt-1.5 text-xs text-neutral-400 max-w-md">
+                All sample tracks and demo playlists have been cleared. Add your favorite MP3 tracks to start listening in 8D Spatial Audio!
+              </p>
+              <button
+                type="button"
+                onClick={() => onNavigate("search")}
+                className="mt-4 px-6 py-2.5 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-xs font-bold flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-[#1DB954]/25"
+              >
+                <span className="material-symbols-outlined text-base font-bold">add</span>
+                <span>+ Add Your Songs</span>
+              </button>
             </div>
           )}
         </section>
 
-        {/* Quick library shortcuts */}
-        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          <button type="button" onClick={() => onNavigate("library", "Favorites")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-400 text-white"><span className="material-symbols-outlined text-2xl">favorite</span></span>
-            <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Liked Songs</span><span className="mt-1 block text-xs text-slate-400">{favorites.size} songs saved</span></span>
-            <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
-          </button>
-          <button type="button" onClick={() => onNavigate("library", "Tamil Love")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
-            <img src={collections[0].cover} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
-            <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Tamil Love</span><span className="mt-1 block text-xs text-slate-400">Romantic favourites</span></span>
-            <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
-          </button>
-          <button type="button" onClick={() => onNavigate("library", "Tamil Melodies")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
-            <img src={collections[1].cover} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
-            <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Tamil Melodies</span><span className="mt-1 block text-xs text-slate-400">Soulful listening</span></span>
-            <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
-          </button>
-        </section>
+        {/* Quick library shortcuts - only when songs exist */}
+        {songs.length > 0 && (
+          <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            <button type="button" onClick={() => onNavigate("library", "Favorites")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-400 text-white"><span className="material-symbols-outlined text-2xl">favorite</span></span>
+              <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Liked Songs</span><span className="mt-1 block text-xs text-slate-400">{favorites.size} songs saved</span></span>
+              <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
+            </button>
+            <button type="button" onClick={() => onNavigate("library", "Tamil Love")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
+              <img src={collections[0].cover} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+              <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Tamil Love</span><span className="mt-1 block text-xs text-slate-400">Romantic favourites</span></span>
+              <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
+            </button>
+            <button type="button" onClick={() => onNavigate("library", "Tamil Melodies")} className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-[#11171b] p-3 text-left transition hover:border-emerald-400/30 hover:bg-[#151e22]">
+              <img src={collections[1].cover} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+              <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-white">Tamil Melodies</span><span className="mt-1 block text-xs text-slate-400">Soulful listening</span></span>
+              <span className="material-symbols-outlined text-slate-500 transition group-hover:text-emerald-300">arrow_forward</span>
+            </button>
+          </section>
+        )}
 
         {/* Trending songs */}
-        <section>
-          <SectionHeading eyebrow="Popular right now" title="Trending Now 🔥" subtitle="Tamil hits, love songs and spatial listening" onSeeAll={() => onNavigate("library")} />
-          {loading ? (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="aspect-[0.82/1] animate-pulse rounded-2xl bg-white/[0.05]" />)}</div>
-          ) : trendingSongs.length ? (
+        {trendingSongs.length > 0 && (
+          <section>
+            <SectionHeading eyebrow="Popular right now" title="Trending Now 🔥" subtitle="Tamil hits, love songs and spatial listening" onSeeAll={() => onNavigate("library")} />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {trendingSongs.map((song, index) => <SongCard key={song._id || song.id || index} song={song} index={index} />)}
             </div>
-          ) : <p className="rounded-2xl border border-white/[0.06] p-6 text-sm text-slate-400">No tracks match your search.</p>}
-        </section>
+          </section>
+        )}
 
-        {/* Curated collections */}
-        <section>
-          <SectionHeading eyebrow="Made for your mood" title="Made For You" subtitle="Explore playlists for every listening moment" onSeeAll={() => onNavigate("library")} />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-            {collections.map((collection) => (
-              <button key={collection.id} type="button" onClick={() => collection.category ? onNavigate("library", collection.category) : onNavigate("library", collection.filter)} className="group relative min-h-[190px] overflow-hidden rounded-2xl border border-white/10 bg-[#11171b] text-left transition hover:-translate-y-0.5 hover:border-emerald-400/30 sm:min-h-[220px]">
-                <img src={collection.cover} alt="" onError={handleImgError} className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-85" />
-                <div className={`absolute inset-0 bg-gradient-to-t ${collection.tone} via-black/35 to-black/10`} />
-                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 flex flex-col items-center justify-center text-center">
-                  <h3 className="text-sm font-bold leading-snug text-white sm:text-base text-center">{collection.title}</h3>
-                  <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-slate-200 text-center">{collection.subtitle}</p>
-                  <span className="mt-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400 text-black shadow-lg transition group-hover:scale-110"><span className="material-symbols-outlined">play_arrow</span></span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
+        {/* Curated collections - only when songs exist */}
+        {songs.length > 0 && (
+          <section>
+            <SectionHeading eyebrow="Made for your mood" title="Made For You" subtitle="Explore playlists for every listening moment" onSeeAll={() => onNavigate("library")} />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+              {collections.map((collection) => (
+                <button key={collection.id} type="button" onClick={() => collection.category ? onNavigate("library", collection.category) : onNavigate("library", collection.filter)} className="group relative min-h-[190px] overflow-hidden rounded-2xl border border-white/10 bg-[#11171b] text-left transition hover:-translate-y-0.5 hover:border-emerald-400/30 sm:min-h-[220px]">
+                  <img src={collection.cover} alt="" onError={handleImgError} className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-85" />
+                  <div className={`absolute inset-0 bg-gradient-to-t ${collection.tone} via-black/35 to-black/10`} />
+                  <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 flex flex-col items-center justify-center text-center">
+                    <h3 className="text-sm font-bold leading-snug text-white sm:text-base text-center">{collection.title}</h3>
+                    <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-slate-200 text-center">{collection.subtitle}</p>
+                    <span className="mt-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400 text-black shadow-lg transition group-hover:scale-110"><span className="material-symbols-outlined">play_arrow</span></span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
 
-        {/* Continue listening */}
-        <section>
-          <SectionHeading eyebrow="Continue listening" title={`Jump Back In · ${audioMode || "Spatial"}`} subtitle="Pick up where your music journey continues" onSeeAll={() => onNavigate("library")} />
-          {jumpBackInSongs.length ? (
+        {/* Continue listening - only when tracks exist */}
+        {jumpBackInSongs.length > 0 && (
+          <section>
+            <SectionHeading eyebrow="Continue listening" title={`Jump Back In · ${audioMode || "Spatial"}`} subtitle="Pick up where your music journey continues" onSeeAll={() => onNavigate("library")} />
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
               {jumpBackInSongs.slice(0, 6).map((song, index) => <SongCard key={song._id || song.id || index} song={song} index={index} compact />)}
             </div>
-          ) : (
-            <div className="rounded-2xl border border-white/[0.07] bg-[#10161a] p-5 text-sm text-slate-400">More tracks will appear here as you explore the library.</div>
-          )}
-        </section>
+          </section>
+        )}
 
         {/* Mood categories */}
         {loveSongs.length > 0 && (
@@ -420,30 +432,32 @@ export default function HomeScreen({ onNavigate }) {
           </section>
         )}
 
-        {/* Artist shortcuts */}
-        <section>
-          <SectionHeading eyebrow="Legends & hitmakers" title="Artists You Love" onSeeAll={() => onNavigate("library")} />
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-            {artists.map((artist) => (
-              <button key={artist.name} type="button" onClick={() => onNavigate("library", artist.name)} className="group rounded-2xl border border-transparent p-3 text-center transition hover:border-white/[0.07] hover:bg-white/[0.03]">
-                <img src={artist.cover} alt={artist.name} onError={handleImgError} className="mx-auto aspect-square w-full max-w-28 rounded-full border-2 border-white/10 object-cover shadow-lg transition group-hover:border-emerald-400/60 group-hover:shadow-emerald-500/10" />
-                <span className="mt-3 block truncate text-xs font-bold text-white sm:text-sm">{artist.name}</span>
-                <span className="mt-1 block truncate text-[11px] text-slate-400">{artist.role}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Top tracks table */}
-        <section>
-          <SectionHeading eyebrow="Your music library" title="Top Tracks" subtitle={`${filteredSongs.length} tracks available`} onSeeAll={() => onNavigate("library")} />
-          <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0e1418]">
-            <div className="hidden grid-cols-[42px_minmax(0,1fr)_160px_70px] gap-3 border-b border-white/[0.07] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500 sm:grid">
-              <span>#</span><span>Title / Artist</span><span>Category</span><span className="text-right">Time</span>
+        {/* Artist shortcuts - only when songs exist */}
+        {songs.length > 0 && (
+          <section>
+            <SectionHeading eyebrow="Legends & hitmakers" title="Artists You Love" onSeeAll={() => onNavigate("library")} />
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+              {artists.map((artist) => (
+                <button key={artist.name} type="button" onClick={() => onNavigate("library", artist.name)} className="group rounded-2xl border border-transparent p-3 text-center transition hover:border-white/[0.07] hover:bg-white/[0.03]">
+                  <img src={artist.cover} alt={artist.name} onError={handleImgError} className="mx-auto aspect-square w-full max-w-28 rounded-full border-2 border-white/10 object-cover shadow-lg transition group-hover:border-emerald-400/60 group-hover:shadow-emerald-500/10" />
+                  <span className="mt-3 block truncate text-xs font-bold text-white sm:text-sm">{artist.name}</span>
+                  <span className="mt-1 block truncate text-[11px] text-slate-400">{artist.role}</span>
+                </button>
+              ))}
             </div>
-            <div className="divide-y divide-white/[0.05]">
-              {filteredSongs.length > 0 ? (
-                filteredSongs.slice(0, 10).map((song, index) => (
+          </section>
+        )}
+
+        {/* Top tracks table - only when tracks exist */}
+        {filteredSongs.length > 0 && (
+          <section>
+            <SectionHeading eyebrow="Your music library" title="Top Tracks" subtitle={`${filteredSongs.length} tracks available`} onSeeAll={() => onNavigate("library")} />
+            <div className="overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0e1418]">
+              <div className="hidden grid-cols-[42px_minmax(0,1fr)_160px_70px] gap-3 border-b border-white/[0.07] px-4 py-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500 sm:grid">
+                <span>#</span><span>Title / Artist</span><span>Category</span><span className="text-right">Time</span>
+              </div>
+              <div className="divide-y divide-white/[0.05]">
+                {filteredSongs.slice(0, 10).map((song, index) => (
                   <div key={song._id || song.id || index} onClick={() => play(song, filteredSongs)} className={`grid cursor-pointer grid-cols-[30px_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 transition hover:bg-white/[0.04] sm:grid-cols-[42px_minmax(0,1fr)_160px_70px] sm:px-4 ${isCurrent(song) ? "bg-emerald-400/[0.05]" : ""}`}>
                     <button type="button" onClick={(event) => { event.stopPropagation(); play(song, filteredSongs); }} className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs ${isCurrent(song) ? "text-emerald-300" : "text-slate-500 hover:text-white"}`} aria-label={`Play ${song.title}`}>
                       <span className="material-symbols-outlined">{isCurrent(song) && isPlaying ? "equalizer" : "play_arrow"}</span>
@@ -463,16 +477,11 @@ export default function HomeScreen({ onNavigate }) {
                       <span className="hidden sm:inline">{song.duration || "—"}</span>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="p-8 text-center text-sm text-slate-400">
-                  <p className="font-semibold text-slate-300">No tracks in your playlist</p>
-                  <p className="mt-1 text-xs text-slate-500">All songs have been removed. Add or upload new tracks to begin.</p>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </div>
 
 
