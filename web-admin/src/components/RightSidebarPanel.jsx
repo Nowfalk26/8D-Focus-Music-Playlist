@@ -116,8 +116,6 @@ export default function RightSidebarPanel({ onNavigate }) {
     currentSong &&
     (currentSong._id || currentSong.id) === (song._id || song.id);
 
-  const activeTrack = currentSong || showcasePlaylist[2]; // Default to "No Time to Die"
-
   return (
     <aside className="w-80 lg:w-[320px] xl:w-[340px] shrink-0 h-full flex flex-col bg-[#121212] rounded-2xl border border-[#282828] p-4 shadow-xl overflow-hidden select-none font-sans">
       {/* Panel Header */}
@@ -220,117 +218,129 @@ export default function RightSidebarPanel({ onNavigate }) {
 
       {/* Compact Synchronized Now Playing Artwork Showcase */}
       <div className="mt-auto pt-2 border-t border-white/5">
-        <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] p-2.5 shadow-md">
-          {/* Compact 16:9 Artwork Backdrop */}
-          <div className="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-[#202020] group">
-            <img
-              src={activeTrack?.imageUrl || DEFAULT_COVER}
-              alt={activeTrack?.title || "Now Playing"}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = DEFAULT_COVER;
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-
-            {/* Spatial Audio Mode Tag (Preserved) */}
-            <button
-              onClick={openModeSelector}
-              className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur border border-white/15 text-neutral-300 hover:text-[#10b981] hover:border-[#10b981]/50 text-[9px] font-mono font-bold uppercase tracking-wider transition-colors"
-              title="Change Spatial Audio Mode"
-            >
-              {audioMode?.toUpperCase() || "8D"} SPATIAL
-            </button>
-
-            {/* Now Playing Live Badge (Preserved) */}
-            <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur border border-white/10 text-[10px] text-neutral-300">
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  isPlaying ? "bg-[#10b981] animate-pulse" : "bg-neutral-500"
-                }`}
+        {currentSong ? (
+          <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] p-2.5 shadow-md">
+            {/* Compact 16:9 Artwork Backdrop */}
+            <div className="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-[#202020] group">
+              <img
+                src={currentSong.imageUrl || currentSong.cover || DEFAULT_COVER}
+                alt={currentSong.title || "Now Playing"}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = DEFAULT_COVER;
+                }}
               />
-              <span className="font-mono text-[9px] uppercase tracking-wide">
-                {isPlaying ? "Live Audio" : "Paused"}
-              </span>
-            </div>
-          </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-          {/* Compact Song Metadata Row with Synced Global Play Action */}
-          <div className="flex items-center justify-between px-0.5">
-            <div className="min-w-0 flex-1 pr-2">
-              <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-tight">
-                {activeTrack?.title || "No Time to Die"}
-              </h4>
-              <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">
-                {activeTrack?.artist || "Billie Eilish"}
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5 shrink-0">
+              {/* Spatial Audio Mode Tag (Preserved) */}
               <button
-                type="button"
-                onClick={() => togglePlay()}
-                className="w-7 h-7 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm"
-                title={isPlaying ? "Pause" : "Play"}
+                onClick={openModeSelector}
+                className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur border border-white/15 text-neutral-300 hover:text-[#10b981] hover:border-[#10b981]/50 text-[9px] font-mono font-bold uppercase tracking-wider transition-colors"
+                title="Change Spatial Audio Mode"
               >
+                {audioMode?.toUpperCase() || "8D"} SPATIAL
+              </button>
+
+              {/* Now Playing Live Badge */}
+              <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur border border-white/10 text-[10px] text-neutral-300">
                 <span
-                  className="material-symbols-outlined text-sm font-bold"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  {isPlaying ? "pause" : "play_arrow"}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => onNavigate && onNavigate("orbit")}
-                className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white text-[10px] font-semibold border border-white/5 transition-colors"
-                title="Open 360° Binaural Stage"
-              >
-                360°
-              </button>
-            </div>
-          </div>
-
-          {/* Synchronized Progress & Volume Indicator */}
-          <div className="mt-2 pt-1.5 border-t border-white/5">
-            <div className="flex items-center justify-between text-[9px] font-mono text-[#a1a1aa] mb-1">
-              <span>{formatTime(currentTime)}</span>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={toggleMute}
-                  className="text-neutral-400 hover:text-white transition-colors"
-                  title={isMuted ? "Unmute" : "Mute"}
-                >
-                  <span className="material-symbols-outlined text-xs">
-                    {isMuted || volume === 0 ? "volume_off" : volume < 0.5 ? "volume_down" : "volume_up"}
-                  </span>
-                </button>
-                <span className="text-[9px] text-[#10b981] font-mono">
-                  {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    isPlaying ? "bg-[#10b981] animate-pulse" : "bg-neutral-500"
+                  }`}
+                />
+                <span className="font-mono text-[9px] uppercase tracking-wide">
+                  {isPlaying ? "Live Audio" : "Paused"}
                 </span>
               </div>
-              <span>{formatTime(duration)}</span>
             </div>
-            <div
-              onClick={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const newPercent = clickX / rect.width;
-                if (duration > 0 && seek) {
-                  seek(newPercent * duration);
-                }
-              }}
-              className="w-full h-1 bg-white/10 hover:h-1.5 rounded-full overflow-hidden cursor-pointer group/progress transition-all relative"
-              title="Seek progress"
-            >
+
+            {/* Compact Song Metadata Row with Synced Global Play Action */}
+            <div className="flex items-center justify-between px-0.5">
+              <div className="min-w-0 flex-1 pr-2">
+                <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-tight">
+                  {currentSong.title}
+                </h4>
+                <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">
+                  {currentSong.artist || "Flow 8D Artist"}
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => togglePlay()}
+                  className="w-7 h-7 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm"
+                  title={isPlaying ? "Pause" : "Play"}
+                >
+                  <span
+                    className="material-symbols-outlined text-sm font-bold"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    {isPlaying ? "pause" : "play_arrow"}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate && onNavigate("orbit")}
+                  className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white text-[10px] font-semibold border border-white/5 transition-colors"
+                  title="Open 360° Binaural Stage"
+                >
+                  360°
+                </button>
+              </div>
+            </div>
+
+            {/* Synchronized Progress & Volume Indicator */}
+            <div className="mt-2 pt-1.5 border-t border-white/5">
+              <div className="flex items-center justify-between text-[9px] font-mono text-[#a1a1aa] mb-1">
+                <span>{formatTime(currentTime)}</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={toggleMute}
+                    className="text-neutral-400 hover:text-white transition-colors"
+                    title={isMuted ? "Unmute" : "Mute"}
+                  >
+                    <span className="material-symbols-outlined text-xs">
+                      {isMuted || volume === 0 ? "volume_off" : volume < 0.5 ? "volume_down" : "volume_up"}
+                    </span>
+                  </button>
+                  <span className="text-[9px] text-[#10b981] font-mono">
+                    {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
+                  </span>
+                </div>
+                <span>{formatTime(duration)}</span>
+              </div>
               <div
-                className="h-full bg-[#10b981] transition-all duration-150 rounded-full"
-                style={{ width: `${progressPercent}%` }}
-              />
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const clickX = e.clientX - rect.left;
+                  const newPercent = clickX / rect.width;
+                  if (duration > 0 && seek) {
+                    seek(newPercent * duration);
+                  }
+                }}
+                className="w-full h-1 bg-white/10 hover:h-1.5 rounded-full overflow-hidden cursor-pointer group/progress transition-all relative"
+                title="Seek progress"
+              >
+                <div
+                  className="h-full bg-[#10b981] transition-all duration-150 rounded-full"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="rounded-2xl bg-[#181818] border border-[#262626] p-3 text-center shadow-sm">
+            <div className="w-10 h-10 mx-auto rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 mb-2">
+              <span className="material-symbols-outlined text-xl">music_note</span>
+            </div>
+            <h4 className="text-xs font-bold text-white leading-snug">No track playing</h4>
+            <p className="text-[10px] text-[#a1a1aa] mt-0.5 leading-tight">
+              Select a song to start listening
+            </p>
+          </div>
+        )}
       </div>
     </aside>
   );
