@@ -46,7 +46,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   ];
 
   return (
-    <div className="flex flex-col w-full max-w-full h-[100dvh] bg-[#0a0a0a] p-2 sm:p-3.5 gap-3 sm:gap-3.5 overflow-hidden text-white font-sans select-none box-border">
+    <div className="flex flex-col w-full max-w-full h-[100dvh] bg-[#0a0a0a] p-2 sm:p-2.5 lg:p-3 gap-2.5 sm:gap-3 overflow-hidden text-white font-sans select-none box-border">
       {/* Top Global Navigation Bar */}
       <SpotifyTopBar
         activeTab={activeTab}
@@ -58,8 +58,8 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         onToggleRightPanel={toggleRightPanel}
       />
 
-      {/* Middle Section: 3-Panel Audio Dashboard with 24px-28px Gutters */}
-      <div className="flex-1 flex gap-4 lg:gap-6 xl:gap-7 min-h-0 min-w-0 overflow-hidden w-full box-border">
+      {/* Middle Section: 3-Panel Audio Dashboard with Image 1 Proportions & Tight Gutters */}
+      <div className="flex-1 flex gap-2.5 sm:gap-3 lg:gap-3.5 min-h-0 min-w-0 overflow-hidden w-full box-border">
         {/* Panel 1: Left Navigation & Library Sidebar */}
         <SpotifySidebar
           activeTab={activeTab}
@@ -70,7 +70,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         />
 
         {/* Panel 2: Center Main Stage (Hero Banner, Trending Albums, Top Artist) */}
-        <div className="flex-1 min-w-0 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-2xl relative border border-[#282828] transition-all duration-300 min-h-0">
+        <div className="flex-1 min-w-0 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-xl relative border border-[#262626] transition-all duration-300 min-h-0">
           <main className="flex-1 min-h-0 min-w-0 overflow-y-auto scroll-smooth overscroll-contain">
             {children}
           </main>

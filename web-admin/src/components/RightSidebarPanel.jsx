@@ -117,7 +117,7 @@ export default function RightSidebarPanel({ onNavigate }) {
     (currentSong._id || currentSong.id) === (song._id || song.id);
 
   return (
-    <aside className="w-80 lg:w-[320px] xl:w-[340px] shrink-0 h-full flex flex-col bg-[#121212] rounded-2xl border border-[#282828] p-4 shadow-xl overflow-hidden select-none font-sans">
+    <aside className="w-64 lg:w-72 xl:w-[280px] shrink-0 h-full flex flex-col bg-[#121212] rounded-2xl border border-[#282828] p-3 shadow-xl overflow-hidden select-none font-sans">
       {/* Panel Header */}
       <div className="flex items-center justify-between pb-3 border-b border-white/5">
         <h3 className="text-base font-bold text-white tracking-tight">Play List</h3>
