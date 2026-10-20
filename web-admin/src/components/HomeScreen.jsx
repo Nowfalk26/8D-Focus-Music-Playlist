@@ -158,9 +158,9 @@ export default function HomeScreen({ onNavigate }) {
               key={filter.id}
               type="button"
               onClick={() => setActiveFilter(filter.id)}
-              className={`h-8 px-4 rounded-full text-xs font-semibold transition-all duration-150 inline-flex items-center justify-center whitespace-nowrap shadow-sm select-none ${
+              className={`h-8 px-4 rounded-full text-xs font-bold transition-all duration-150 inline-flex items-center justify-center text-center leading-none whitespace-nowrap shadow-sm select-none ${
                 isActive
-                  ? "bg-white text-black font-bold shadow-md"
+                  ? "bg-white text-black font-extrabold shadow-md"
                   : "bg-[#222222] hover:bg-[#2c2c2c] text-neutral-200 hover:text-white border border-white/5"
               }`}
             >
@@ -197,21 +197,9 @@ export default function HomeScreen({ onNavigate }) {
                 109,482,631 monthly listeners
               </p>
 
-              {/* Action Buttons: Following Pill + Circular Play Button */}
+              {/* Action Buttons: Standard "Listen now" Stadium Pill + Following Pill */}
               <div className="mt-5 flex items-center gap-3 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setIsFollowingHero(!isFollowingHero)}
-                  className={`h-9 px-4.5 sm:px-5 rounded-full text-xs sm:text-[13px] font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shadow-sm shrink-0 whitespace-nowrap select-none ${
-                    isFollowingHero
-                      ? "bg-[#dcfce7] text-[#064e3b] hover:bg-[#bbf7d0]"
-                      : "bg-white/10 text-white hover:bg-white/15"
-                  }`}
-                >
-                  <span>{isFollowingHero ? "Following" : "+ Follow"}</span>
-                  <span className="material-symbols-outlined text-sm font-bold">north_east</span>
-                </button>
-
+                {/* Primary "Listen now" CTA matching user reference */}
                 <button
                   type="button"
                   onClick={() => {
@@ -221,15 +209,30 @@ export default function HomeScreen({ onNavigate }) {
                       playSong(heroTrack, trendingAlbums);
                     }
                   }}
-                  className="w-10 h-10 rounded-full bg-[#10b981] hover:bg-[#059669] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25 shrink-0"
-                  title={isHeroPlaying ? "Pause" : "Play Billie Eilish"}
+                  className="h-10 px-6 rounded-full bg-[#10b981] hover:bg-[#059669] text-black font-extrabold text-sm inline-flex items-center justify-center text-center leading-none gap-2 transition-all active:scale-95 shadow-md shadow-[#10b981]/25 shrink-0 select-none whitespace-nowrap"
+                  title={isHeroPlaying ? "Pause" : "Listen now to Billie Eilish"}
                 >
                   <span
-                    className="material-symbols-outlined text-xl font-bold ml-0.5"
+                    className="material-symbols-outlined text-xl font-bold"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     {isHeroPlaying ? "pause" : "play_arrow"}
                   </span>
+                  <span>{isHeroPlaying ? "Pause" : "Listen now"}</span>
+                </button>
+
+                {/* Following Pill Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsFollowingHero(!isFollowingHero)}
+                  className={`h-10 px-5 rounded-full text-xs sm:text-[13px] font-bold inline-flex items-center justify-center text-center leading-none gap-1.5 transition-all active:scale-95 shadow-sm shrink-0 whitespace-nowrap select-none border ${
+                    isFollowingHero
+                      ? "bg-[#dcfce7] text-[#064e3b] border-transparent hover:bg-[#bbf7d0]"
+                      : "bg-white/10 text-white border-white/10 hover:bg-white/15"
+                  }`}
+                >
+                  <span>{isFollowingHero ? "Following" : "+ Follow"}</span>
+                  <span className="material-symbols-outlined text-sm font-bold">north_east</span>
                 </button>
               </div>
             </div>
@@ -261,7 +264,7 @@ export default function HomeScreen({ onNavigate }) {
             <button
               type="button"
               onClick={() => onNavigate("library")}
-              className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center transition-colors whitespace-nowrap"
+              className="h-8 px-4 rounded-full bg-[#181818] hover:bg-[#242424] text-neutral-200 hover:text-white text-xs font-bold border border-[#262626] inline-flex items-center justify-center text-center leading-none transition-colors whitespace-nowrap select-none"
             >
               See All
             </button>
@@ -349,7 +352,7 @@ export default function HomeScreen({ onNavigate }) {
             <button
               type="button"
               onClick={() => onNavigate("library")}
-              className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center gap-1 transition-colors whitespace-nowrap"
+              className="h-8 px-4 rounded-full bg-[#181818] hover:bg-[#242424] text-neutral-200 hover:text-white text-xs font-bold border border-[#262626] inline-flex items-center justify-center text-center leading-none gap-1 transition-colors whitespace-nowrap select-none"
             >
               <span>See All</span>
               <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -382,14 +385,14 @@ export default function HomeScreen({ onNavigate }) {
                     </div>
                   </div>
 
-                  {/* Follow Button: Standardized 32px height with ample padding */}
+                  {/* Follow Button: Standardized 32px height with centered text and pill shape */}
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleArtistFollow(art.name);
                     }}
-                    className={`h-8 min-w-[92px] px-3.5 rounded-full text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap ${
+                    className={`h-8 min-w-[92px] px-4 rounded-full text-xs font-bold inline-flex items-center justify-center text-center leading-none gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap select-none ${
                       isFollowing
                         ? "bg-white/5 hover:bg-white/10 text-neutral-300 border border-[#262626]"
                         : "bg-[#10b981] hover:bg-[#059669] text-black shadow-sm"
@@ -471,10 +474,10 @@ export default function HomeScreen({ onNavigate }) {
                   <span>{pod.episodes}</span>
                   <button
                     type="button"
-                    className="h-7 px-3 rounded-full bg-[#10b981] text-black font-sans font-bold text-xs inline-flex items-center gap-1 hover:scale-105 transition-transform"
+                    className="h-8 px-4 rounded-full bg-[#10b981] hover:bg-[#059669] text-black font-sans font-extrabold text-xs inline-flex items-center justify-center text-center leading-none gap-1 hover:scale-105 active:scale-95 transition-transform select-none"
                   >
                     <span className="material-symbols-outlined text-sm font-bold">play_arrow</span>
-                    <span>Listen</span>
+                    <span>Listen now</span>
                   </button>
                 </div>
               </div>
@@ -495,7 +498,7 @@ export default function HomeScreen({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("search")}
-            className="h-[38px] px-5 rounded-full bg-[#10b981] hover:bg-[#059669] text-black text-[13px] font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap shadow-sm"
+            className="h-9 px-5 rounded-full bg-[#10b981] hover:bg-[#059669] text-black text-xs sm:text-[13px] font-extrabold inline-flex items-center justify-center text-center leading-none gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap shadow-sm select-none"
           >
             <span className="material-symbols-outlined text-base font-bold">add</span>
             <span>+ Add Song</span>

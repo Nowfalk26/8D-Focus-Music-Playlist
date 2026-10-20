@@ -326,7 +326,7 @@ export default function SpotifyPlayerBar({ onNavigate, onOpenNowPlaying, onOpenC
           {/* Spatial Mode Indicator Pill */}
           <button
             onClick={openModeSelector}
-            className="h-7 px-2.5 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95 leading-none inline-flex items-center justify-center"
+            className="h-7 px-3 rounded-full bg-[#181818] hover:bg-[#242424] border border-[#1DB954]/40 text-[#1DB954] font-mono text-[11px] font-extrabold tracking-wider uppercase transition-all shadow-sm hover:scale-105 active:scale-95 leading-none inline-flex items-center justify-center text-center select-none"
             title="Switch Audio Experience Mode"
           >
             {audioMode?.toUpperCase() || "8D"}
