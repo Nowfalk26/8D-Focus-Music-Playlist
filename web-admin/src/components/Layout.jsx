@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SpotifySidebar from "./SpotifySidebar";
 import SpotifyTopBar from "./SpotifyTopBar";
 import SpotifyPlayerBar from "./SpotifyPlayerBar";
+import RightSidebarPanel from "./RightSidebarPanel";
 import Player360 from "./Player360";
 import MobileNowPlayingModal from "./MobileNowPlayingModal";
 import MobilePlayQueueModal from "./MobilePlayQueueModal";
@@ -31,20 +32,22 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   const [isConnectOpen, setIsConnectOpen] = useState(false);
   const [show360Visualizer, setShow360Visualizer] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const toggleRightPanel = () => setIsRightPanelOpen((prev) => !prev);
 
   const mobileNavTabs = [
-    { id: "home", label: "Home", icon: "home" },
-    { id: "search", label: "Search", icon: "search" },
-    { id: "library", label: "Library", icon: "library_music" },
-    { id: "orbit", label: "360° Orbit", icon: "spatial_audio_off" },
+    { id: "home", label: "Dashboard", icon: "dashboard" },
+    { id: "search", label: "Browse", icon: "folder_open" },
+    { id: "library", label: "Library", icon: "folder_special" },
+    { id: "orbit", label: "360° Orbit", icon: "videocam" },
     { id: "milo", label: "Milo AI", icon: "smart_toy", isAction: true, action: () => setShowMiloChat(true) },
   ];
 
   return (
-    <div className="flex flex-col w-screen h-[100dvh] bg-[#000000] p-1.5 sm:p-2.5 gap-1.5 sm:gap-2.5 overflow-hidden text-white font-sans select-none">
-      {/* Top Global Navigation Bar (Spanning across top with Image 2 search bar) */}
+    <div className="flex flex-col w-screen h-[100dvh] bg-[#0a0d0b] p-1.5 sm:p-2.5 gap-1.5 sm:gap-2.5 overflow-hidden text-white font-sans select-none">
+      {/* Top Global Navigation Bar */}
       <SpotifyTopBar
         activeTab={activeTab}
         onSelectTab={onSelectTab}
@@ -52,39 +55,68 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         onLogout={onLogout}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={toggleSidebar}
+        onToggleRightPanel={toggleRightPanel}
       />
 
-      {/* Middle Section: Floating Left Sidebar Card + Floating Main Content Card */}
+      {/* Middle Section: 3-Panel Audio Dashboard */}
       <div className="flex-1 flex gap-2 sm:gap-2.5 min-h-0 overflow-hidden">
-        {/* Left Card: Spotify Sidebar (Black Rounded Square Shape) */}
+        {/* Panel 1: Left Navigation & Library Sidebar */}
         <SpotifySidebar
           activeTab={activeTab}
           onSelectTab={onSelectTab}
           isSidebarOpen={isSidebarOpen}
           onToggleSidebar={toggleSidebar}
+          onLogout={onLogout}
         />
 
-        {/* Center Card: Main Stage (Black Rounded Square Shape containing all UI options) */}
-        <div className="flex-1 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-2xl relative border border-white/10 transition-all duration-300 min-h-0">
-          {/* Main Scrollable View Area: all UI design & options are inside this black card */}
+        {/* Panel 2: Center Main Stage (Hero Banner, Trending Albums, Top Artist) */}
+        <div className="flex-1 flex flex-col bg-[#121614] rounded-2xl overflow-hidden shadow-2xl relative border border-white/5 transition-all duration-300 min-h-0">
           <main className="flex-1 overflow-y-auto no-scrollbar">
             {children}
           </main>
         </div>
+
+        {/* Panel 3: Right Queue & Play List Panel (Persistent on wide screens >1200px) */}
+        <div className="hidden xl:flex h-full">
+          <RightSidebarPanel onNavigate={onSelectTab} />
+        </div>
       </div>
+
+      {/* Slide-over Right Panel Drawer for Tablets & Mobile */}
+      {isRightPanelOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm xl:hidden flex justify-end"
+          onClick={() => setIsRightPanelOpen(false)}
+        >
+          <div
+            className="w-full max-w-sm h-full p-2 bg-[#0a0d0b]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="h-full relative">
+              <button
+                onClick={() => setIsRightPanelOpen(false)}
+                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+              <RightSidebarPanel onNavigate={onSelectTab} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Floating Mini-Player on Mobile / Persistent Player Bar on Desktop */}
       <SpotifyPlayerBar
         onNavigate={onSelectTab}
         onOpenNowPlaying={() => setShowFullPlayer(true)}
         onOpenConnect={() => setIsConnectOpen(true)}
-        onOpenQueue={() => setIsQueueOpen(true)}
+        onOpenQueue={() => setIsRightPanelOpen(true)}
       />
 
-      {/* Mobile Bottom Navigation Bar (Stitch Spotify Android UX) */}
+      {/* Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden flex items-center justify-around bg-[#121212] border-t border-white/10 py-2 px-1 shrink-0 z-40 pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.5)]"
+        className="md:hidden flex items-center justify-around bg-[#121614] border-t border-white/10 py-2 px-1 shrink-0 z-40 pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.5)]"
       >
         {mobileNavTabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -99,12 +131,12 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
                 }
               }}
               className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 transition-all active:scale-95 ${
-                isActive ? "text-[#1DB954]" : "text-neutral-400 hover:text-white"
+                isActive ? "text-[#10b981]" : "text-neutral-400 hover:text-white"
               }`}
             >
               <span
                 className={`material-symbols-outlined text-[22px] transition-transform ${
-                  isActive ? "text-[#1DB954] scale-110" : ""
+                  isActive ? "text-[#10b981] scale-110" : ""
                 }`}
                 style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
               >
@@ -118,7 +150,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         })}
       </nav>
 
-      {/* Mobile Now Playing Screen with Synchronized Lyrics (Stitch screen f9bc52519fb44d55834c9cd09d26d5de) */}
+      {/* Mobile Now Playing Screen with Synchronized Lyrics */}
       <MobileNowPlayingModal
         isOpen={showFullPlayer && !show360Visualizer}
         onClose={() => setShowFullPlayer(false)}
@@ -126,13 +158,13 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         onOpenConnect={() => setIsConnectOpen(true)}
       />
 
-      {/* Play Queue Sheet / Modal (Stitch screen 73f2302eb0084120899787808af30392) */}
+      {/* Play Queue Sheet / Modal */}
       <MobilePlayQueueModal
         isOpen={isQueueOpen}
         onClose={() => setIsQueueOpen(false)}
       />
 
-      {/* Device Connect Sheet (Stitch screen 1a3e166d80e94ff2b3adf09a8875ae1e) */}
+      {/* Device Connect Sheet */}
       <DeviceConnectModal
         isOpen={isConnectOpen}
         onClose={() => setIsConnectOpen(false)}
@@ -159,7 +191,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
       {/* Cinematic Mode Transition Overlay */}
       <ModeTransitionOverlay
         isOpen={isTransitioningMode}
-        targetMode={transitionTargetMode || audioMode || "8d"}
+        mode={transitionTargetMode}
         onComplete={handleTransitionComplete}
       />
     </div>

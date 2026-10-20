@@ -2,175 +2,77 @@ import React, { useState } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import LiveSearchAutocomplete from "./LiveSearchAutocomplete";
 
-export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, isSidebarOpen, onToggleSidebar }) {
-  const {
-    audioMode,
-    openModeSelector,
-    setShowMiloChat,
-    setShowFullPlayer,
-  } = usePlayer();
-
+export default function SpotifyTopBar({
+  activeTab,
+  onSelectTab,
+  user,
+  onLogout,
+  isSidebarOpen,
+  onToggleSidebar,
+  onToggleRightPanel,
+}) {
+  const { audioMode, openModeSelector, setShowMiloChat } = usePlayer();
   const [topSearch, setTopSearch] = useState("");
-  const [activeCategoryPill, setActiveCategoryPill] = useState("All");
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-
-  const categoryPills = [
-    "All",
-    "Music",
-    "Podcasts",
-    "Audiobooks",
-    "Tamil Hits",
-    "Spatial 8D",
-  ];
-
-  const modeBadge = {
-    normal: { label: "Normal Music", short: "Normal", icon: "🎵", color: "text-neutral-200 border-white/20 bg-white/10" },
-    "8d": { label: "8D Audio", short: "8D", icon: "🎧", color: "text-[#1DB954] border-[#1DB954]/40 bg-[#1DB954]/15" },
-    "9d": { label: "9D Dimension", short: "9D", icon: "✨", color: "text-rose-400 border-rose-400/40 bg-rose-950/40" },
-  }[audioMode || "8d"] || { label: "8D Audio", short: "8D", icon: "🎧", color: "text-[#1DB954] border-[#1DB954]/40 bg-[#1DB954]/15" };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (topSearch.trim()) {
-      onSelectTab("search", topSearch.trim());
-    } else {
-      onSelectTab("search");
-    }
-  };
-
-  const handlePillClick = (pill) => {
-    setActiveCategoryPill(pill);
-    if (pill === "Tamil Hits") onSelectTab("search", "Tamil Hits");
-    else if (pill === "Spatial 8D") onSelectTab("search", "8D");
-    else if (pill === "Music" || pill === "All") onSelectTab("search", "All");
-    else onSelectTab("search", pill);
-  };
+  const [showSettings, setShowSettings] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   return (
-    <header className={`w-full z-30 bg-[#000000] select-none shrink-0 transition-all ${activeTab === "library" || activeTab === "search" ? "hidden md:block" : ""}`}>
-      {/* Upper Navigation & Search Row */}
-      <div className="py-1 px-1 sm:px-2 flex items-center justify-between gap-3 min-h-[52px]">
-        {/* Left: History Navigation & Large Rounded Search Bar */}
-        <div className="flex items-center gap-3 flex-1 max-w-2xl">
-          {/* Sidebar Toggle Button (like ChatGPT & Antigravity) */}
+    <header className="w-full z-30 select-none shrink-0 px-2 sm:px-4 py-2">
+      <div className="flex items-center justify-between gap-3 min-h-[48px]">
+        {/* Left: Sidebar Toggle (on mobile / smaller screens) + Search Bar */}
+        <div className="flex items-center gap-3 flex-1 max-w-xl">
           {onToggleSidebar && (
             <button
               type="button"
               onClick={onToggleSidebar}
-              className={`w-9 h-9 rounded-xl hidden md:flex items-center justify-center transition-all active:scale-90 shrink-0 ${
-                !isSidebarOpen
-                  ? "bg-[#1ed760] text-black font-bold shadow-lg shadow-[#1ed760]/30 hover:scale-105"
-                  : "bg-[#232323] hover:bg-[#2e2e2e] text-neutral-300 hover:text-white border border-white/5"
-              }`}
-              title={isSidebarOpen ? "Close menu" : "Open menu"}
-              aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+              className="w-9 h-9 rounded-xl md:hidden flex items-center justify-center bg-[#161c18] hover:bg-[#1f2722] text-neutral-300 hover:text-white border border-white/5 transition-all shrink-0"
+              title="Toggle sidebar"
             >
-              <span className="material-symbols-outlined text-[20px] leading-none">
-                {isSidebarOpen ? "dock_to_left" : "menu"}
-              </span>
+              <span className="material-symbols-outlined text-xl">menu</span>
             </button>
           )}
 
-          {/* Back & Forward Controls */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <button
-              onClick={() => onSelectTab("home")}
-              className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors active:scale-95 shadow-sm"
-              title="Go to Home"
-            >
-              <span className="material-symbols-outlined text-lg">chevron_left</span>
-            </button>
-            <button
-              onClick={() => onSelectTab("library")}
-              className="w-8 h-8 rounded-full bg-black/60 hover:bg-black text-neutral-300 hover:text-white flex items-center justify-center transition-colors active:scale-95 shadow-sm"
-              title="Go to Library"
-            >
-              <span className="material-symbols-outlined text-lg">chevron_right</span>
-            </button>
+          {/* Search Input matching GreenWave screenshot */}
+          <div className="relative flex-1">
+            <LiveSearchAutocomplete
+              variant="topbar"
+              className="w-full"
+              value={topSearch}
+              onChange={setTopSearch}
+              onNavigate={onSelectTab}
+              placeholder="Search your Song"
+            />
           </div>
-
-          {/* Large Rounded Search Bar with Instant Autocomplete */}
-          <LiveSearchAutocomplete
-            variant="topbar"
-            className="flex-1 max-w-xl w-full"
-            value={topSearch}
-            onChange={setTopSearch}
-            onNavigate={onSelectTab}
-            placeholder="What do you want to play?"
-          />
         </div>
 
-        {/* Right Action Toolbar */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Premium Button */}
-          <button
-            onClick={() => onSelectTab("orbit")}
-            className="hidden lg:inline-flex spotify-action-btn bg-white hover:bg-neutral-200 text-black shadow-md"
-            title="Flow 8D Premium Spatial Audio"
-          >
-            <span className="material-symbols-outlined text-sm font-bold text-amber-600">workspace_premium</span>
-            <span>Explore Premium</span>
-          </button>
-
-          {/* Audio Universe Mode Switcher Pill */}
-          <button
-            onClick={openModeSelector}
-            className={`spotify-action-btn border shadow-sm hover:brightness-125 ${modeBadge.color}`}
-            title="Switch Audio Experience Mode (Normal Music, 8D Audio)"
-          >
-            <span>{modeBadge.icon}</span>
-            <span className="font-mono text-[11px] uppercase tracking-wider hidden sm:inline">
-              {modeBadge.label}
-            </span>
-            <span className="font-mono text-[11px] uppercase tracking-wider sm:hidden">
-              {modeBadge.short}
-            </span>
-          </button>
-
-          {/* Milo AI Assistant Button */}
-          <button
-            onClick={() => setShowMiloChat(true)}
-            className="spotify-action-btn bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-200 shadow-sm"
-            title="Chat with Milo AI"
-          >
-            <span className="text-sm">🐱</span>
-            <span className="hidden md:inline">Milo AI</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1DB954] animate-pulse" />
-          </button>
-
-          {/* 360° Spatial Stage Control */}
-          <button
-            onClick={() => onSelectTab("orbit")}
-            className="hidden sm:inline-flex spotify-action-btn bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-neutral-300 hover:text-white"
-            title="360° Binaural Stage"
-          >
-            <span className="material-symbols-outlined text-sm text-[#00f2fe]">spatial_audio_off</span>
-            <span>360° Orbit</span>
-          </button>
-
+        {/* Right Toolbar: Notifications, Settings, User Profile */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Notifications Bell */}
           <div className="relative">
             <button
+              type="button"
               onClick={() => setShowNotifications(!showNotifications)}
-              className="spotify-action-btn-icon bg-[#242424] hover:bg-[#2c2c2c] text-neutral-300 hover:text-white relative"
+              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center relative transition-colors"
               title="Notifications"
             >
               <span className="material-symbols-outlined text-lg">notifications</span>
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#1DB954] border border-[#121212]" />
+              <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#10b981]" />
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#1e1e1e] border border-white/10 rounded-2xl p-4 shadow-2xl z-50 animate-fadeIn">
+              <div className="absolute right-0 mt-2 w-72 bg-[#161c18] border border-white/10 rounded-2xl p-4 shadow-2xl z-50 animate-fadeIn">
                 <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">Notifications</h4>
-                  <span className="text-[10px] text-[#1DB954] font-semibold">1 New</span>
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
+                    Notifications
+                  </h4>
+                  <span className="text-[10px] text-[#10b981] font-semibold">1 New</span>
                 </div>
                 <div className="space-y-2 pt-2">
-                  <div className="p-2 rounded-xl bg-[#282828] text-xs">
-                    <p className="font-bold text-white">🎵 312 Tamil Tracks Ready</p>
+                  <div className="p-2.5 rounded-xl bg-white/5 text-xs">
+                    <p className="font-bold text-white">✨ 8D Spatial Audio Engine</p>
                     <p className="text-[11px] text-neutral-400 mt-0.5">
-                      New trending Tamil romantic melodies, vibe tracks, and 8D spatial mixes loaded.
+                      New 3-Panel GreenWave layout with 360° binaural rendering is active.
                     </p>
                   </div>
                 </div>
@@ -178,28 +80,92 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
             )}
           </div>
 
-          {/* User Profile Menu */}
+          {/* Settings Gear */}
           <div className="relative">
             <button
-              onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="inline-flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-full bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 text-white transition-colors leading-none"
+              type="button"
+              onClick={() => setShowSettings(!showSettings)}
+              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
+              title="Settings"
             >
-              <div className="w-7 h-7 rounded-full bg-[#1DB954] text-black inline-flex items-center justify-center font-bold text-xs shadow-sm leading-none">
-                {user?.name ? user.name[0].toUpperCase() : "U"}
+              <span className="material-symbols-outlined text-lg">settings</span>
+            </button>
+
+            {showSettings && (
+              <div className="absolute right-0 mt-2 w-56 bg-[#161c18] border border-white/10 rounded-2xl p-3 shadow-2xl z-50 animate-fadeIn space-y-1">
+                <button
+                  onClick={() => {
+                    setShowSettings(false);
+                    openModeSelector();
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-neutral-200 hover:text-white hover:bg-white/5 flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-base text-cyan-400">graphic_eq</span>
+                    <span>Audio Universe</span>
+                  </span>
+                  <span className="text-[10px] font-mono text-[#10b981]">{audioMode?.toUpperCase()}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSettings(false);
+                    setShowMiloChat(true);
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-neutral-200 hover:text-white hover:bg-white/5 flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-base text-purple-400">smart_toy</span>
+                  <span>Milo AI Assistant</span>
+                </button>
               </div>
-              <span className="text-xs font-semibold hidden md:inline truncate max-w-[100px] leading-none">
-                {user?.name || "Listener"}
-              </span>
-              <span className="material-symbols-outlined text-sm text-neutral-400">
-                {showProfileMenu ? "expand_less" : "expand_more"}
-              </span>
+            )}
+          </div>
+
+          {/* Right Panel Toggle (for tablet/desktop) */}
+          {onToggleRightPanel && (
+            <button
+              type="button"
+              onClick={onToggleRightPanel}
+              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center xl:hidden transition-colors"
+              title="Toggle Playlist & Player"
+            >
+              <span className="material-symbols-outlined text-lg">queue_music</span>
+            </button>
+          )}
+
+          {/* User Profile Pill matching screenshot "Robbi Darwis @Robbi001" */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className="flex items-center gap-2.5 p-1 pr-3 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-left transition-colors"
+            >
+              <img
+                src={
+                  user?.avatar ||
+                  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80"
+                }
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover border border-[#10b981]/40"
+              />
+              <div className="hidden sm:flex flex-col">
+                <span className="text-xs font-bold text-white leading-tight">
+                  {user?.name || "Robbi Darwis"}
+                </span>
+                <span className="text-[10px] text-neutral-400 font-mono leading-tight">
+                  {user?.handle || "@Robbi001"}
+                </span>
+              </div>
             </button>
 
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#1e1e1e] border border-white/10 rounded-2xl p-2 shadow-2xl z-50 animate-fadeIn">
+              <div className="absolute right-0 mt-2 w-48 bg-[#161c18] border border-white/10 rounded-2xl p-2 shadow-2xl z-50 animate-fadeIn">
                 <div className="px-3 py-2 border-b border-white/10">
-                  <p className="text-xs font-bold text-white truncate">{user?.name || "Guest Listener"}</p>
-                  <p className="text-[10px] text-neutral-400 capitalize">{user?.role || "Free Plan"}</p>
+                  <p className="text-xs font-bold text-white truncate">
+                    {user?.name || "Robbi Darwis"}
+                  </p>
+                  <p className="text-[10px] text-neutral-400 font-mono">
+                    {user?.handle || "@Robbi001"}
+                  </p>
                 </div>
                 <div className="pt-1 space-y-0.5">
                   <button
@@ -207,7 +173,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
                       setShowProfileMenu(false);
                       onSelectTab("taste");
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-[#282828] flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-white/5 flex items-center gap-2"
                   >
                     <span className="material-symbols-outlined text-sm">insights</span>
                     <span>Music Taste DNA</span>
@@ -217,7 +183,7 @@ export default function SpotifyTopBar({ activeTab, onSelectTab, user, onLogout, 
                       setShowProfileMenu(false);
                       onSelectTab("library", "Favorites");
                     }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-[#282828] flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-neutral-200 hover:text-white hover:bg-white/5 flex items-center gap-2"
                   >
                     <span className="material-symbols-outlined text-sm">favorite</span>
                     <span>Liked Songs</span>
