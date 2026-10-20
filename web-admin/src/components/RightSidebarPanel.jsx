@@ -6,6 +6,7 @@ export default function RightSidebarPanel({ onNavigate }) {
     currentSong,
     isPlaying,
     playSong,
+    togglePlay,
     audioMode,
     openModeSelector,
     playlist,
@@ -117,23 +118,29 @@ export default function RightSidebarPanel({ onNavigate }) {
         </button>
       </div>
 
-      {/* Itemized Track List */}
-      <div className="flex-1 overflow-y-auto no-scrollbar py-2.5 space-y-1 pr-0.5">
+      {/* Itemized Track List with increased breathing room */}
+      <div className="flex-1 overflow-y-auto no-scrollbar py-2 space-y-1.5 pr-0.5">
         {activeTrackList.slice(0, 7).map((song, idx) => {
           const isThisActive = isCurrent(song);
           return (
             <div
               key={song._id || song.id || idx}
-              onClick={() => playSong(song, activeTrackList)}
-              className={`group flex items-center justify-between p-2 rounded-xl cursor-pointer transition-all ${
+              onClick={() => {
+                if (isThisActive) {
+                  togglePlay();
+                } else {
+                  playSong(song, activeTrackList);
+                }
+              }}
+              className={`group flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all ${
                 isThisActive
                   ? "bg-[#181818] border border-[#10b981]/30 shadow-sm"
                   : "hover:bg-[#181818] border border-transparent"
               }`}
             >
-              {/* Thumbnail & Title */}
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-[#1e1e1e]">
+              {/* Thumbnail & Title with generous gap */}
+              <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-[#1e1e1e]">
                   <img
                     src={song.imageUrl || DEFAULT_COVER}
                     alt={song.title}
@@ -145,46 +152,50 @@ export default function RightSidebarPanel({ onNavigate }) {
                   />
                   {isThisActive && isPlaying && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-0.5">
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_100ms] h-3" />
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_300ms] h-4" />
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_200ms] h-2.5" />
+                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_100ms] h-3.5" />
+                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_300ms] h-4.5" />
+                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_200ms] h-3" />
                     </div>
                   )}
                 </div>
 
                 <div className="min-w-0 flex-1">
                   <h4
-                    className={`text-xs font-bold truncate leading-snug ${
+                    className={`text-xs sm:text-sm font-bold truncate leading-tight ${
                       isThisActive ? "text-[#10b981]" : "text-white group-hover:text-white"
                     }`}
                   >
                     {song.title}
                   </h4>
-                  <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">
+                  <p className="text-[11px] text-[#a1a1aa] truncate mt-1">
                     {song.role || song.artist || "Musician"}
                   </p>
                 </div>
               </div>
 
-              {/* Inline Quick Play Trigger */}
+              {/* Inline Quick Play Trigger Synced With Global Player State */}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  playSong(song, activeTrackList);
+                  if (isThisActive) {
+                    togglePlay();
+                  } else {
+                    playSong(song, activeTrackList);
+                  }
                 }}
-                className={`w-7 h-7 rounded-full flex items-center justify-center transition-all shrink-0 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ml-2 ${
                   isThisActive
-                    ? "bg-[#10b981] text-black shadow-md shadow-[#10b981]/20"
+                    ? "bg-[#10b981] text-black shadow-md shadow-[#10b981]/25"
                     : "border border-white/10 text-neutral-400 group-hover:border-white/30 group-hover:text-white"
                 }`}
-                title={isThisActive && isPlaying ? "Playing" : "Play"}
+                title={isThisActive && isPlaying ? "Pause" : "Play"}
               >
                 <span
                   className="material-symbols-outlined text-sm font-bold"
                   style={{ fontVariationSettings: "'FILL' 1" }}
                 >
-                  {isThisActive && isPlaying ? "equalizer" : "play_arrow"}
+                  {isThisActive && isPlaying ? "pause" : "play_arrow"}
                 </span>
               </button>
             </div>
@@ -192,11 +203,11 @@ export default function RightSidebarPanel({ onNavigate }) {
         })}
       </div>
 
-      {/* Clean Now Playing Artwork Showcase (No redundant playback controls or scrubbers!) */}
-      <div className="mt-auto pt-3 border-t border-white/5">
-        <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#282828] p-3 shadow-lg">
-          {/* Full-width Album Art Backdrop */}
-          <div className="relative w-full aspect-[16/11] rounded-xl overflow-hidden mb-2.5 bg-[#202020]">
+      {/* Compact Now Playing Artwork Showcase */}
+      <div className="mt-auto pt-2.5 border-t border-white/5">
+        <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] p-2.5 shadow-md">
+          {/* Compact 16:9 Artwork Backdrop */}
+          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-2 bg-[#202020]">
             <img
               src={activeTrack?.imageUrl || DEFAULT_COVER}
               alt={activeTrack?.title || "Now Playing"}
@@ -229,24 +240,39 @@ export default function RightSidebarPanel({ onNavigate }) {
             </div>
           </div>
 
-          {/* Song Metadata Card */}
+          {/* Compact Song Metadata Row with Synced Global Play Action */}
           <div className="flex items-center justify-between px-1">
             <div className="min-w-0 flex-1 pr-2">
-              <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-snug">
+              <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-tight">
                 {activeTrack?.title || "No Time to Die"}
               </h4>
               <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">
                 {activeTrack?.artist || "Billie Eilish"}
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate("orbit")}
-              className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white text-[10px] font-semibold border border-white/5 shrink-0 transition-colors"
-              title="Open 360° Binaural Stage"
-            >
-              360° Stage
-            </button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => togglePlay()}
+                className="w-7 h-7 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm"
+                title={isPlaying ? "Pause" : "Play"}
+              >
+                <span
+                  className="material-symbols-outlined text-sm font-bold"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  {isPlaying ? "pause" : "play_arrow"}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate && onNavigate("orbit")}
+                className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white text-[10px] font-semibold border border-white/5 transition-colors"
+                title="Open 360° Binaural Stage"
+              >
+                360°
+              </button>
+            </div>
           </div>
         </div>
       </div>

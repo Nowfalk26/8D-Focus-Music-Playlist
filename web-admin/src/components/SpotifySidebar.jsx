@@ -56,7 +56,7 @@ export default function SpotifySidebar({
 
   return (
     <aside
-      className={`hidden md:flex h-full flex-col shrink-0 select-none font-sans bg-[#121614] rounded-2xl border border-white/5 p-4 shadow-2xl transition-all duration-300 ease-in-out ${
+      className={`hidden md:flex h-full flex-col shrink-0 select-none font-sans bg-[#121212] rounded-2xl border border-[#282828] p-4 shadow-xl transition-all duration-300 ease-in-out ${
         isSidebarOpen
           ? "w-64 lg:w-72 opacity-100"
           : "w-0 p-0 m-0 overflow-hidden opacity-0 pointer-events-none"
