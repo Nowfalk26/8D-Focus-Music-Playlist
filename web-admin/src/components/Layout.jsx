@@ -71,7 +71,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
 
         {/* Panel 2: Center Main Stage (Hero Banner, Trending Albums, Top Artist) */}
         <div className="flex-1 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-2xl relative border border-[#282828] transition-all duration-300 min-h-0">
-          <main className="flex-1 overflow-y-auto no-scrollbar">
+          <main className="flex-1 overflow-y-auto no-scrollbar scroll-smooth overscroll-contain">
             {children}
           </main>
         </div>

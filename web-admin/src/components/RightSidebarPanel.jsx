@@ -7,11 +7,26 @@ export default function RightSidebarPanel({ onNavigate }) {
     isPlaying,
     playSong,
     togglePlay,
+    currentTime,
+    duration,
+    seek,
+    volume,
+    isMuted,
+    toggleMute,
     audioMode,
     openModeSelector,
     playlist,
     queue,
   } = usePlayer();
+
+  const formatTime = (secs) => {
+    if (isNaN(secs) || secs === Infinity) return "0:00";
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   const DEFAULT_COVER = "/billie-nowplaying.png";
 
@@ -203,15 +218,15 @@ export default function RightSidebarPanel({ onNavigate }) {
         })}
       </div>
 
-      {/* Compact Now Playing Artwork Showcase */}
-      <div className="mt-auto pt-2.5 border-t border-white/5">
+      {/* Compact Synchronized Now Playing Artwork Showcase */}
+      <div className="mt-auto pt-2 border-t border-white/5">
         <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] p-2.5 shadow-md">
           {/* Compact 16:9 Artwork Backdrop */}
-          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-2 bg-[#202020]">
+          <div className="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-[#202020] group">
             <img
               src={activeTrack?.imageUrl || DEFAULT_COVER}
               alt={activeTrack?.title || "Now Playing"}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = DEFAULT_COVER;
@@ -219,15 +234,16 @@ export default function RightSidebarPanel({ onNavigate }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-            {/* Spatial Audio Mode Tag */}
+            {/* Spatial Audio Mode Tag (Preserved) */}
             <button
               onClick={openModeSelector}
               className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur border border-white/15 text-neutral-300 hover:text-[#10b981] hover:border-[#10b981]/50 text-[9px] font-mono font-bold uppercase tracking-wider transition-colors"
+              title="Change Spatial Audio Mode"
             >
               {audioMode?.toUpperCase() || "8D"} SPATIAL
             </button>
 
-            {/* Now Playing Live Badge */}
+            {/* Now Playing Live Badge (Preserved) */}
             <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur border border-white/10 text-[10px] text-neutral-300">
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
@@ -241,7 +257,7 @@ export default function RightSidebarPanel({ onNavigate }) {
           </div>
 
           {/* Compact Song Metadata Row with Synced Global Play Action */}
-          <div className="flex items-center justify-between px-1">
+          <div className="flex items-center justify-between px-0.5">
             <div className="min-w-0 flex-1 pr-2">
               <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-tight">
                 {activeTrack?.title || "No Time to Die"}
@@ -272,6 +288,46 @@ export default function RightSidebarPanel({ onNavigate }) {
               >
                 360°
               </button>
+            </div>
+          </div>
+
+          {/* Synchronized Progress & Volume Indicator */}
+          <div className="mt-2 pt-1.5 border-t border-white/5">
+            <div className="flex items-center justify-between text-[9px] font-mono text-[#a1a1aa] mb-1">
+              <span>{formatTime(currentTime)}</span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  className="text-neutral-400 hover:text-white transition-colors"
+                  title={isMuted ? "Unmute" : "Mute"}
+                >
+                  <span className="material-symbols-outlined text-xs">
+                    {isMuted || volume === 0 ? "volume_off" : volume < 0.5 ? "volume_down" : "volume_up"}
+                  </span>
+                </button>
+                <span className="text-[9px] text-[#10b981] font-mono">
+                  {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
+                </span>
+              </div>
+              <span>{formatTime(duration)}</span>
+            </div>
+            <div
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const newPercent = clickX / rect.width;
+                if (duration > 0 && seek) {
+                  seek(newPercent * duration);
+                }
+              }}
+              className="w-full h-1 bg-white/10 hover:h-1.5 rounded-full overflow-hidden cursor-pointer group/progress transition-all relative"
+              title="Seek progress"
+            >
+              <div
+                className="h-full bg-[#10b981] transition-all duration-150 rounded-full"
+                style={{ width: `${progressPercent}%` }}
+              />
             </div>
           </div>
         </div>

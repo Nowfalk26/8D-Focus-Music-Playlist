@@ -136,39 +136,39 @@ export default function HomeScreen({ onNavigate }) {
     isPlaying;
 
   return (
-    <div className="w-full flex flex-col font-sans text-neutral-100 select-none p-5 sm:p-7 space-y-8 pb-48 sm:pb-52 max-w-[1300px] mx-auto">
+    <div className="w-full flex flex-col font-sans text-neutral-100 select-none p-4 sm:p-6 lg:p-7 space-y-7 pb-44 sm:pb-48 max-w-[1300px] mx-auto">
       {/* ============================================================== */}
-      {/* 🌟 1. REDESIGNED HERO BANNER (Wider Artwork & Balanced Spacing) */}
+      {/* 🌟 1. REDESIGNED HERO BANNER (Compact & Balanced Alignment)     */}
       {/* ============================================================== */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#141b17] via-[#111613] to-[#151a17] border border-[#262626] p-6 sm:p-8 lg:p-10 shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#141b17] via-[#111613] to-[#151a17] border border-[#262626] p-5 sm:p-6 lg:p-7 shadow-xl">
         {/* Subtle dark ambient aura */}
-        <div className="absolute right-0 bottom-0 w-96 h-96 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
+        <div className="absolute right-0 bottom-0 w-80 h-80 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-6 lg:gap-10">
+        <div className="relative z-10 flex flex-col-reverse md:flex-row items-center justify-between gap-5 lg:gap-8">
           {/* Left Metadata & Actions */}
-          <div className="flex-1 min-w-0 text-left py-1">
-            {/* Verified Artist Pill - subtle & disciplined */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-4">
+          <div className="flex-1 min-w-0 text-left py-0.5">
+            {/* Verified Artist Pill */}
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-2.5">
               <span className="material-symbols-outlined text-sm text-[#10b981]">verified</span>
               <span>Verified Artist</span>
             </div>
 
             {/* Oversized Bold Artist Name */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
               Billie Eilish
             </h1>
 
             {/* Monthly Listeners / Metadata */}
-            <p className="mt-3 text-xs sm:text-sm text-[#a1a1aa] font-medium">
+            <p className="mt-1.5 text-xs sm:text-sm text-[#a1a1aa] font-medium">
               109,482,631 monthly listeners
             </p>
 
             {/* Action Buttons: Mint Following + Circular Play Button */}
-            <div className="mt-7 flex items-center gap-3.5">
+            <div className="mt-5 flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsFollowingHero(!isFollowingHero)}
-                className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm ${
+                className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm ${
                   isFollowingHero
                     ? "bg-[#dcfce7] text-[#064e3b] hover:bg-[#bbf7d0]"
                     : "bg-white/10 text-white hover:bg-white/15"
@@ -187,7 +187,7 @@ export default function HomeScreen({ onNavigate }) {
                     playSong(heroTrack, trendingAlbums);
                   }
                 }}
-                className="w-12 h-12 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[#10b981]/25"
+                className="w-11 h-11 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25"
                 title={isHeroPlaying ? "Pause" : "Play Billie Eilish"}
               >
                 <span
@@ -200,9 +200,9 @@ export default function HomeScreen({ onNavigate }) {
             </div>
           </div>
 
-          {/* Right Featured Artist Cut-Out Artwork (Wider, prominent & proportional) */}
+          {/* Right Featured Artist Cut-Out Artwork (Proportionate & Sleek) */}
           <div className="relative shrink-0 flex items-center justify-center w-full md:w-auto">
-            <div className="relative w-full max-w-[280px] sm:max-w-[340px] md:w-72 md:h-60 lg:w-96 lg:h-64 h-52 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-[#0e1712]">
+            <div className="relative w-full max-w-[240px] sm:max-w-[280px] md:w-64 md:h-48 lg:w-72 lg:h-52 h-44 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-[#0e1712]">
               <img
                 src="/billie-hero.png"
                 alt="Billie Eilish"
@@ -232,7 +232,7 @@ export default function HomeScreen({ onNavigate }) {
         </div>
 
         {/* 4 Cards evenly distributed across full width with 1:1 Aspect Ratio */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 w-full">
           {trendingAlbums.map((album) => {
             const isPlayingThis =
               currentSong &&
@@ -243,7 +243,7 @@ export default function HomeScreen({ onNavigate }) {
               <div
                 key={album.id}
                 onClick={() => playSong(album, trendingAlbums)}
-                className="group flex flex-col justify-between bg-[#181818] border border-[#262626] hover:border-white/20 rounded-2xl p-3 transition-all duration-200 cursor-pointer shadow-md hover:-translate-y-0.5 w-full"
+                className="group flex flex-col justify-between bg-[#181818] border border-[#262626] hover:border-white/20 rounded-2xl p-3 transition-all duration-200 cursor-pointer shadow-md hover:-translate-y-0.5 w-full h-full"
               >
                 {/* 1:1 Square Aspect Ratio Cover */}
                 <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#202020] mb-2.5 shrink-0">
@@ -283,7 +283,7 @@ export default function HomeScreen({ onNavigate }) {
                 {/* Song/Album Title with Truncation to prevent clipping */}
                 <div className="flex flex-col min-w-0 w-full">
                   <h3
-                    className="text-xs sm:text-sm font-bold text-white truncate leading-tight group-hover:text-[#10b981] transition-colors"
+                    className="text-xs sm:text-sm font-bold text-white truncate leading-snug group-hover:text-[#10b981] transition-colors"
                     title={album.title}
                   >
                     {album.title}
