@@ -124,7 +124,7 @@ export default function RightSidebarPanel({ onNavigate }) {
         <button
           type="button"
           onClick={() => onNavigate && onNavigate("library")}
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs text-neutral-400 hover:text-white transition-colors"
+          className="h-[30px] px-3 rounded-full bg-white/5 hover:bg-white/10 text-xs font-semibold text-neutral-300 hover:text-white inline-flex items-center justify-center gap-1 transition-colors whitespace-nowrap"
         >
           <span>See All</span>
           <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -265,15 +265,15 @@ export default function RightSidebarPanel({ onNavigate }) {
                   {currentSong.artist || "Flow 8D Artist"}
                 </p>
               </div>
-              <div className="flex items-center gap-1.5 shrink-0">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => togglePlay()}
-                  className="w-7 h-7 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm"
+                  className="w-8 h-8 rounded-full bg-[#10b981] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm shrink-0"
                   title={isPlaying ? "Pause" : "Play"}
                 >
                   <span
-                    className="material-symbols-outlined text-sm font-bold"
+                    className="material-symbols-outlined text-base font-bold"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     {isPlaying ? "pause" : "play_arrow"}
@@ -282,7 +282,7 @@ export default function RightSidebarPanel({ onNavigate }) {
                 <button
                   type="button"
                   onClick={() => onNavigate && onNavigate("orbit")}
-                  className="px-2 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white text-[10px] font-semibold border border-white/5 transition-colors"
+                  className="h-7 px-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white text-[11px] font-semibold border border-white/10 inline-flex items-center justify-center transition-colors whitespace-nowrap"
                   title="Open 360° Binaural Stage"
                 >
                   360°

@@ -141,7 +141,7 @@ export default function HomeScreen({ onNavigate }) {
     isPlaying;
 
   return (
-    <div className="w-full flex flex-col font-sans text-neutral-100 select-none p-4 sm:p-6 lg:p-7 space-y-7 pb-44 sm:pb-48 max-w-[1300px] mx-auto">
+    <div className="w-full min-w-0 flex flex-col font-sans text-neutral-100 select-none p-4 sm:p-6 lg:p-7 space-y-7 pb-36 max-w-[1300px] mx-auto box-border">
       {/* ============================================================== */}
       {/* 🌟 1. REDESIGNED HERO BANNER (Compact & Balanced Alignment)     */}
       {/* ============================================================== */}
@@ -153,7 +153,7 @@ export default function HomeScreen({ onNavigate }) {
           {/* Left Metadata & Actions */}
           <div className="flex-1 min-w-0 text-left py-0.5">
             {/* Verified Artist Pill */}
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-2.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-neutral-300 border border-white/10 text-xs font-semibold mb-2.5">
               <span className="material-symbols-outlined text-sm text-[#10b981]">verified</span>
               <span>Verified Artist</span>
             </div>
@@ -168,12 +168,12 @@ export default function HomeScreen({ onNavigate }) {
               109,482,631 monthly listeners
             </p>
 
-            {/* Action Buttons: Mint Following + Circular Play Button */}
+            {/* Action Buttons: Standard 38px height + Circular Play Button */}
             <div className="mt-5 flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsFollowingHero(!isFollowingHero)}
-                className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm ${
+                className={`h-[38px] px-5 rounded-full text-[13px] font-bold inline-flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm whitespace-nowrap ${
                   isFollowingHero
                     ? "bg-[#dcfce7] text-[#064e3b] hover:bg-[#bbf7d0]"
                     : "bg-white/10 text-white hover:bg-white/15"
@@ -192,7 +192,7 @@ export default function HomeScreen({ onNavigate }) {
                     playSong(heroTrack, trendingAlbums);
                   }
                 }}
-                className="w-11 h-11 rounded-full bg-[#10b981] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25"
+                className="w-[42px] h-[42px] rounded-full bg-[#10b981] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#10b981]/25 shrink-0"
                 title={isHeroPlaying ? "Pause" : "Play Billie Eilish"}
               >
                 <span
@@ -230,7 +230,7 @@ export default function HomeScreen({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("library")}
-            className="text-xs text-[#a1a1aa] hover:text-[#10b981] font-semibold transition-colors"
+            className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center transition-colors whitespace-nowrap"
           >
             See All
           </button>
@@ -316,7 +316,7 @@ export default function HomeScreen({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("library")}
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#181818] hover:bg-white/10 text-xs text-[#a1a1aa] hover:text-white transition-colors border border-[#262626]"
+            className="h-8 px-3.5 rounded-full bg-[#181818] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-semibold border border-[#262626] inline-flex items-center justify-center gap-1 transition-colors whitespace-nowrap"
           >
             <span>See All</span>
             <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -349,20 +349,20 @@ export default function HomeScreen({ onNavigate }) {
                   </div>
                 </div>
 
-                {/* Follow Button */}
+                {/* Follow Button: Standardized 32px height with ample padding */}
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleArtistFollow(art.name);
                   }}
-                  className={`inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95 shrink-0 ${
+                  className={`h-8 min-w-[92px] px-3.5 rounded-full text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap ${
                     isFollowing
-                      ? "bg-white/5 hover:bg-white/10 text-[#a1a1aa] hover:text-white border border-[#262626]"
-                      : "bg-[#10b981] hover:bg-[#059669] text-black font-bold shadow-sm"
+                      ? "bg-white/5 hover:bg-white/10 text-neutral-300 border border-[#262626]"
+                      : "bg-[#10b981] hover:bg-[#059669] text-black shadow-sm"
                   }`}
                 >
-                  <span className="material-symbols-outlined text-sm">
+                  <span className="material-symbols-outlined text-sm font-bold">
                     {isFollowing ? "check" : "add"}
                   </span>
                   <span>{isFollowing ? "Following" : "Follow"}</span>
@@ -385,9 +385,9 @@ export default function HomeScreen({ onNavigate }) {
           <button
             type="button"
             onClick={() => onNavigate("search")}
-            className="px-4 py-2 rounded-full bg-[#10b981] hover:bg-[#059669] text-black text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 shrink-0"
+            className="h-[38px] px-5 rounded-full bg-[#10b981] hover:bg-[#059669] text-black text-[13px] font-bold inline-flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 whitespace-nowrap shadow-sm"
           >
-            <span className="material-symbols-outlined text-sm font-bold">add</span>
+            <span className="material-symbols-outlined text-base font-bold">add</span>
             <span>+ Add Song</span>
           </button>
         </div>

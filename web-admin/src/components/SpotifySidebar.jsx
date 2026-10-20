@@ -101,11 +101,11 @@ export default function SpotifySidebar({
         )}
       </div>
 
-      {/* Scrollable Navigation Sections */}
-      <div className="flex-1 overflow-y-auto no-scrollbar space-y-5 pr-0.5">
+      {/* Scrollable Navigation Sections with 20-24px group spacing */}
+      <div className="flex-1 overflow-y-auto no-scrollbar space-y-6 pr-0.5 pt-1">
         {/* SECTION 1: MENU */}
         <div>
-          <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono mb-2">
+          <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono mb-2.5">
             MENU
           </p>
           <nav className="space-y-1">
@@ -115,14 +115,14 @@ export default function SpotifySidebar({
                 <button
                   key={item.id}
                   onClick={() => onSelectTab(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150 ${
                     active
                       ? "text-[#10b981] bg-[#10b981]/15 font-bold shadow-sm border border-[#10b981]/30"
                       : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                   }`}
                 >
                   <span
-                    className={`material-symbols-outlined text-lg ${
+                    className={`material-symbols-outlined text-[20px] ${
                       active ? "text-[#10b981]" : "text-neutral-400"
                     }`}
                   >
@@ -137,7 +137,7 @@ export default function SpotifySidebar({
 
         {/* SECTION 2: FOLDER & STUDIO */}
         <div>
-          <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono mb-2">
+          <p className="px-3 text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono mb-2.5">
             FOLDER
           </p>
           <nav className="space-y-1">
@@ -147,14 +147,14 @@ export default function SpotifySidebar({
                 <button
                   key={item.id}
                   onClick={() => onSelectTab(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
+                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-150 ${
                     active
                       ? "text-[#10b981] bg-[#10b981]/15 font-bold shadow-sm border border-[#10b981]/30"
                       : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                   }`}
                 >
                   <span
-                    className={`material-symbols-outlined text-lg ${
+                    className={`material-symbols-outlined text-[20px] ${
                       active ? "text-[#10b981]" : "text-neutral-400"
                     }`}
                   >
@@ -168,15 +168,15 @@ export default function SpotifySidebar({
             {/* Sound Universe Mode Trigger */}
             <button
               onClick={openModeSelector}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-white/5 transition-all"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent transition-all"
             >
               <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-lg text-cyan-400">
+                <span className="material-symbols-outlined text-[20px] text-cyan-400">
                   graphic_eq
                 </span>
                 <span>Spatial Sound</span>
               </div>
-              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                 {audioMode?.toUpperCase() || "8D"}
               </span>
             </button>
@@ -185,13 +185,13 @@ export default function SpotifySidebar({
 
         {/* SECTION 3: PLAYLISTS CONTAINER */}
         <div>
-          <div className="flex items-center justify-between px-3 mb-2">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
+          <div className="flex items-center justify-between px-3 mb-2.5">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 font-mono">
               PLAYLISTS
             </p>
             <button
               onClick={() => onSelectTab("library")}
-              className="text-[10px] text-[#10b981] hover:underline"
+              className="text-[11px] text-[#10b981] hover:underline font-semibold"
             >
               View all
             </button>
@@ -216,10 +216,10 @@ export default function SpotifySidebar({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h5 className="text-xs font-semibold text-neutral-200 group-hover:text-white truncate">
+                  <h5 className="text-[13px] font-semibold text-neutral-200 group-hover:text-white truncate">
                     {pl.title}
                   </h5>
-                  <p className="text-[10px] text-neutral-500 truncate mt-0.5">
+                  <p className="text-[11px] text-neutral-500 truncate mt-0.5">
                     {pl.count}
                   </p>
                 </div>
@@ -233,9 +233,9 @@ export default function SpotifySidebar({
       <div className="pt-3 border-t border-white/5 mt-auto">
         <button
           onClick={onLogout || (() => onSelectTab("home"))}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white hover:bg-white/5 transition-colors"
+          className="w-full h-10 flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-semibold text-neutral-400 hover:text-white hover:bg-white/5 transition-colors"
         >
-          <span className="material-symbols-outlined text-lg">logout</span>
+          <span className="material-symbols-outlined text-[20px]">logout</span>
           <span>Log Out</span>
         </button>
       </div>
