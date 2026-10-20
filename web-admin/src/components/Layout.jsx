@@ -6,7 +6,6 @@ import Player360 from "./Player360";
 import MobileNowPlayingModal from "./MobileNowPlayingModal";
 import MobilePlayQueueModal from "./MobilePlayQueueModal";
 import DeviceConnectModal from "./DeviceConnectModal";
-import ScreenCatPet from "./ScreenCatPet";
 import AudioModeSelector from "./AudioModeSelector";
 import ModeTransitionOverlay from "./ModeTransitionOverlay";
 import MiloCatChat from "./MiloCatChat";
@@ -143,9 +142,6 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
       {showFullPlayer && show360Visualizer && (
         <Player360 onClose={() => setShow360Visualizer(false)} />
       )}
-
-      {/* Screen Cat Pet */}
-      <ScreenCatPet />
 
       {/* Milo AI Assistant Chat Modal */}
       {showMiloChat && <MiloCatChat onClose={() => setShowMiloChat(false)} />}
