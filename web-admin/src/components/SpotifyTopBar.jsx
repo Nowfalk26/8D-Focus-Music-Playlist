@@ -26,7 +26,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={onToggleSidebar}
-              className="w-9 h-9 rounded-xl md:hidden flex items-center justify-center bg-[#161c18] hover:bg-[#1f2722] text-neutral-300 hover:text-white border border-white/5 transition-all shrink-0"
+              className="w-9 h-9 rounded-xl md:hidden flex items-center justify-center bg-[#181818] hover:bg-[#222222] text-neutral-300 hover:text-white border border-[#262626] transition-all shrink-0"
               title="Toggle sidebar"
             >
               <span className="material-symbols-outlined text-xl">menu</span>
@@ -53,7 +53,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={() => setShowNotifications(!showNotifications)}
-              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center relative transition-colors"
+              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center relative transition-colors"
               title="Notifications"
             >
               <span className="material-symbols-outlined text-lg">notifications</span>
@@ -61,8 +61,8 @@ export default function SpotifyTopBar({
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#161c18] border border-white/10 rounded-2xl p-4 shadow-2xl z-50 animate-fadeIn">
-                <div className="flex items-center justify-between pb-2 border-b border-white/10">
+              <div className="absolute right-0 mt-2 w-72 bg-[#181818] border border-[#262626] rounded-2xl p-4 shadow-2xl z-50 animate-fadeIn">
+                <div className="flex items-center justify-between pb-2 border-b border-[#262626]">
                   <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono">
                     Notifications
                   </h4>
@@ -72,7 +72,7 @@ export default function SpotifyTopBar({
                   <div className="p-2.5 rounded-xl bg-white/5 text-xs">
                     <p className="font-bold text-white">✨ 8D Spatial Audio Engine</p>
                     <p className="text-[11px] text-neutral-400 mt-0.5">
-                      New 3-Panel GreenWave layout with 360° binaural rendering is active.
+                      3-Panel GreenWave layout with synchronized binaural audio is active.
                     </p>
                   </div>
                 </div>
@@ -85,14 +85,14 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={() => setShowSettings(!showSettings)}
-              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
+              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center transition-colors"
               title="Settings"
             >
               <span className="material-symbols-outlined text-lg">settings</span>
             </button>
 
             {showSettings && (
-              <div className="absolute right-0 mt-2 w-56 bg-[#161c18] border border-white/10 rounded-2xl p-3 shadow-2xl z-50 animate-fadeIn space-y-1">
+              <div className="absolute right-0 mt-2 w-56 bg-[#181818] border border-[#262626] rounded-2xl p-3 shadow-2xl z-50 animate-fadeIn space-y-1">
                 <button
                   onClick={() => {
                     setShowSettings(false);
@@ -125,7 +125,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={onToggleRightPanel}
-              className="w-9 h-9 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-neutral-300 hover:text-white flex items-center justify-center xl:hidden transition-colors"
+              className="w-9 h-9 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-neutral-300 hover:text-white flex items-center justify-center xl:hidden transition-colors"
               title="Toggle Playlist & Player"
             >
               <span className="material-symbols-outlined text-lg">queue_music</span>
@@ -137,7 +137,7 @@ export default function SpotifyTopBar({
             <button
               type="button"
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2.5 p-1 pr-3 rounded-full bg-[#161c18] hover:bg-[#1f2722] border border-white/5 text-left transition-colors"
+              className="flex items-center gap-2.5 p-1 pr-3 rounded-full bg-[#181818] hover:bg-[#222222] border border-[#262626] text-left transition-colors"
             >
               <img
                 src={
@@ -158,8 +158,8 @@ export default function SpotifyTopBar({
             </button>
 
             {showProfileMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#161c18] border border-white/10 rounded-2xl p-2 shadow-2xl z-50 animate-fadeIn">
-                <div className="px-3 py-2 border-b border-white/10">
+              <div className="absolute right-0 mt-2 w-48 bg-[#181818] border border-[#262626] rounded-2xl p-2 shadow-2xl z-50 animate-fadeIn">
+                <div className="px-3 py-2 border-b border-[#262626]">
                   <p className="text-xs font-bold text-white truncate">
                     {user?.name || "Robbi Darwis"}
                   </p>

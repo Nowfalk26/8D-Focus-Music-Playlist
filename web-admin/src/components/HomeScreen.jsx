@@ -89,7 +89,7 @@ export default function HomeScreen({ onNavigate }) {
       id: "alb-4",
       title: "When We All Fall Asleep",
       plays: "2.4M Plays",
-      cover: "/billie-nowplaying.png",
+      cover: "/album-whenwefall.png",
       artist: "Billie Eilish",
       audioUrl: "https://aac.saavncdn.com/932/7cf7f8a9d9c3faa2633d1605e97ba4a5_160.mp4",
       audioMode: "8d",
