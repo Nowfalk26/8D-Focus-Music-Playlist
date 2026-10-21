@@ -243,7 +243,7 @@ export default function SpotifySidebar({
             </div>
             <button
               onClick={() => onSelectTab("library")}
-              className="h-6 px-2.5 rounded-full text-[11px] font-bold text-[#10b981] hover:bg-[#10b981]/15 inline-flex items-center justify-center text-center leading-none transition-colors"
+              className="h-6 px-3 rounded-full text-[11px] font-bold text-[#10b981] hover:bg-[#10b981]/15 border border-[#10b981]/40 inline-flex items-center justify-center text-center leading-none transition-colors select-none"
             >
               View all
             </button>
@@ -260,10 +260,10 @@ export default function SpotifySidebar({
                 key={chip.id}
                 type="button"
                 onClick={() => setLibraryFilter(chip.id)}
-                className={`h-7 px-3 rounded-full text-xs font-bold inline-flex items-center justify-center text-center leading-none transition-colors select-none ${
+                className={`h-7 px-3.5 rounded-full text-xs font-bold inline-flex items-center justify-center text-center leading-none transition-colors select-none ${
                   libraryFilter === chip.id
-                    ? "bg-white text-black font-extrabold shadow-sm"
-                    : "bg-white/5 text-neutral-300 hover:text-white hover:bg-white/10"
+                    ? "bg-[#10b981] text-black font-bold shadow-sm"
+                    : "bg-black/40 text-neutral-300 hover:text-white border border-[#71717a]/70 hover:border-white"
                 }`}
               >
                 {chip.label}
@@ -312,7 +312,7 @@ export default function SpotifySidebar({
       <div className="pt-3 border-t border-white/5 mt-auto">
         <button
           onClick={onLogout || (() => onSelectTab("home"))}
-          className="w-full h-9 flex items-center justify-center gap-2.5 px-4 rounded-full text-xs font-bold text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 transition-colors leading-none select-none"
+          className="w-full h-8.5 flex items-center justify-center gap-2 px-4 rounded-full text-xs font-bold text-neutral-300 hover:text-white bg-black/40 hover:bg-black/60 border border-[#71717a]/70 hover:border-white transition-colors leading-none select-none"
         >
           <span className="material-symbols-outlined text-[18px]">logout</span>
           <span>Log Out</span>

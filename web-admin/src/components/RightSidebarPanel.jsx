@@ -124,7 +124,7 @@ export default function RightSidebarPanel({ onNavigate }) {
         <button
           type="button"
           onClick={() => onNavigate && onNavigate("library")}
-          className="h-8 px-4 rounded-full bg-white/5 hover:bg-white/10 text-xs font-bold text-neutral-200 hover:text-white inline-flex items-center justify-center text-center leading-none gap-1 transition-colors whitespace-nowrap select-none border border-white/5"
+          className="h-8 px-4 rounded-full bg-black/40 hover:bg-black/60 text-xs font-bold text-neutral-200 hover:text-white border border-[#71717a] hover:border-white inline-flex items-center justify-center text-center leading-none gap-1 transition-colors whitespace-nowrap select-none"
         >
           <span>See All</span>
           <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -282,7 +282,7 @@ export default function RightSidebarPanel({ onNavigate }) {
                 <button
                   type="button"
                   onClick={() => onNavigate && onNavigate("orbit")}
-                  className="h-7 px-3 rounded-full bg-white/10 hover:bg-white/15 text-neutral-200 hover:text-white text-[11px] font-bold border border-white/10 inline-flex items-center justify-center text-center leading-none transition-colors whitespace-nowrap select-none"
+                  className="h-7.5 px-3.5 rounded-full bg-black/40 hover:bg-black/60 text-white text-[11px] font-bold border border-[#71717a] hover:border-white inline-flex items-center justify-center text-center leading-none transition-colors whitespace-nowrap select-none"
                   title="Open 360° Binaural Stage"
                 >
                   360°
