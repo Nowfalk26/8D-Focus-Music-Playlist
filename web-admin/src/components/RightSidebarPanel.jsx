@@ -7,99 +7,74 @@ export default function RightSidebarPanel({ onNavigate }) {
     isPlaying,
     playSong,
     togglePlay,
+    queue,
+    playlist,
     currentTime,
     duration,
-    seek,
-    volume,
-    isMuted,
-    toggleMute,
-    audioMode,
-    openModeSelector,
-    playlist,
-    queue,
   } = usePlayer();
 
-  const formatTime = (secs) => {
-    if (isNaN(secs) || secs === Infinity) return "0:00";
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
-
-  const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
-
-  const DEFAULT_COVER = "/billie-nowplaying.png";
-
-  // Showcase playlist matching GreenWave
   const showcasePlaylist = [
     {
-      id: "gw-1",
+      id: "track-1",
       title: "Ocean Eyes",
       artist: "Billie Eilish",
-      role: "Musician",
       duration: "3:20",
-      imageUrl: "/album-dontsmile.png",
       audioUrl: "https://aac.saavncdn.com/932/7cf7f8a9d9c3faa2633d1605e97ba4a5_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuAWByWvdnUZaWSyHWRuiUAof9rGDUkaXD0hDAykUqTaQA_p_GH-PIHsoDBJlXPsmxAkgp2fE1h7uI8vbFX6SKL-_yqYcCR3vScUyvaCskQv3W2_53DwvuccO3gSuoWU08yyJD6MzSeR1JNFG71eD3VUjlfCTFKI0ImoEE00r75DhLiPNwojNa9Vy6UUfYhA_9YJ3Xtfd4VE3bcfOHoXCBuVKg6Kg1s5YXb0t_bw_sjqb22HowHDEiQHEg",
       audioMode: "8d",
     },
     {
-      id: "gw-2",
-      title: "Lo Vas a Olvidar",
-      artist: "Billie Eilish, Rosalía",
-      role: "Musician",
+      id: "track-2",
+      title: "Lo Vas A Olvidar",
+      artist: "Billie Eilish & Rosalía",
       duration: "3:23",
-      imageUrl: "/album-happier.png",
       audioUrl: "https://aac.saavncdn.com/001/cf795c655325785055b410f9e9cfda3a_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuCYOFacibrY2TY432yOuPgY5_38m7t0nLQPmAiPqcML9vT30Dlgx1poPsnfqiHl11l9qwsezKwcTM5Bd87rcTIN8FFHiugju5nfLmQ3HRNBjh9R3SIjwZTYNlSM-9YCfKzgagAQbcxiUZ2xgq31Rhq7hSA-2Qr_KYQgAhXZ8bnF9CtLzte-0hEDC_Nlb2rjFUhx4Xq-kZE0Eav26Bijv0GJcy20mtBy1DDZN77D4nCWtIFvLDXqW-8SBA",
       audioMode: "8d",
     },
     {
-      id: "gw-3",
+      id: "track-3",
       title: "No Time to Die",
       artist: "Billie Eilish",
-      role: "Musician",
       duration: "4:02",
-      imageUrl: "/billie-nowplaying.png",
       audioUrl: "https://aac.saavncdn.com/267/35e80dc0e599d4db2f8d8b9d6a36f94b_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuBcoCM6X9BeYwVFxdvBOpIP4R-1kPSsURPoXVqh1oHaCVvyzYq7Hesj3mG7I7rroJ9kgbX1XrXMpvwrsaMhpmf2jYHk5UI0-ZQiwoIhYsDswvljP8h2T-AMvxZGPMJlzHt3Fv4fQIR3RdHKyL_jcZdVFXV9aF8Ews_Db9F61ZGRMLC20QOD_sKkoIA1l3PgmSbDlLxrqSu4pHSfMLQUlzjgA48ialb5QfPOb3SOy7aNN2Kq7kGwIv1SXA",
       audioMode: "8d",
     },
     {
-      id: "gw-4",
+      id: "track-4",
       title: "Six Feet Under",
       artist: "Billie Eilish",
-      role: "Musician",
-      duration: "3:10",
-      imageUrl: "/album-hitmehard.png",
+      duration: "3:09",
       audioUrl: "https://aac.saavncdn.com/932/7cf7f8a9d9c3faa2633d1605e97ba4a5_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuC_k_6KkxwYbap9wW2x23Dn3VQYeKJs9itz6dzsiqUtfbEpf2PTBbnPhSNNSoufEwT0l8lRo8nwFlrXhWknKVp1PLe42p-UkCbZnV2H-bpGDxqmhIu8g7ey6ZZ_qLnzuJcNOt7ulJbG3u9fFS5Mk_IuLMZJajdfsUWHRrlvjH2kfudFv3c3pBEoghbW8Mq6utSx8wIX1Lyqsb875pjOl9Z-F1_boeOMlXpcRF8_SDxsmAH8MKfLokdh2A",
       audioMode: "8d",
     },
     {
-      id: "gw-5",
+      id: "track-5",
       title: "Bury a Friend",
       artist: "Billie Eilish",
-      role: "Musician",
       duration: "3:13",
-      imageUrl: "/album-dontsmile.png",
       audioUrl: "https://aac.saavncdn.com/001/cf795c655325785055b410f9e9cfda3a_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8IOGZNT5KPCl_ln7PczM603_rXgOSkUxEBZ-9WwVqvbbs8YEWStGTxV_xdKOPDU8YtXBdvHydiXrdQdqjrI2M_ignhtvJtFyJDVHHRPq6INfKmJF2U4fFqB4Lj6iAiLoN4EBo2yYK-sgZiR0L266437M3DaneJk6ZIwk-fC84HQHgIIAJg0ICdmkm70-70__d8omjbip32bRTpt07GWlRKuiQQYnYDtoOmYl-L8VDO5zGhti8BVevnQ",
       audioMode: "8d",
     },
     {
-      id: "gw-6",
+      id: "track-6",
       title: "Bad Guy",
       artist: "Billie Eilish",
-      role: "Musician",
       duration: "3:14",
-      imageUrl: "/album-hitmehard.png",
       audioUrl: "https://aac.saavncdn.com/267/35e80dc0e599d4db2f8d8b9d6a36f94b_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuBZA93wzZ_sfgwxDxUi6IOIckYtUwehrv-lM6lLlLCxS9BeR8a7lIUHI2hukDIrdz4hYizvctGzavQvMX0std5GoReHDvciJFc6WTHkhcJgUMkbl7JGponhKumellmLzbYqzF-gPRsITX6wM9CmPP2BGjlz0SNfcGOlrUUZhW-fh3p0C7UR7-bzkIbcZ9XiU950Hsarxd-fevssUZZE3zIi7hCbeNbzSedIrJKhTJ4H_186QwwJDtUTlg",
       audioMode: "8d",
     },
     {
-      id: "gw-7",
+      id: "track-7",
       title: "Wish You Were Gay",
       artist: "Billie Eilish",
-      role: "Musician",
       duration: "3:41",
-      imageUrl: "/album-happier.png",
       audioUrl: "https://aac.saavncdn.com/932/7cf7f8a9d9c3faa2633d1605e97ba4a5_160.mp4",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuBKO09V1CXYUHuwlQsuor3B4VAFZRMTQty4ISNGQj6g-iQvadqzRmnS2FYdW_gnVkKyVTkyuqbbEMV238ABS87mx_oLfWyjhgwwKd_XEAQ-0ljsQSdSI5bIhNy_oPNW2c0ThNYYR8Sg8lRBO8eiz5qG5K3qzU7Hrdyp0xEleQTXuwvw7htpLJgjhrlbapOSFqIYwrKG1ERASLJyY3TiD583D3xAOgonObpZFW8qxPntVGeWbvmvw-syFg",
       audioMode: "8d",
     },
   ];
@@ -114,27 +89,36 @@ export default function RightSidebarPanel({ onNavigate }) {
   const isCurrent = (song) =>
     song &&
     currentSong &&
-    (currentSong._id || currentSong.id) === (song._id || song.id);
+    (currentSong._id === song._id ||
+      currentSong.id === song.id ||
+      currentSong.title === song.title);
 
   return (
-    <aside className="w-64 lg:w-72 xl:w-[280px] shrink-0 h-full flex flex-col bg-[#121212] rounded-2xl border border-[#282828] p-3 shadow-xl overflow-hidden select-none font-sans">
+    <aside className="w-80 xl:w-[320px] 2xl:w-[340px] shrink-0 h-full flex flex-col justify-between bg-surface-container-lowest p-4 rounded-2xl shadow-xl border border-white/5 overflow-hidden select-none font-sans">
       {/* Panel Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/5">
-        <h3 className="text-base font-bold text-white tracking-tight">Play List</h3>
+      <div className="flex items-center justify-between px-1 pb-2 border-b border-white/5 shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-primary-container text-xl">
+            graphic_eq
+          </span>
+          <h3 className="font-headline-sm text-base text-on-surface font-bold tracking-tight">
+            Play List
+          </h3>
+        </div>
         <button
-          type="button"
           onClick={() => onNavigate && onNavigate("library")}
-          className="h-8 px-4 rounded-full bg-black/40 hover:bg-black/60 text-xs font-bold text-neutral-200 hover:text-white border border-[#71717a] hover:border-white inline-flex items-center justify-center text-center leading-none gap-1 transition-colors whitespace-nowrap select-none"
+          className="flex items-center gap-1 font-label-md text-xs text-outline hover:text-on-surface transition-colors cursor-pointer"
         >
           <span>See All</span>
           <span className="material-symbols-outlined text-sm">expand_more</span>
         </button>
       </div>
 
-      {/* Itemized Track List with increased breathing room */}
-      <div className="flex-1 overflow-y-auto no-scrollbar py-2 space-y-1.5 pr-0.5">
+      {/* Track List Items */}
+      <div className="flex-1 overflow-y-auto no-scrollbar py-2 space-y-1 pr-0.5">
         {activeTrackList.slice(0, 7).map((song, idx) => {
           const isThisActive = isCurrent(song);
+
           return (
             <div
               key={song._id || song.id || idx}
@@ -145,202 +129,180 @@ export default function RightSidebarPanel({ onNavigate }) {
                   playSong(song, activeTrackList);
                 }
               }}
-              className={`group flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all ${
+              className={`group relative flex items-center justify-between p-2 rounded-xl transition-all cursor-pointer ${
                 isThisActive
-                  ? "bg-[#181818] border border-[#10b981]/30 shadow-sm"
-                  : "hover:bg-[#181818] border border-transparent"
+                  ? "bg-surface-container shadow-md border border-white/5"
+                  : "hover:bg-surface-container border border-transparent"
               }`}
             >
-              {/* Thumbnail & Title with generous gap */}
-              <div className="flex items-center gap-3.5 min-w-0 flex-1">
-                <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-[#1e1e1e]">
+              {/* Active left indicator line */}
+              {isThisActive && (
+                <div className="absolute left-0 top-2 bottom-2 w-1 bg-primary-container rounded-r-full shadow-[0_0_8px_rgba(0,245,155,0.7)]" />
+              )}
+
+              <div className="flex items-center gap-2.5 min-w-0 pl-1">
+                <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-surface-container-high">
                   <img
-                    src={song.imageUrl || DEFAULT_COVER}
+                    className="w-full h-full object-cover"
+                    src={song.cover || song.imageUrl}
                     alt={song.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = DEFAULT_COVER;
-                    }}
                   />
-                  {isThisActive && isPlaying && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-0.5">
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_100ms] h-3.5" />
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_300ms] h-4.5" />
-                      <span className="w-0.5 bg-[#10b981] rounded-full animate-[bounce_1s_infinite_200ms] h-3" />
+
+                  {/* Equalizer Wave / Hover Play Icon */}
+                  {isThisActive && isPlaying ? (
+                    <div className="absolute inset-0 bg-surface-container-lowest/60 flex items-center justify-center">
+                      <div className="flex items-end gap-[2px] h-3.5">
+                        <div
+                          className="w-0.5 bg-primary-container rounded-full animate-bounce"
+                          style={{ animationDuration: "450ms", height: "12px" }}
+                        />
+                        <div
+                          className="w-0.5 bg-primary-container rounded-full animate-bounce"
+                          style={{ animationDuration: "300ms", height: "7px" }}
+                        />
+                        <div
+                          className="w-0.5 bg-primary-container rounded-full animate-bounce"
+                          style={{ animationDuration: "550ms", height: "14px" }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 bg-surface-container-lowest/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                      <span
+                        className="material-symbols-outlined text-primary text-lg"
+                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      >
+                        play_arrow
+                      </span>
                     </div>
                   )}
                 </div>
 
-                <div className="min-w-0 flex-1">
-                  <h4
-                    className={`text-xs sm:text-sm font-bold truncate leading-tight ${
-                      isThisActive ? "text-[#10b981]" : "text-white group-hover:text-white"
-                    }`}
-                  >
-                    {song.title}
-                  </h4>
-                  <p className="text-[11px] text-[#a1a1aa] truncate mt-1">
-                    {song.role || song.artist || "Musician"}
-                  </p>
+                <div className="flex flex-col min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={`font-label-lg text-xs font-semibold truncate ${
+                        isThisActive
+                          ? "text-primary-container"
+                          : "text-on-surface group-hover:text-primary-container transition-colors"
+                      }`}
+                    >
+                      {song.title}
+                    </span>
+                    <span className="px-1 py-0.2 rounded bg-primary-container/20 text-primary-container font-label-caps text-[8px] font-extrabold uppercase">
+                      8D
+                    </span>
+                  </div>
+                  <span className="font-body-sm text-[11px] text-outline truncate">
+                    {song.artist}
+                  </span>
                 </div>
               </div>
 
-              {/* Inline Quick Play Trigger Synced With Global Player State */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (isThisActive) {
-                    togglePlay();
-                  } else {
-                    playSong(song, activeTrackList);
-                  }
-                }}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ml-2 ${
-                  isThisActive
-                    ? "bg-[#10b981] text-black shadow-md shadow-[#10b981]/25"
-                    : "border border-white/10 text-neutral-400 group-hover:border-white/30 group-hover:text-white"
-                }`}
-                title={isThisActive && isPlaying ? "Pause" : "Play"}
-              >
+              <div className="flex items-center gap-2 shrink-0">
                 <span
-                  className="material-symbols-outlined text-sm font-bold"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
+                  className={`font-body-sm text-[11px] font-mono ${
+                    isThisActive ? "text-secondary" : "text-outline"
+                  }`}
                 >
-                  {isThisActive && isPlaying ? "pause" : "play_arrow"}
+                  {song.duration || "3:20"}
                 </span>
-              </button>
+                <button
+                  aria-label={isThisActive && isPlaying ? "Pause" : "Play"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isThisActive) {
+                      togglePlay();
+                    } else {
+                      playSong(song, activeTrackList);
+                    }
+                  }}
+                  className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
+                    isThisActive && isPlaying
+                      ? "bg-primary-container text-on-primary-container shadow-[0_0_12px_rgba(0,245,155,0.4)]"
+                      : "bg-surface-container-high text-on-surface-variant group-hover:text-primary-container group-hover:bg-surface-bright opacity-0 group-hover:opacity-100"
+                  }`}
+                >
+                  <span
+                    className="material-symbols-outlined text-base"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    {isThisActive && isPlaying ? "pause" : "play_arrow"}
+                  </span>
+                </button>
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Compact Synchronized Now Playing Artwork Showcase */}
-      <div className="mt-auto pt-2 border-t border-white/5">
-        {currentSong ? (
-          <div className="relative rounded-2xl overflow-hidden bg-[#181818] border border-[#262626] p-2.5 shadow-md">
-            {/* Compact 16:9 Artwork Backdrop */}
-            <div className="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-[#202020] group">
-              <img
-                src={currentSong.imageUrl || currentSong.cover || DEFAULT_COVER}
-                alt={currentSong.title || "Now Playing"}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = DEFAULT_COVER;
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      {/* CURRENT SPATIAL SOUNDSTAGE MONITOR WIDGET */}
+      <div className="mt-2 p-3.5 rounded-xl bg-surface-container-low flex flex-col gap-2 relative overflow-hidden border border-white/5 shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-primary-container animate-ping" />
+            <span className="font-label-caps text-[10px] text-on-surface font-bold uppercase tracking-wider">
+              Spatial Soundstage
+            </span>
+          </div>
+          <span className="font-label-caps text-[9px] text-secondary font-mono tracking-widest font-bold">
+            BINAURAL 8D
+          </span>
+        </div>
 
-              {/* Spatial Audio Mode Tag (Preserved) */}
-              <button
-                onClick={openModeSelector}
-                className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur border border-white/15 text-neutral-300 hover:text-[#10b981] hover:border-[#10b981]/50 text-[9px] font-mono font-bold uppercase tracking-wider transition-colors"
-                title="Change Spatial Audio Mode"
-              >
-                {audioMode?.toUpperCase() || "8D"} SPATIAL
-              </button>
+        {/* Radar / Orbit Soundstage Canvas Simulation */}
+        <div className="relative w-full h-28 rounded-lg bg-surface-container-lowest flex items-center justify-center overflow-hidden border border-white/5">
+          {/* Concentric Orbit Range Rings */}
+          <div className="absolute w-24 h-24 rounded-full border border-outline-variant/40" />
+          <div className="absolute w-16 h-16 rounded-full border border-outline-variant/60" />
+          <div className="absolute w-10 h-10 rounded-full border border-secondary/30" />
 
-              {/* Now Playing Live Badge */}
-              <div className="absolute bottom-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur border border-white/10 text-[10px] text-neutral-300">
-                <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    isPlaying ? "bg-[#10b981] animate-pulse" : "bg-neutral-500"
-                  }`}
-                />
-                <span className="font-mono text-[9px] uppercase tracking-wide">
-                  {isPlaying ? "Live Audio" : "Paused"}
-                </span>
-              </div>
-            </div>
+          {/* Crosshairs */}
+          <div className="absolute inset-x-0 h-[1px] bg-outline-variant/20" />
+          <div className="absolute inset-y-0 w-[1px] bg-outline-variant/20" />
 
-            {/* Compact Song Metadata Row with Synced Global Play Action */}
-            <div className="flex items-center justify-between px-0.5">
-              <div className="min-w-0 flex-1 pr-2">
-                <h4 className="text-xs sm:text-sm font-bold text-white truncate leading-tight">
-                  {currentSong.title}
-                </h4>
-                <p className="text-[11px] text-[#a1a1aa] truncate mt-0.5">
-                  {currentSong.artist || "Flow 8D Artist"}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => togglePlay()}
-                  className="w-8 h-8 rounded-full bg-[#10b981] text-black inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-sm shrink-0"
-                  title={isPlaying ? "Pause" : "Play"}
-                >
-                  <span
-                    className="material-symbols-outlined text-base font-bold"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    {isPlaying ? "pause" : "play_arrow"}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onNavigate && onNavigate("orbit")}
-                  className="h-7.5 px-3.5 rounded-full bg-black/40 hover:bg-black/60 text-white text-[11px] font-bold border border-[#71717a] hover:border-white inline-flex items-center justify-center text-center leading-none transition-colors whitespace-nowrap select-none"
-                  title="Open 360° Binaural Stage"
-                >
-                  360°
-                </button>
-              </div>
-            </div>
+          {/* Listener Center Head Icon */}
+          <div className="relative z-10 w-7 h-7 rounded-full bg-surface-container-high text-primary-container flex items-center justify-center shadow-lg border border-primary-container/30">
+            <span className="material-symbols-outlined text-sm">headphones</span>
+          </div>
 
-            {/* Synchronized Progress & Volume Indicator */}
-            <div className="mt-2 pt-1.5 border-t border-white/5">
-              <div className="flex items-center justify-between text-[9px] font-mono text-[#a1a1aa] mb-1">
-                <span>{formatTime(currentTime)}</span>
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    className="text-neutral-400 hover:text-white transition-colors"
-                    title={isMuted ? "Unmute" : "Mute"}
-                  >
-                    <span className="material-symbols-outlined text-xs">
-                      {isMuted || volume === 0 ? "volume_off" : volume < 0.5 ? "volume_down" : "volume_up"}
-                    </span>
-                  </button>
-                  <span className="text-[9px] text-[#10b981] font-mono">
-                    {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
-                  </span>
-                </div>
-                <span>{formatTime(duration)}</span>
-              </div>
-              <div
-                onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const clickX = e.clientX - rect.left;
-                  const newPercent = clickX / rect.width;
-                  if (duration > 0 && seek) {
-                    seek(newPercent * duration);
-                  }
-                }}
-                className="w-full h-1 bg-white/10 hover:h-1.5 rounded-full overflow-hidden cursor-pointer group/progress transition-all relative"
-                title="Seek progress"
-              >
-                <div
-                  className="h-full bg-[#10b981] transition-all duration-150 rounded-full"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
+          {/* Revolving 8D Orbit Sound Node */}
+          <div
+            className="absolute w-full h-full animate-spin"
+            style={{
+              animationDuration: isPlaying ? "8s" : "24s",
+              animationTimingFunction: "linear",
+            }}
+          >
+            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 flex items-center gap-1">
+              <span className="w-3.5 h-3.5 rounded-full bg-primary-container shadow-[0_0_12px_rgba(0,245,155,0.9)] flex items-center justify-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-on-primary-container" />
+              </span>
             </div>
           </div>
-        ) : (
-          <div className="rounded-2xl bg-[#181818] border border-[#262626] p-3 text-center shadow-sm">
-            <div className="w-10 h-10 mx-auto rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-neutral-400 mb-2">
-              <span className="material-symbols-outlined text-xl">music_note</span>
+
+          {/* Secondary Audio Node */}
+          <div
+            className="absolute w-full h-full animate-spin"
+            style={{
+              animationDuration: isPlaying ? "12s" : "36s",
+              animationTimingFunction: "linear",
+              animationDirection: "reverse",
+            }}
+          >
+            <div className="absolute bottom-3 right-6 flex items-center gap-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(78,222,163,0.8)]" />
             </div>
-            <h4 className="text-xs font-bold text-white leading-snug">No track playing</h4>
-            <p className="text-[10px] text-[#a1a1aa] mt-0.5 leading-tight">
-              Select a song to start listening
-            </p>
           </div>
-        )}
+        </div>
+
+        <div className="flex items-center justify-between text-outline font-body-sm text-[10px] pt-0.5">
+          <div className="flex items-center gap-1">
+            <span className="material-symbols-outlined text-xs text-secondary">explore</span>
+            <span>Azimuth: 142° Orbit</span>
+          </div>
+          <span className="text-on-surface-variant font-mono">Elevation: +14°</span>
+        </div>
       </div>
     </aside>
   );

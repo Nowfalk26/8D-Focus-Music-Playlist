@@ -1,13 +1,53 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-green: #1DB954;
-  --color-brand-green-hover: #1ed760;
-  --color-brand-green-subtle: rgba(29, 185, 84, 0.15);
-  --color-brand-surface: #181818;
-  --color-brand-canvas: #121212;
-  --color-brand-card: #242424;
-  --color-brand-card-hover: #2a2a2a;
+  /* Spatial Wave Obsidian Design System Tokens */
+  --color-surface: #111318;
+  --color-surface-dim: #111318;
+  --color-surface-bright: #37393e;
+  --color-surface-container-lowest: #0c0e12;
+  --color-surface-container-low: #1a1c20;
+  --color-surface-container: #1e2024;
+  --color-surface-container-high: #282a2e;
+  --color-surface-container-highest: #333539;
+  --color-surface-variant: #333539;
+  --color-on-surface: #e2e2e8;
+  --color-on-surface-variant: #b9cbbd;
+  --color-inverse-surface: #e2e2e8;
+  --color-inverse-on-surface: #2f3035;
+  --color-outline: #849588;
+  --color-outline-variant: #3b4a3f;
+  --color-surface-tint: #00e38f;
+  --color-primary: #cdffdc;
+  --color-on-primary: #003920;
+  --color-primary-container: #00f59b;
+  --color-on-primary-container: #006b41;
+  --color-inverse-primary: #006d42;
+  --color-secondary: #4edea3;
+  --color-on-secondary: #003824;
+  --color-secondary-container: #00a572;
+  --color-on-secondary-container: #00311f;
+  --color-secondary-fixed: #6ffbbe;
+  --color-secondary-fixed-dim: #4edea3;
+  --color-tertiary: #e8f5ff;
+  --color-on-tertiary: #00354a;
+  --color-tertiary-container: #a8deff;
+  --color-on-tertiary-container: #006488;
+  --color-tertiary-fixed: #c4e7ff;
+  --color-tertiary-fixed-dim: #7bd0ff;
+  --color-primary-fixed: #53ffab;
+  --color-primary-fixed-dim: #00e38f;
+  --color-background: #111318;
+  --color-on-background: #e2e2e8;
+  --color-emerald-accent: #00f59b;
+
+  --color-brand-green: #00f59b;
+  --color-brand-green-hover: #53ffab;
+  --color-brand-green-subtle: rgba(0, 245, 155, 0.15);
+  --color-brand-surface: #1e2024;
+  --color-brand-canvas: #0c0e12;
+  --color-brand-card: #1a1c20;
+  --color-brand-card-hover: #282a2e;
   --color-brand-border: rgba(255, 255, 255, 0.08);
 
   --color-space-950: #060714;
@@ -15,48 +55,61 @@
   --color-space-850: #0c0817;
   --color-space-800: #121638;
 
-  --color-obsidian-950: #07050b;
-  --color-obsidian-900: #0e0818;
-  --color-obsidian-850: #130b26;
-  --color-obsidian-800: #160d2b;
-  --color-obsidian-700: #21123d;
-  --color-obsidian-600: #322850;
+  --color-obsidian-950: #06070a;
+  --color-obsidian-900: #0c0e12;
+  --color-obsidian-850: #111318;
+  --color-obsidian-800: #171a21;
+  --color-obsidian-750: #1e222c;
+  --color-obsidian-700: #272d3a;
+  --color-obsidian-600: #333539;
 
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Inter", "Plus Jakarta Sans", sans-serif;
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2rem;
+  --spacing-space-2xl: 3rem;
+  --spacing-gutter: 1rem;
+  --spacing-gutter-lg: 1.5rem;
+  --spacing-margin: 1rem;
+  --spacing-margin-desktop: 1.5rem;
+
+  --font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --color-neon-cyan: #00f2fe;
   --color-neon-blue: #4facfe;
   --color-neon-purple: #b026ff;
   --color-neon-magenta: #f72585;
-  --color-neon-emerald: #10b981;
+  --color-neon-emerald: #00f59b;
   --color-neon-amber: #f59e0b;
   --color-neon-coral: #f43f5e;
 
-  --shadow-glow-green: 0 0 25px -4px rgba(29, 185, 84, 0.45);
+  --shadow-glow-emerald: 0 0 20px -2px rgba(0, 245, 155, 0.45);
+  --shadow-glow-green: 0 0 20px -2px rgba(0, 245, 155, 0.45);
   --shadow-glow-cyan: 0 0 20px -3px rgba(0, 242, 254, 0.45);
   --shadow-glow-purple: 0 0 20px -3px rgba(176, 38, 255, 0.45);
 }
 
 :root {
-  --bg-main: #121212;
-  --bg-sidebar: #000000;
-  --bg-card: #181818;
-  --bg-card-hover: #242424;
-  --bg-input: #242424;
+  --bg-main: #0c0e12;
+  --bg-sidebar: #0c0e12;
+  --bg-card: #1a1c20;
+  --bg-card-hover: #1e2024;
+  --bg-input: #1e2024;
   --border-color: rgba(255, 255, 255, 0.08);
-  --border-focus: #1DB954;
-  --text-main: #ffffff;
-  --text-muted: #a7a7a7;
-  --text-sub: #727272;
-  --accent-primary: #1DB954;
-  --accent-primary-hover: #1ed760;
-  --accent-cyan: #00f2fe;
+  --border-focus: #00f59b;
+  --text-main: #e2e2e8;
+  --text-muted: #b9cbbd;
+  --text-sub: #849588;
+  --accent-primary: #00f59b;
+  --accent-primary-hover: #53ffab;
+  --accent-cyan: #a8deff;
   --accent-pink: #ec4899;
-  --accent-success: #1DB954;
-  --accent-danger: #ef4444;
-  --font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --accent-success: #00f59b;
+  --accent-danger: #ffb4ab;
+  --font-family: "Plus Jakarta Sans", "Inter", sans-serif;
 }
 
 * {
@@ -590,4 +643,96 @@ input, select, textarea {
   text-align: center !important;
   line-height: 1 !important;
 }
+
+/* ============================================================== */
+/* ⚡ SPATIAL WAVE OBSIDIAN TYPOGRAPHY & ANIMATIONS               */
+/* ============================================================== */
+.font-display-hero {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.font-headline-lg {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.font-headline-md {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.font-headline-sm {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.font-body-lg {
+  font-family: "Inter", sans-serif !important;
+}
+
+.font-body-md {
+  font-family: "Inter", sans-serif !important;
+}
+
+.font-body-sm {
+  font-family: "Inter", sans-serif !important;
+}
+
+.font-label-lg {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.font-label-md {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.font-label-caps {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+@keyframes radarSweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.radar-sweep-line {
+  transform-origin: center center;
+  animation: radarSweep 6s linear infinite;
+}
+
+@keyframes eqWave {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+.eq-bar:nth-child(1) { animation: eqWave 0.9s ease-in-out infinite 0.1s; }
+.eq-bar:nth-child(2) { animation: eqWave 0.75s ease-in-out infinite 0.35s; }
+.eq-bar:nth-child(3) { animation: eqWave 1.1s ease-in-out infinite 0.2s; }
+.eq-bar:nth-child(4) { animation: eqWave 0.85s ease-in-out infinite 0.45s; }
+
+@keyframes spinOrbitClockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.orbit-spin {
+  animation: spinOrbitClockwise 6.2s linear infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
 

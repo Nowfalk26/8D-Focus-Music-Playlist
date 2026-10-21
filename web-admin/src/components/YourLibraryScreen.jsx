@@ -1,614 +1,544 @@
 import React, { useState, useEffect } from "react";
 import { usePlayer } from "../context/PlayerContext";
 import { songsApi } from "../api/api";
-
-const DEFAULT_COVER =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCYHY4hp0r-GSzPdesFf5Z5mHQjlDX8zkLIjOdCA_IqUU_uw_nFr73ANifvOdaM2Q0NTsbK9ZB4CakHGH5fOSwA-_HynlD80C-hNL1oquc1m9K6gETHr9tKwpVJsxr8i3yXt8MxzxgSfUOhVYLQ8IqgfrlSGKs-61qE80eejtCqn6bE6dEiNbaAVFjYTn5bXQizoK0XcGh2VyyPyVMbGgVbr-Vnz7APr5Vg8HSuKiI1D50YhAVg3lfgaQ";
+import staticSongs from "../data/songsData.json";
 
 export default function YourLibraryScreen({ onNavigate }) {
   const {
     currentSong,
     isPlaying,
     playSong,
+    togglePlay,
     favorites,
     toggleFavorite,
     audioMode,
-    openModeSelector,
   } = usePlayer();
 
-  const [activeFilter, setActiveFilter] = useState("All"); // 'All' | 'Playlists' | 'Podcasts & Shows' | 'Albums' | 'Artists' | 'Downloaded'
-  const [sortOption, setSortOption] = useState("Recents"); // 'Recents' | 'Recently Added' | 'Alphabetical' | 'Creator'
-  const [viewMode, setViewMode] = useState("list"); // 'list' | 'grid'
-  const [librarySearch, setLibrarySearch] = useState("");
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [songs, setSongs] = useState([]);
-  const [selectedPlaylistSongs, setSelectedPlaylistSongs] = useState(null); // when user clicks a playlist/item
-  const [selectedPlaylistTitle, setSelectedPlaylistTitle] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [viewMode, setViewMode] = useState("grid"); // 'grid' | 'list'
+  const [searchQuery, setSearchQuery] = useState("");
+  const [songs, setSongs] = useState(() => staticSongs);
+  const [selectedCollection, setSelectedCollection] = useState(null);
 
   useEffect(() => {
     songsApi
       .getAll({ mode: audioMode })
-      .then((res) => setSongs(res.data?.data || []))
-      .catch(() => setSongs([]));
+      .then((res) => {
+        if (Array.isArray(res.data?.data) && res.data.data.length > 0) {
+          setSongs(res.data.data);
+        }
+      })
+      .catch(() => {});
   }, [audioMode]);
 
-  const handleImgError = (e) => {
-    e.target.onerror = null;
-    e.target.src = DEFAULT_COVER;
-  };
-
-  // Dynamic library items based on user's songs & liked songs (sample/dummy playlists removed)
-  const libraryEntries = [
+  const collections = [
     {
-      id: "liked-songs",
+      id: "liked",
       title: "Liked Songs",
       type: "Playlist",
-      categoryType: "Playlists",
-      subtitle: `Playlist • ${favorites.size} songs`,
+      category: "Playlists",
+      subtitle: `${favorites.size} songs • Auto-synced in 8D`,
       isPinned: true,
-      isDownloaded: true,
       isSpecialLiked: true,
-      image: null,
-      filterAction: () => songs.filter((s) => favorites.has(s._id || s.id)),
+      songsCount: favorites.size,
+      duration: `${favorites.size * 3} min`,
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuCL7oW54sB68_m0dEHGYCtexZMfxjQZgIJ4zlb3HCyBhoUYWGqIQ4vwczxL0CM7hHMtbfOFTiDiHliTAHZnTV1lwxfhz7RVKbKAiB9ymEiWYJkldVSO55zCzN-FC-ZOTRwfnCce8sdaPY8uTFviwnlXLaOhiIyxvbG5jSA0GE5UR9gHS5mn2_1taMYIZgw44RCN9QVvuZKPTtvXag594zIGQ0l1eLh5xeRQvyZYBxdeTghgchKhnvfK8w",
+      getSongs: () => songs.filter((s) => favorites.has(s._id || s.id)),
     },
-    ...(songs.some((s) => s.category === "Tamil Love" || s.genre === "Love")
-      ? [
-          {
-            id: "tamil-love-playlist",
-            title: "Tamil Love",
-            type: "Playlist",
-            categoryType: "Playlists",
-            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Love" || s.genre === "Love").length} songs`,
-            isPinned: false,
-            isDownloaded: true,
-            image:
-              "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=300&q=80",
-            filterAction: () => songs.filter((s) => s.category === "Tamil Love" || s.genre === "Love"),
-          },
-        ]
-      : []),
-    ...(songs.some((s) => s.category === "Tamil Melodies" || s.genre === "Melody")
-      ? [
-          {
-            id: "tamil-melodies-playlist",
-            title: "Tamil Melodies",
-            type: "Playlist",
-            categoryType: "Playlists",
-            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Melodies" || s.genre === "Melody").length} songs`,
-            isPinned: false,
-            isDownloaded: true,
-            image:
-              "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=300&q=80",
-            filterAction: () => songs.filter((s) => s.category === "Tamil Melodies" || s.genre === "Melody"),
-          },
-        ]
-      : []),
-    ...(songs.some((s) => s.category === "Tamil Vibe" || s.genre === "Vibe")
-      ? [
-          {
-            id: "tamil-vibe-playlist",
-            title: "Tamil Vibe",
-            type: "Playlist",
-            categoryType: "Playlists",
-            subtitle: `Playlist • ${songs.filter((s) => s.category === "Tamil Vibe" || s.genre === "Vibe").length} songs`,
-            isPinned: false,
-            isDownloaded: true,
-            image:
-              "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=300&q=80",
-            filterAction: () => songs.filter((s) => s.category === "Tamil Vibe" || s.genre === "Vibe"),
-          },
-        ]
-      : []),
+    {
+      id: "hit-me-hard",
+      title: "Hit Me Hard and Soft",
+      type: "Playlist",
+      category: "Playlists",
+      subtitle: "Playlist • Billie Eilish",
+      tag: "8D Spatial",
+      songsCount: 10,
+      duration: "34 min",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuB3PmWuBQuugO5tL_bWf1H7s08_HJto4A1R01JtOlUTvy1lWJhNUO8EyI3PnTjdNzvKtn9R2EXB93xkY0CMZB3q05dNQMK30HRS_eGw8pyq2WLyq3Bz59F6EvSACjkzaxhVcCYQSWYeP4ybKCDrlj2Oo62wJTYwQ4YBdDg3q4e5OvltmFa8x1nB_y2ODQeuW6_faNYsPmQnbjnu9JTw2Nh9qPvj2SQJbcp-GEsTCj8Am8v8sb5okerNOw",
+      getSongs: () => songs.filter((s) => s.artist?.includes("Billie") || s.album?.includes("Soft")),
+    },
+    {
+      id: "happier-than-ever",
+      title: "Happier Than Ever",
+      type: "Playlist",
+      category: "Playlists",
+      subtitle: "Playlist • Billie Eilish",
+      tag: "8D Spatial",
+      songsCount: 16,
+      duration: "56 min",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_wl6Svdg4abRX3dbTT3EXYeC75IvYj_WeQ3FUja9tqO-8a3jbGar0wQa7B1gfGILu7dFbfk6q9tGhhgMrl7IOJQipBEnANp_Rx95b9_DDhLYoZt8WwLE1I8o5FxnOiV1yyUXvKfiHV5VGwWj8qOh1f2F64dZg6yEjmDEe28k5XnZIwKpnVy9LilX88vKRJELHoCKmgDGkSWfCEMuCztbig3wAkueHV7sTjGhhViNp7y3UTlhmpw_4wg",
+      getSongs: () => songs.filter((s) => s.artist?.includes("Billie")),
+    },
+    {
+      id: "dont-smile",
+      title: "Don't Smile at Me",
+      type: "Playlist",
+      category: "Playlists",
+      subtitle: "Playlist • Billie Eilish",
+      tag: "8D Spatial",
+      songsCount: 9,
+      duration: "29 min",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuCkXqDM0Tld3Emz4fGerlQq4bF-0kVMp4b41f0i8tvHaMKnOD49SaOZCj4gaTskayOXA4dyd1aRVu34Qs2il623YN5FjSTX_5_7SwqnSzO-KkksGhau90XwG-jmpmoUbBfYAkujOuzOH1_uRFjj1B_tk4Su8qok2ybGBso7HNlp1SL4oCOJAp40FdL38yP4iyzA102r7pdsJNld_VPyaHjdBa_RnYvedSg_1Jl8Lm60bc8ITwViZYlVzg",
+      getSongs: () => songs.filter((s) => s.artist?.includes("Billie")),
+    },
+    {
+      id: "tamil-8d",
+      title: "Tamil 8D Melodies",
+      type: "Playlist",
+      category: "Playlists",
+      subtitle: "Playlist • Flow 8D Master",
+      tag: "Binaural Mix",
+      songsCount: 45,
+      duration: "2 hr 40 min",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwIyKHQinWa7qaDI9Ko2kG935OnLAGU_to4xvfCVT3elXB932su5NaAZ5Z_o_g0RkW5lFKGgQuiVZBmL4yLrAoyGUpcqmVJyiIkV2LS0eltzkfAVd-nT3O5y4hYZtlhSeHE_hb8cnktKiAyB-QzQbXxtMKnwdvGEA3zSiIFLcYd8LgvGN8O8AfcOavosx9V6RaCuPb2ZET8vVY2O2XhZYy8cP2B15EJ2NjcSbHW_pr41OSeOoGRk1a3w",
+      getSongs: () => songs.filter((s) => s.category?.includes("Tamil") || s.language === "Tamil"),
+    },
+    {
+      id: "billie-artist",
+      title: "Billie Eilish",
+      type: "Artist",
+      category: "Artists",
+      subtitle: "Artist • 109M Listeners",
+      tag: "Spatial Headliner",
+      isArtist: true,
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuAU74Hnn7FjMlmptuSN8M0SajceQMDgzKZh6Ib_OWUkTZMT1Ie2wWM5Mw4Lj66LMsUfmXxhS5jTZ_67ts9rxukObMTvnK0s3_T8NJnnnjYH0D2qLMN4qEjND3FhrD8iNwG3cpQLi2sK3hc_86wedGT2IkRNu5rhfLEq1Dk-hjMDH3TX9L_s5ebG2o7kbK4yr_y40ImYZIXPdhFzB8P2FDfpm3XEHs5Z5H6dlRSSmZORD-ezuMEf_nYurw",
+      getSongs: () => songs.filter((s) => s.artist?.includes("Billie")),
+    },
+    {
+      id: "leonard-cohen",
+      title: "Leonard Cohen",
+      type: "Artist",
+      category: "Artists",
+      subtitle: "Artist • Folk & Poetry",
+      tag: "Acoustic 360°",
+      isArtist: true,
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuBdJxx7pZb1VEoztPmLeS01-bs7tSXUhh4oI6Rc1iHZGT23dVXHbGWVhKQaPB2Z3RaUZB12pYXN6Kn859HQN7UqSJRLgSjepNd8JaSyKo9A1LEb5L-49jjc5u_Nlm4D-K3WRhelw9WbSNo5ZQ7z8JIoo9T8UXbvZptydasEaddqBdv2e_90fXlW2IMhkbQlimM_RQeHY9czqS9Ic4_INKImF08cyz0tIH-HXCqMse5IqrvUAUpyGKwqEw",
+      getSongs: () => songs.filter((s) => s.artist?.includes("Leonard")),
+    },
+    {
+      id: "binaural-lofi",
+      title: "Late Night Binaural Lo-Fi",
+      type: "Playlist",
+      category: "Playlists",
+      subtitle: "Playlist • Flow 8D Lab",
+      tag: "Curated 8D",
+      songsCount: 62,
+      duration: "3 hr 15 min",
+      cover: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqKdhYl8MGUf7wTT8FIx6eWJkVCihRQgaUS703JS-UDHkqn6YSThOvsow6w_VOI4Y1vJase3svPpI-XQKWuGFt2d8IsLzjm9AHfnWE8D1sPwuGpQZvXz4yHRaKUVMQaxfKDF0ukUQylfYXu6hNsuuwK41M-r9YTLAZjTAZ3fMy8kqAFSEygXSgP-ceKEdqdwM9Txg5CGya_A0h2hV2Dtg6fh2k2yOZ7XXlFvjdjyR7nY6SolXxbd8CDw",
+      getSongs: () => songs,
+    },
   ];
 
-  const filterTabs = ["All", "Playlists", "Artists", "Albums"];
+  const filterTabs = ["All", "Playlists", "Artists", "Albums", "Podcasts", "Downloaded (Offline 8D)"];
 
-  // Filter items based on active pill and search query
-  const filteredEntries = libraryEntries.filter((item) => {
+  const filteredCollections = collections.filter((item) => {
     const matchesFilter =
       activeFilter === "All"
         ? true
         : activeFilter === "Playlists"
-        ? item.categoryType === "Playlists"
-        : activeFilter === "Podcasts & Shows"
-        ? item.categoryType === "Podcasts & Shows"
-        : activeFilter === "Albums"
-        ? item.categoryType === "Albums"
+        ? item.category === "Playlists"
         : activeFilter === "Artists"
-        ? item.categoryType === "Artists"
-        : activeFilter === "Downloaded"
-        ? item.isDownloaded
+        ? item.category === "Artists"
+        : activeFilter === "Albums"
+        ? item.category === "Albums"
         : true;
 
     const matchesSearch =
-      !librarySearch.trim() ||
-      item.title.toLowerCase().includes(librarySearch.toLowerCase()) ||
-      item.subtitle.toLowerCase().includes(librarySearch.toLowerCase());
+      !searchQuery.trim() ||
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesFilter && matchesSearch;
   });
 
-  const handleEntryClick = (entry) => {
-    const matchedSongs = entry.filterAction();
-    if (matchedSongs.length > 0) {
-      setSelectedPlaylistSongs(matchedSongs);
-      setSelectedPlaylistTitle(entry.title);
+  const handlePlayCollection = (coll, e) => {
+    if (e) e.stopPropagation();
+    const matched = coll.getSongs();
+    if (matched.length > 0) {
+      playSong(matched[0], matched);
     }
-  };
-
-  const handlePlayEntry = (entry, e) => {
-    e.stopPropagation();
-    const matchedSongs = entry.filterAction();
-    if (matchedSongs.length > 0) {
-      playSong(matchedSongs[0], matchedSongs);
-    }
-  };
-
-  const handleCycleSort = () => {
-    const options = ["Recents", "Recently Added", "Alphabetical", "Creator"];
-    const nextIdx = (options.indexOf(sortOption) + 1) % options.length;
-    setSortOption(options[nextIdx]);
   };
 
   return (
-    <div className="w-full flex flex-col font-sans text-white select-none p-4 sm:p-6 lg:p-8 space-y-4 pb-32 bg-[#121212] min-h-full max-w-[1700px] mx-auto">
-      {/* ============================================================== */}
-      {/* 📱 1. STITCH ANDROID YOUR LIBRARY TOP HEADER (Mobile View) */}
-      {/* ============================================================== */}
-      <div className="md:hidden flex items-center justify-between px-4 pt-4 pb-2 bg-[#121212]">
-        <div className="flex items-center gap-2.5">
-          <img
-            src="https://lh3.googleusercontent.com/aida/AEtjO1XoGmMbJ4lRqhALz_oICNd7N_sJDwjfsGxmDR3yFTJPnbbPbucsize5x7dBTYwBCtGPxDVxTpLbXKqIdL9xnCgL9114bHGeKl2V3x3w-dNiZzZIdRcTzVd1Xlf40emRClBwaGJsXHKD2bPcd7gfh7O_wTbF_TzF6FlPr3oehFoGCeW-s_9D8tq5QPb4gceZS1yPLwWzyQnH24-gq9ebYzHnxaPk4bUK9TAMgYRt7_VN9jXRc6E2GmwsvO8"
-            alt="Flow 8D"
-            className="h-8 w-auto object-contain shrink-0"
-          />
-          <h1 className="text-xl font-black text-white tracking-tight">Your Library</h1>
-        </div>
-
-        <div className="flex items-center gap-1 text-neutral-400">
-          <button
-            onClick={() => onNavigate && onNavigate("orbit")}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:text-white hover:bg-white/5 active:scale-95 transition-all"
-            title="Spatial Orbit"
-          >
-            <span className="material-symbols-outlined text-[24px]">notifications</span>
-          </button>
-          <button
-            onClick={openModeSelector}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:text-white hover:bg-white/5 active:scale-95 transition-all"
-            title="Audio Universe Settings"
-          >
-            <span className="material-symbols-outlined text-[24px]">settings</span>
-          </button>
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20 ml-1 shrink-0">
-            <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiczsZzVgrgqYyrdIAiKEzTYTD24N-A1X7vSr1QWp-QIiT1z32jd9Y_RbcNgncekE8Wj4-eMWoZAj8rXCXcGmtkyQ2w8J_fw1sH2tP1QUInToHVRoSe2qjGabX0AUe48Z63E7XUi9QIgXXIcYp9FRmY9oNzX5Qk1FWGeSQUmUdxDzd88RoX7HgMoy77AsZ4dtH0eJrBoWlPRJ9ZYNAqYuyuCTE9rxzHlgJYjJ6a9-dBgu_1cLJ8fqT"
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
+    <div className="w-full min-w-0 flex flex-col font-sans text-on-surface select-none p-5 sm:p-7 space-y-7 pb-28 max-w-[1400px] mx-auto box-border">
+      {/* Header of Library Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-extrabold text-on-surface tracking-tight font-display-hero">
+              Your Library
+            </h1>
+            <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-primary-container/15 text-primary-container border border-primary-container/30">
+              Spatial Archive
+            </span>
           </div>
+          <p className="text-xs text-outline mt-1 font-body-sm">
+            Manage, curate and synthesize your 8D spatial soundscapes and personal playlists.
+          </p>
         </div>
-      </div>
 
-      {/* ============================================================== */}
-      {/* 2. SUB-HEADER: Large Title & Action Buttons (Search & Add) */}
-      {/* ============================================================== */}
-      <div className="px-4 sm:px-8 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Your Library
-        </h2>
-
-        <div className="flex items-center gap-1 text-neutral-300">
-          <button
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className={`w-10 h-10 flex items-center justify-center rounded-full hover:text-white hover:bg-white/5 active:scale-95 transition-all ${
-              isSearchOpen ? "text-[#1DB954]" : ""
-            }`}
-            title="Search your library"
-          >
-            <span className="material-symbols-outlined text-[24px]">search</span>
-          </button>
-          <button
-            onClick={() => onNavigate && onNavigate("search")}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:text-white hover:bg-white/5 active:scale-95 transition-all"
-            title="Create playlist or add music"
-          >
-            <span className="material-symbols-outlined text-[26px]">add</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Optional Search bar dropdown */}
-      {isSearchOpen && (
-        <div className="px-4 sm:px-8 max-w-7xl mx-auto w-full pb-2 animate-fadeIn">
-          <div className="flex items-center w-full bg-[#242424] rounded-xl px-3.5 py-2 border border-white/10 gap-2">
-            <span className="material-symbols-outlined text-neutral-400 text-lg">search</span>
+        {/* Secondary Controls: Search, Sort, View Switcher */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="relative w-48 sm:w-56">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">
+              search
+            </span>
             <input
               type="text"
-              value={librarySearch}
-              onChange={(e) => setLibrarySearch(e.target.value)}
-              placeholder="Find in Your Library..."
-              className="bg-transparent border-0 text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none w-full"
-              autoFocus
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search in library..."
+              className="w-full h-9 pl-9 pr-3 rounded-xl bg-surface-container-high border border-white/5 text-xs text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary-container"
             />
-            {librarySearch && (
-              <button
-                onClick={() => setLibrarySearch("")}
-                className="text-neutral-400 hover:text-white text-xs"
-              >
-                ✕
-              </button>
-            )}
+          </div>
+
+          <div className="h-9 flex items-center bg-surface-container-high border border-white/5 rounded-xl p-0.5 text-outline">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+                viewMode === "grid"
+                  ? "bg-surface-container-lowest text-primary-container shadow-sm"
+                  : "hover:text-on-surface"
+              }`}
+              title="Grid View"
+            >
+              <span className="material-symbols-outlined text-sm">grid_view</span>
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+                viewMode === "list"
+                  ? "bg-surface-container-lowest text-primary-container shadow-sm"
+                  : "hover:text-on-surface"
+              }`}
+              title="List View"
+            >
+              <span className="material-symbols-outlined text-sm">format_list_bulleted</span>
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* ============================================================== */}
-      <div className="px-4 sm:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2 max-w-7xl mx-auto w-full">
+      {/* Main Navigation Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
         {filterTabs.map((tab) => {
           const isActive = activeFilter === tab;
           return (
             <button
               key={tab}
               onClick={() => setActiveFilter(tab)}
-              className={`spotify-cat-btn !text-xs !min-h-[32px] !py-1.5 !px-4 ${
-                isActive ? "spotify-cat-btn-active font-bold" : "spotify-cat-btn-inactive font-bold"
+              className={`px-4 py-1.5 rounded-full font-label-md text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                isActive
+                  ? "bg-primary-container text-on-primary-container font-bold shadow-[0_0_12px_rgba(0,245,155,0.35)]"
+                  : "bg-surface-container-high text-on-surface-variant hover:text-on-surface hover:bg-surface-bright"
               }`}
             >
-              <span className="inline-flex items-center justify-center text-center leading-none">
-                {tab}
-              </span>
+              {tab}
             </button>
           );
         })}
       </div>
 
-      {/* ============================================================== */}
-      {/* 4. SORT ROW & LIST/GRID TOGGLE */}
-      {/* ============================================================== */}
-      <div className="px-4 sm:px-8 pt-3 pb-2 flex items-center justify-between max-w-7xl mx-auto w-full">
-        <button
-          onClick={handleCycleSort}
-          className="inline-flex items-center justify-center gap-1.5 text-neutral-300 hover:text-white group px-3 py-1.5 rounded-full hover:bg-white/5 active:opacity-75 transition-all text-center leading-none"
+      {/* Spotlight Cards Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Liked Songs Spotlight Card */}
+        <div
+          onClick={() => {
+            const likedList = songs.filter((s) => favorites.has(s._id || s.id));
+            if (likedList.length > 0) setSelectedCollection({ title: "Liked Songs", songs: likedList });
+          }}
+          className="group relative rounded-2xl p-5 bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-surface-container-low border border-purple-500/30 overflow-hidden shadow-xl hover:border-purple-400/50 transition-all cursor-pointer"
         >
-          <span className="material-symbols-outlined text-[18px] text-neutral-400 group-hover:text-[#1DB954] transition-colors leading-none flex items-center justify-center">
-            swap_vert
-          </span>
-          <span className="text-xs font-semibold leading-none">{sortOption}</span>
-        </button>
-
-        <button
-          onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
-          className="w-9 h-9 flex items-center justify-center text-neutral-400 hover:text-white active:scale-90 transition-transform rounded-full hover:bg-white/5"
-          title={`Switch to ${viewMode === "list" ? "Grid" : "List"} View`}
-        >
-          <span className="material-symbols-outlined text-[20px]">
-            {viewMode === "list" ? "grid_view" : "view_list"}
-          </span>
-        </button>
-      </div>
-
-      {/* ============================================================== */}
-      {/* 5. MAIN CONTENT: PLAYLIST TRACKS OR LIBRARY LIST */}
-      {/* ============================================================== */}
-      <div className="px-4 sm:px-8 max-w-7xl mx-auto w-full mt-2">
-        {selectedPlaylistSongs ? (
-          /* Sub-view: Showing songs of the selected playlist */
-          <div className="flex flex-col gap-4 animate-fadeIn">
-            <div className="flex items-center justify-between p-4 rounded-2xl bg-[#1e1e24] border border-white/5">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setSelectedPlaylistSongs(null)}
-                  className="w-9 h-9 rounded-full bg-[#2a2a32] hover:bg-white hover:text-black flex items-center justify-center text-white transition-all active:scale-95"
-                  title="Back to Library"
-                >
-                  <span className="material-symbols-outlined text-lg">arrow_back</span>
-                </button>
-                <div>
-                  <h3 className="text-base sm:text-lg font-bold text-white">
-                    {selectedPlaylistTitle}
-                  </h3>
-                  <p className="text-xs text-neutral-400">
-                    {selectedPlaylistSongs.length} songs • {audioMode?.toUpperCase()} Spatial
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => playSong(selectedPlaylistSongs[0], selectedPlaylistSongs)}
-                className="px-5 py-2.5 rounded-full bg-[#1DB954] text-black font-bold text-xs inline-flex items-center justify-center text-center gap-1.5 hover:scale-105 active:scale-95 transition-transform leading-none shadow-md"
-              >
-                <span className="material-symbols-outlined text-base leading-none">play_arrow</span>
-                <span className="leading-none px-0.5">Play</span>
-              </button>
+          <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-purple-600/20 rounded-full blur-2xl group-hover:bg-purple-500/30 transition-all pointer-events-none" />
+          <div className="flex items-start justify-between relative z-10">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl shadow-lg">
+              <span className="material-symbols-outlined text-3xl">favorite</span>
             </div>
-
-            {/* Song rows */}
-            <div className="divide-y divide-white/5 rounded-2xl bg-[#181818]/60 border border-white/5 p-2">
-              {selectedPlaylistSongs.map((song, idx) => {
-                const isThisPlaying =
-                  currentSong &&
-                  (currentSong._id || currentSong.id) === (song._id || song.id) &&
-                  isPlaying;
-                const isFav = favorites.has(song._id || song.id);
-
-                return (
-                  <div
-                    key={song._id || song.id || idx}
-                    onClick={() => playSong(song, selectedPlaylistSongs)}
-                    className={`grid grid-cols-12 items-center px-4 py-3 rounded-xl hover:bg-[#242424] cursor-pointer group transition-colors text-xs ${
-                      isThisPlaying ? "bg-[#242424] text-[#1DB954]" : "text-neutral-300"
-                    }`}
-                  >
-                    <div className="col-span-1 flex items-center justify-center font-mono text-neutral-400 group-hover:hidden">
-                      {isThisPlaying ? (
-                        <span className="material-symbols-outlined text-[#1DB954] text-base animate-pulse">
-                          equalizer
-                        </span>
-                      ) : (
-                        idx + 1
-                      )}
-                    </div>
-                    <div className="col-span-1 hidden items-center justify-center group-hover:flex">
-                      <span className="material-symbols-outlined text-xl text-white">
-                        {isThisPlaying ? "pause" : "play_arrow"}
-                      </span>
-                    </div>
-
-                    <div className="col-span-8 md:col-span-6 flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-900">
-                        <img
-                          src={song.imageUrl || DEFAULT_COVER}
-                          alt={song.title}
-                          className="w-full h-full object-cover"
-                          onError={handleImgError}
-                        />
-                      </div>
-                      <div className="min-w-0 flex flex-col">
-                        <h4
-                          className={`font-bold truncate text-xs sm:text-sm ${
-                            isThisPlaying ? "text-[#1DB954]" : "text-white group-hover:text-[#1DB954]"
-                          }`}
-                        >
-                          {song.title}
-                        </h4>
-                        <p className="text-[11px] text-neutral-400 truncate mt-0.5">
-                          {song.artist}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:flex md:col-span-3 items-center gap-2 text-neutral-400">
-                      <span className="truncate">{song.category || "Tamil Melodies"}</span>
-                      {song.audioMode && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#1DB954] uppercase">
-                          {song.audioMode}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="col-span-3 md:col-span-2 flex items-center justify-end gap-3 pr-2 text-right">
-                      <span className="font-mono text-neutral-400 text-[11px]">
-                        {song.duration || "4:15"}
-                      </span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleFavorite(song._id || song.id);
-                        }}
-                        className="text-neutral-400 hover:text-white"
-                      >
-                        <span
-                          className={`material-symbols-outlined text-sm ${
-                            isFav ? "text-[#1DB954]" : ""
-                          }`}
-                          style={{ fontVariationSettings: isFav ? "'FILL' 1" : "'FILL' 0" }}
-                        >
-                          favorite
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-container/20 text-primary-container border border-primary-container/30">
+              <span className="material-symbols-outlined text-[13px]">push_pin</span>
+              <span>Pinned</span>
             </div>
           </div>
-        ) : viewMode === "grid" ? (
-          /* Grid View Mode */
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5">
-            {filteredEntries.map((entry) => (
-              <div
-                key={entry.id}
-                onClick={() => handleEntryClick(entry)}
-                className="group p-3 rounded-2xl bg-[#181818] hover:bg-[#242424] cursor-pointer transition-all duration-300 flex flex-col justify-between shadow-md border border-white/5 hover:border-white/10 active:scale-[0.98]"
-              >
-                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-[#202020] shadow-md flex items-center justify-center">
-                  {entry.isSpecialLiked ? (
-                    <div className="w-full h-full bg-gradient-to-br from-[#450af5] via-[#8e8ee5] to-[#c4efd9] flex items-center justify-center shadow-lg">
-                      <span
-                        className="material-symbols-outlined text-white text-4xl"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        favorite
-                      </span>
-                    </div>
-                  ) : entry.isSpecialEpisodes ? (
-                    <div className="w-full h-full bg-gradient-to-br from-[#006450] to-[#05382b] flex items-center justify-center shadow-lg">
-                      <span
-                        className="material-symbols-outlined text-[#1DB954] text-4xl"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        bookmark
-                      </span>
-                    </div>
-                  ) : (
-                    <img
-                      src={entry.image || DEFAULT_COVER}
-                      alt={entry.title}
-                      className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-                        entry.isArtist ? "rounded-full" : "rounded-xl"
-                      }`}
-                      onError={handleImgError}
-                    />
-                  )}
+          <div className="mt-6 relative z-10">
+            <h3 className="text-xl font-bold text-on-surface group-hover:text-purple-300 transition-colors">
+              Liked Songs
+            </h3>
+            <p className="text-xs text-outline mt-1 flex items-center gap-2">
+              <span>{favorites.size} songs</span>
+              <span className="w-1 h-1 rounded-full bg-outline" />
+              <span className="text-secondary font-medium flex items-center gap-1">
+                <span className="material-symbols-outlined text-[13px]">sync</span>
+                Auto-synced in 8D
+              </span>
+            </p>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const likedList = songs.filter((s) => favorites.has(s._id || s.id));
+              if (likedList.length > 0) playSong(likedList[0], likedList);
+            }}
+            className="absolute right-5 bottom-5 w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_16px_rgba(0,245,155,0.4)] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <span
+              className="material-symbols-outlined text-2xl"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              play_arrow
+            </span>
+          </button>
+        </div>
 
-                  {/* Play Hover Button */}
-                  <div className="absolute right-2.5 bottom-2.5 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-3 transition-all duration-200">
+        {/* 8D Converted Masters Card */}
+        <div
+          onClick={() => onNavigate("orbit")}
+          className="group relative rounded-2xl p-5 bg-gradient-to-br from-surface-container-low via-surface-container to-secondary-container/10 border border-primary-container/20 hover:border-primary-container/50 transition-all cursor-pointer shadow-xl"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-14 h-14 rounded-2xl bg-primary-container/10 border border-primary-container/30 flex items-center justify-center text-primary-container group-hover:shadow-[0_0_16px_rgba(0,245,155,0.3)] transition-all">
+              <span className="material-symbols-outlined text-3xl">headphones</span>
+            </div>
+            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-primary-container bg-primary-container/10 px-2 py-0.5 rounded border border-primary-container/30">
+              96kHz Stems
+            </span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-base font-bold text-on-surface group-hover:text-primary-container transition-colors">
+              8D Converted Masters
+            </h3>
+            <p className="text-xs text-outline mt-1 font-body-sm">
+              Rendered with dynamic 360° orbital spatialization and binaural HRTF curves.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center justify-between text-xs">
+            <span className="text-outline font-mono">Total size: 1.84 GB</span>
+            <span className="text-primary-container font-semibold flex items-center gap-1 group-hover:underline">
+              Open Stage <span className="material-symbols-outlined text-sm">chevron_right</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Music Taste DNA Spotlight */}
+        <div
+          onClick={() => onNavigate("taste")}
+          className="group relative rounded-2xl p-5 bg-surface-container-low border border-white/10 hover:border-secondary/60 flex flex-col justify-between transition-all cursor-pointer shadow-xl"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-14 h-14 rounded-2xl bg-surface-container-high border border-white/5 flex items-center justify-center text-secondary group-hover:scale-105 transition-all">
+              <span className="material-symbols-outlined text-3xl">bubble_chart</span>
+            </div>
+            <span className="text-[10px] uppercase font-bold tracking-wider text-outline bg-surface-container-high px-2.5 py-1 rounded-md border border-white/5 font-mono">
+              AI Latent
+            </span>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-base font-bold text-on-surface group-hover:text-secondary transition-colors">
+              Music Taste DNA
+            </h3>
+            <p className="text-xs text-outline mt-1 font-body-sm">
+              Vector embeddings, acoustic fingerprint radar, and spatial affinity clusters.
+            </p>
+          </div>
+          <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold text-secondary">
+            <span>Inspect Vector Graph</span>
+            <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Selected Collection View if Active */}
+      {selectedCollection && (
+        <section className="p-5 rounded-2xl bg-surface-container-low border border-white/10 space-y-4">
+          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSelectedCollection(null)}
+                className="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-bright flex items-center justify-center text-outline hover:text-on-surface"
+              >
+                <span className="material-symbols-outlined text-sm">arrow_back</span>
+              </button>
+              <h2 className="text-xl font-bold text-on-surface">{selectedCollection.title}</h2>
+              <span className="text-xs text-outline font-mono">({selectedCollection.songs.length} tracks)</span>
+            </div>
+            <button
+              onClick={() => {
+                if (selectedCollection.songs.length > 0) {
+                  playSong(selectedCollection.songs[0], selectedCollection.songs);
+                }
+              }}
+              className="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-xs font-bold shadow-md hover:scale-105 transition-transform flex items-center gap-1.5"
+            >
+              <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>play_arrow</span>
+              <span>Play All</span>
+            </button>
+          </div>
+
+          <div className="space-y-1">
+            {selectedCollection.songs.map((song, idx) => {
+              const isPlayingThis = currentSong && (currentSong._id === song._id || currentSong.title === song.title) && isPlaying;
+              return (
+                <div
+                  key={song._id || song.id || idx}
+                  onClick={() => playSong(song, selectedCollection.songs)}
+                  className={`flex items-center justify-between p-2.5 rounded-xl hover:bg-surface-container cursor-pointer transition-colors ${
+                    isPlayingThis ? "bg-surface-container border border-primary-container/30" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-5 text-xs text-outline font-mono text-center">{idx + 1}</span>
+                    <img
+                      src={song.imageUrl || song.cover || DEFAULT_COVER}
+                      alt={song.title}
+                      className="w-10 h-10 rounded-lg object-cover bg-surface-container-high"
+                    />
+                    <div className="flex flex-col min-w-0">
+                      <span className={`text-xs font-semibold truncate ${isPlayingThis ? "text-primary-container" : "text-on-surface"}`}>
+                        {song.title}
+                      </span>
+                      <span className="text-[11px] text-outline truncate">{song.artist}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="text-xs text-outline font-mono">{song.duration || "3:20"}</span>
                     <button
-                      onClick={(e) => handlePlayEntry(entry, e)}
-                      className="w-10 h-10 rounded-full bg-[#1DB954] text-black flex items-center justify-center shadow-xl hover:scale-105 active:scale-90 transition-transform"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(song._id || song.id);
+                      }}
+                      className="text-outline hover:text-primary-container"
                     >
-                      <span
-                        className="material-symbols-outlined text-2xl font-bold ml-0.5"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        play_arrow
+                      <span className="material-symbols-outlined text-base">
+                        {favorites.has(song._id || song.id) ? "favorite" : "favorite_border"}
                       </span>
                     </button>
                   </div>
                 </div>
-
-                <div className="min-w-0 flex flex-col">
-                  <h3
-                    className={`text-xs sm:text-sm font-bold truncate leading-snug pb-0.5 ${
-                      entry.isPinned ? "text-[#1DB954]" : "text-white"
-                    } group-hover:text-[#1DB954] transition-colors`}
-                  >
-                    {entry.title}
-                  </h3>
-                  <div className="flex items-center gap-1.5 mt-1 text-[11px] text-neutral-400 truncate">
-                    {entry.isPinned && (
-                      <span
-                        className="material-symbols-outlined text-[#1DB954] text-[13px] shrink-0"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        push_pin
-                      </span>
-                    )}
-                    <span className="truncate">{entry.subtitle}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        ) : (
-          /* List View Mode (Exact Stitch Spec) */
-          <div className="flex flex-col gap-1">
-            {filteredEntries.map((entry) => (
-              <div
-                key={entry.id}
-                onClick={() => handleEntryClick(entry)}
-                className="group flex items-center justify-between p-2.5 rounded-xl hover:bg-[#1f1f26] active:bg-[#282733] transition-colors cursor-pointer"
+        </section>
+      )}
+
+      {/* Library Collections Grid */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-bold text-on-surface tracking-tight font-headline-md">
+              Personal & Curated Collections
+            </h2>
+            <span className="text-xs font-mono text-outline">({filteredCollections.length} items)</span>
+          </div>
+          <span className="text-xs text-outline font-body-sm">
+            Sorted by: <span className="text-primary-container font-semibold">Recently Added</span>
+          </span>
+        </div>
+
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {filteredCollections.map((item) => (
+              <article
+                key={item.id}
+                onClick={() => {
+                  const matched = item.getSongs();
+                  if (matched.length > 0) {
+                    setSelectedCollection({ title: item.title, songs: matched });
+                  }
+                }}
+                className={`group bg-surface-container-low rounded-2xl p-3.5 border border-white/5 hover:border-primary-container/40 hover:bg-surface-container transition-all duration-300 relative shadow-xl cursor-pointer ${
+                  item.isArtist ? "flex flex-col items-center text-center" : ""
+                }`}
               >
-                <div className="flex items-center gap-3.5 min-w-0 flex-1">
-                  {/* Artwork / Icon Box */}
-                  {entry.isSpecialLiked ? (
-                    <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-[#450af5] via-[#8e8ee5] to-[#c4efd9] shrink-0 flex items-center justify-center shadow-[0_6px_20px_rgba(69,10,245,0.35)] overflow-hidden">
-                      <span
-                        className="material-symbols-outlined text-white text-[28px]"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        favorite
-                      </span>
-                    </div>
-                  ) : entry.isSpecialEpisodes ? (
-                    <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-[#006450] to-[#05382b] shrink-0 flex items-center justify-center shadow-[0_6px_16px_rgba(0,100,80,0.3)] overflow-hidden">
-                      <span
-                        className="material-symbols-outlined text-[#1DB954] text-[28px]"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        bookmark
-                      </span>
-                    </div>
-                  ) : (
-                    <div
-                      className={`relative w-16 h-16 shrink-0 overflow-hidden shadow-md bg-[#242424] ${
-                        entry.isArtist ? "rounded-full" : "rounded-xl"
-                      }`}
-                    >
-                      <img
-                        src={entry.image || DEFAULT_COVER}
-                        alt={entry.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onError={handleImgError}
-                      />
-                    </div>
-                  )}
-
-                  {/* Title & Subtitle */}
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <span
-                      className={`font-semibold text-sm truncate ${
-                        entry.isPinned
-                          ? "text-[#1DB954] font-bold"
-                          : "text-white group-hover:text-[#1DB954]"
-                      } transition-colors`}
-                    >
-                      {entry.title}
-                    </span>
-                    <div className="flex items-center gap-1.5 mt-0.5 min-w-0 text-neutral-400 text-xs">
-                      {entry.isPinned && (
-                        <span
-                          className="material-symbols-outlined text-[#1DB954] text-[14px] shrink-0"
-                          style={{ fontVariationSettings: "'FILL' 1" }}
-                        >
-                          push_pin
-                        </span>
-                      )}
-                      <span className="truncate">{entry.subtitle}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right: Download indicator / Play button */}
-                <div className="flex items-center gap-3 shrink-0 ml-2">
-                  {entry.isDownloaded && (
-                    <span
-                      className="material-symbols-outlined text-[#1DB954] text-[17px] shrink-0"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                      title="Downloaded"
-                    >
-                      download_done
+                <div
+                  className={`relative overflow-hidden mb-3.5 bg-surface-container-high ${
+                    item.isArtist
+                      ? "w-32 h-32 rounded-full border-2 border-primary-container/30 group-hover:border-primary-container shadow-md"
+                      : "w-full aspect-square rounded-xl"
+                  }`}
+                >
+                  <img
+                    src={item.cover}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {item.tag && !item.isArtist && (
+                    <span className="absolute top-2.5 left-2.5 bg-surface-container-lowest/80 backdrop-blur-md text-[9px] font-bold text-primary-container px-2 py-0.5 rounded border border-primary-container/30">
+                      {item.tag}
                     </span>
                   )}
                   <button
-                    onClick={(e) => handlePlayEntry(entry, e)}
-                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#1DB954] hover:text-black text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all active:scale-90"
-                    title="Play"
+                    onClick={(e) => handlePlayCollection(item, e)}
+                    className="absolute right-3 bottom-3 w-11 h-11 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-base shadow-[0_0_16px_rgba(0,245,155,0.45)] opacity-0 group-hover:opacity-100 transform translate-y-3 group-hover:translate-y-0 transition-all duration-300 hover:scale-110 active:scale-95"
                   >
                     <span
-                      className="material-symbols-outlined text-lg"
+                      className="material-symbols-outlined text-2xl font-bold ml-0.5"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       play_arrow
                     </span>
                   </button>
                 </div>
+
+                <div className={`space-y-1 ${item.isArtist ? "w-full" : ""}`}>
+                  <h4 className="text-sm font-bold text-on-surface group-hover:text-primary-container truncate transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="text-xs text-outline truncate">{item.subtitle}</p>
+                  {!item.isArtist && (
+                    <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[11px] text-outline">
+                      <span>{item.songsCount} Songs</span>
+                      <span className="text-secondary font-mono">{item.duration}</span>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredCollections.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => {
+                  const matched = item.getSongs();
+                  if (matched.length > 0) {
+                    setSelectedCollection({ title: item.title, songs: matched });
+                  }
+                }}
+                className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low hover:bg-surface-container border border-white/5 transition-all cursor-pointer group"
+              >
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <img
+                    src={item.cover}
+                    alt={item.title}
+                    className={`w-12 h-12 object-cover shrink-0 ${item.isArtist ? "rounded-full" : "rounded-xl"}`}
+                  />
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs sm:text-sm font-semibold text-on-surface group-hover:text-primary-container truncate">
+                      {item.title}
+                    </span>
+                    <span className="text-[11px] text-outline truncate">{item.subtitle}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 shrink-0">
+                  {!item.isArtist && (
+                    <span className="text-xs font-mono text-secondary">{item.duration}</span>
+                  )}
+                  <button
+                    onClick={(e) => handlePlayCollection(item, e)}
+                    className="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>
+                      play_arrow
+                    </span>
+                  </button>
+                </div>
               </div>
             ))}
-
-            {/* Add Artists & Podcasts Shortcut Tile from Stitch */}
-            <div
-              onClick={() => onNavigate && onNavigate("search")}
-              className="group flex items-center gap-3.5 p-2.5 rounded-xl hover:bg-[#1f1f26] active:bg-[#282733] transition-colors cursor-pointer mt-2"
-            >
-              <div className="w-16 h-16 rounded-xl bg-[#242424] border-dashed border-2 border-white/20 flex items-center justify-center shrink-0 group-hover:border-[#1DB954] group-hover:bg-[#2a2930] transition-all">
-                <span className="material-symbols-outlined text-neutral-400 group-hover:text-[#1DB954] text-[28px] transition-colors">
-                  add
-                </span>
-              </div>
-              <div className="flex flex-col min-w-0 flex-1">
-                <span className="text-sm font-semibold text-white group-hover:text-[#1DB954] transition-colors">
-                  Add Artists &amp; Podcasts
-                </span>
-                <span className="text-xs text-neutral-400 truncate mt-0.5">
-                  Personalize your library recommendations
-                </span>
-              </div>
-            </div>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

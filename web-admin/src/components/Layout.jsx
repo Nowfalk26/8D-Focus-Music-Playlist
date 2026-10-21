@@ -46,7 +46,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
   ];
 
   return (
-    <div className="flex flex-col w-full max-w-full h-[100dvh] bg-[#0a0a0a] p-2 sm:p-2.5 lg:p-3 gap-2.5 sm:gap-3 overflow-hidden text-white font-sans select-none box-border">
+    <div className="flex flex-col w-full max-w-full h-[100dvh] bg-surface-container-lowest p-2 sm:p-2.5 lg:p-3 gap-2.5 sm:gap-3 overflow-hidden text-on-surface font-sans select-none box-border">
       {/* Top Global Navigation Bar */}
       <SpotifyTopBar
         activeTab={activeTab}
@@ -58,7 +58,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         onToggleRightPanel={toggleRightPanel}
       />
 
-      {/* Middle Section: 3-Panel Audio Dashboard with Image 1 Proportions & Tight Gutters */}
+      {/* Middle Section: 3-Panel Audio Dashboard with Stitch Proportions & Obsidian Gutters */}
       <div className="flex-1 flex gap-2.5 sm:gap-3 lg:gap-3.5 min-h-0 min-w-0 overflow-hidden w-full box-border">
         {/* Panel 1: Left Navigation & Library Sidebar */}
         <SpotifySidebar
@@ -70,7 +70,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
         />
 
         {/* Panel 2: Center Main Stage (Hero Banner, Trending Albums, Top Artist) */}
-        <div className="flex-1 min-w-0 flex flex-col bg-[#121212] rounded-2xl overflow-hidden shadow-xl relative border border-[#262626] transition-all duration-300 min-h-0">
+        <div className="flex-1 min-w-0 flex flex-col bg-surface rounded-2xl overflow-hidden shadow-2xl relative border border-white/5 transition-all duration-300 min-h-0">
           <main className="flex-1 min-h-0 min-w-0 overflow-y-auto scroll-smooth overscroll-contain">
             {children}
           </main>
@@ -85,17 +85,17 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
       {/* Slide-over Right Panel Drawer for Tablets & Mobile */}
       {isRightPanelOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm xl:hidden flex justify-end"
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md xl:hidden flex justify-end"
           onClick={() => setIsRightPanelOpen(false)}
         >
           <div
-            className="w-full max-w-sm h-full p-2 bg-[#0a0d0b]"
+            className="w-full max-w-sm h-full p-2 bg-surface-container-lowest"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="h-full relative">
               <button
                 onClick={() => setIsRightPanelOpen(false)}
-                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
+                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
@@ -116,7 +116,7 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
       {/* Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden flex items-center justify-around bg-[#121614] border-t border-white/10 py-2 px-1 shrink-0 z-40 pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.5)]"
+        className="md:hidden flex items-center justify-around bg-surface-container-lowest border-t border-white/5 py-2 px-1 shrink-0 z-40 pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.5)]"
       >
         {mobileNavTabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -131,18 +131,18 @@ export default function Layout({ activeTab, onSelectTab, user, onLogout, childre
                 }
               }}
               className={`flex flex-col items-center justify-center gap-0.5 flex-1 py-1 transition-all active:scale-95 ${
-                isActive ? "text-[#10b981]" : "text-neutral-400 hover:text-white"
+                isActive ? "text-primary-container" : "text-outline hover:text-on-surface"
               }`}
             >
               <span
                 className={`material-symbols-outlined text-[22px] transition-transform ${
-                  isActive ? "text-[#10b981] scale-110" : ""
+                  isActive ? "text-primary-container scale-110 drop-shadow-[0_0_8px_rgba(0,245,155,0.6)]" : ""
                 }`}
                 style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
               >
                 {tab.icon}
               </span>
-              <span className={`text-[10px] font-semibold leading-tight tracking-tight ${isActive ? "text-white" : ""}`}>
+              <span className={`text-[10px] font-semibold leading-tight tracking-tight ${isActive ? "text-primary-container font-bold" : "text-outline"}`}>
                 {tab.label}
               </span>
             </button>
